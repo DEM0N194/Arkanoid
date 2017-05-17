@@ -26,13 +26,13 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	walls(0.0f, float(gfx.ScreenWidth), 0.0f, float(gfx.ScreenHeight)),
-	ball(Vec2(100, 100), Vec2(200, 200)),
+	ball(Vec2(150, 200), Vec2(200, 200)),
 	paddle(Vec2(400,550), 100, 15),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\arkbrick.wav")
 {
 	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
-	const Vec2 topLeft(0.0f, 0.0f);
+	const Vec2 topLeft(40.0f, 60.0f);
 	for (int y = 0; y < nBricksDown; y++)
 	{
 		const Color c = colors[y];
@@ -65,6 +65,7 @@ void Game::UpdateModel()
 		if (b.DoBallCollision(ball))
 		{
 			soundBrick.Play();
+			break;
 		}
 	}
 

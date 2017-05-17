@@ -21,6 +21,11 @@ RectF::RectF(const Vec2 & topLeft, float width, float height)
 {
 }
 
+RectF RectF::GetExpanded(float offset) const
+{
+	return RectF(left-offset, right+offset, top-offset, bottom+offset);
+}
+
 bool RectF::IsOverlappingWith(const RectF & other) const
 {
 	return left < other.right && right > other.left && top < other.bottom && bottom > other.top;
