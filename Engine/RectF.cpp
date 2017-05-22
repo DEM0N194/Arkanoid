@@ -23,7 +23,12 @@ RectF::RectF(const Vec2 & topLeft, float width, float height)
 
 RectF RectF::GetExpanded(float offset) const
 {
-	return RectF(left-offset, right+offset, top-offset, bottom+offset);
+	return RectF(left - offset, right + offset, top - offset, bottom + offset);
+}
+
+Vec2 RectF::GetCenter() const
+{
+	return Vec2( (left + right)/2.0f, (top + bottom)/2.0f );
 }
 
 bool RectF::IsOverlappingWith(const RectF & other) const
@@ -34,5 +39,5 @@ bool RectF::IsOverlappingWith(const RectF & other) const
 RectF RectF::fromCenter(const Vec2 & center, float halfWidth, float halfHeight)
 {
 	const Vec2 half(halfWidth, halfHeight);
-	return RectF(center-half, center+half);
+	return RectF(center - half, center + half);
 }

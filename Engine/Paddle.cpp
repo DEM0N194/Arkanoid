@@ -25,40 +25,29 @@ void Paddle::Update(Keyboard & kbd, float dt)
 	}
 }
 
-bool Paddle::DoBallCollision(Ball & ball) const
+bool Paddle::DoBallCollision(Ball & ball)
 {
-	RectF ballRect(ball.GetRect());
-	RectF rect(GetRect());
-	float deltaX;
-	float deltaY;
-	if (rect.IsOverlappingWith(ballRect))
+	if (!coolDown)
 	{
-		if (rect.left < ballRect.left)
+		RectF rect(GetRect());
+		if (rect.IsOverlappingWith(ball.GetRect()))
 		{
-			deltaX = rect.right - ballRect.left;
+			const Vec2 ballPos = ball.GetPosition();
+			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x)))
+			{
+				ball.ReboundY();
+			}
+			else if (ballPos.x <= rect.right && ballPos.x >= rect.left)
+			{
+				ball.ReboundY();
+			}
+			else
+			{
+				ball.ReboundX();
+			}
+			coolDown = true;
+			return true;
 		}
-		else
-		{
-			deltaX = ballRect.right - rect.left;
-		}
-		if (rect.top < ballRect.top)
-		{
-			deltaY = rect.bottom - ballRect.top;
-		}
-		else
-		{
-			deltaY = ballRect.bottom - rect.top;
-		}
-
-		if (deltaX <= deltaY)
-		{
-			ball.ReboundX();
-		}
-		else
-		{
-			ball.ReboundY();
-		}
-		return true;
 	}
 	return false;
 }
@@ -79,4 +68,9 @@ void Paddle::DoWallCollision(const RectF & walls)
 RectF Paddle::GetRect() const
 {
 	return RectF::fromCenter(pos, halfWidth, halfHeight);
+}
+
+void Paddle::ResetCooldown()
+{
+	coolDown = false;
 }
