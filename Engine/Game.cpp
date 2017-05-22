@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
 	ball(Vec2(150, 200), Vec2(200, 200)),
 	paddle(Vec2(400,550), 100, 15),
 	soundPad(L"Sounds\\arkpad.wav"),
-	soundBrick(L"Sounds\\arkbrick.wav")
+	soundBrick(L"Sounds\\fho.wav")
 {
 	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
 	const Vec2 topLeft(40.0f, 60.0f);
@@ -64,18 +64,18 @@ void Game::UpdateModel()
 	{
 		if (b.DoBallCollision(ball))
 		{
-			soundBrick.Play();
+			//soundBrick.Play();
 			break;
 		}
 	}
 
 	if (paddle.DoBallCollision(ball))
 	{
-		soundPad.Play();
+		//soundPad.Play();
 	}
 	if (ball.DoWallCollisions(walls))
 	{
-		soundPad.Play();
+		//soundPad.Play();
 	}
 }
 

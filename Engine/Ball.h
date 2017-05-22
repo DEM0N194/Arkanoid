@@ -10,9 +10,11 @@ public:
 	void Draw(Graphics& gfx);
 	void Update(float dt);
 	bool DoWallCollisions(const RectF& walls);
-	RectF GetRect() const;
 	void ReboundX();
 	void ReboundY();
+	RectF GetRect() const;
+	Vec2 GetVelocity() const;
+	Vec2 GetPosition() const;
 private:
 	static constexpr float radius = 7.0f;
 	Vec2 pos;
