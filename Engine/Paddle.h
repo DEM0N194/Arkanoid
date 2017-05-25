@@ -26,6 +26,6 @@ private:
 	float exitXFactor;
 	float fixedZoneHalfWidth;
 	float fixedZoneExitX;
-	float speed = 450.0f;
+	float speed = 650.0f;
 	bool coolDown = false;
 };
