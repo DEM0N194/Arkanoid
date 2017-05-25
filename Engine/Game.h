@@ -28,6 +28,7 @@
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
+#include "Walls.h"
 
 class Game
 {
@@ -53,10 +54,10 @@ private:
 	static constexpr int nBricksDown = 4;
 	static constexpr int nBricks = nBricksAcross * nBricksDown;
 	FrameTimer ft;
-	RectF walls;
 	Brick bricks[nBricks];
 	Ball ball;
 	Paddle paddle;
+	Walls walls;
 	Sound soundPad;
 	Sound soundBrick;
 	/********************************/

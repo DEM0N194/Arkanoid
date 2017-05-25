@@ -26,7 +26,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	walls(20.0f, float(gfx.ScreenWidth)-20.0f, 150.0f, float(gfx.ScreenHeight)),
+	walls(RectF(20.0f, float(gfx.ScreenWidth)-20.0f, 150.0f, float(gfx.ScreenHeight)), 20, Color(0,50,200)),
 	ball(Vec2(150, 450), Vec2(300, 300)),
 	paddle(Vec2(400,810), 75, 10),
 	soundPad(L"Sounds\\arkpad.wav"),
@@ -61,7 +61,7 @@ void Game::Go()
 void Game::UpdateModel(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
-	paddle.DoWallCollision(walls);
+	paddle.DoWallCollision(walls.GetInnerBounds());
 
 	ball.Update(dt);
 
@@ -101,12 +101,12 @@ void Game::UpdateModel(float dt)
 	{
 		//soundPad.Play();
 	}
-	if (ball.DoWallCollisions(walls) == 1)
+	if (ball.DoWallCollisions(walls.GetInnerBounds()) == 1)
 	{
 		paddle.ResetCooldown();
 		//soundPad.Play();
 	}
-	else if (ball.DoWallCollisions(walls) == 2)
+	else if (ball.DoWallCollisions(walls.GetInnerBounds()) == 2)
 	{
 
 	}
@@ -120,7 +120,7 @@ void Game::ComposeFrame()
 		b.Draw(gfx);
 	}
 	paddle.Draw(gfx);
-	const Beveler bev(Color {0,100,200});
-	RectF frame(0.0f, float(gfx.ScreenWidth), 130.0f, float(gfx.ScreenHeight));
-	bev.DrawBeveledFrameNoBottom(frame, 10, gfx);
+	walls.Draw(gfx);
+	//RectF frame(0.0f, float(gfx.ScreenWidth), 130.0f, float(gfx.ScreenHeight));
+	//ev.DrawBeveledFrameNoBottom(frame, 10, gfx);
 }

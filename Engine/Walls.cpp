@@ -7,7 +7,16 @@ Walls::Walls(const RectF & innerBounds_in, int thickness_in, Color baseColor_in)
 	thickness(thickness_in),
 	bev(baseColor_in)
 {
+#ifndef NDEBUG
+	innerBounds.bottom -= thickness;
+#endif // !NDEBUG
+
+	assert(thickness % 2 == 0);
 	assert(innerBounds.GetExpanded(thickness).IsContainedBy(Graphics::GetScreenRect()));
+
+#ifndef NDEBUG
+	innerBounds.bottom += thickness;
+#endif // !NDEBUG
 }
 
 const RectF & Walls::GetInnerBounds() const
@@ -17,5 +26,5 @@ const RectF & Walls::GetInnerBounds() const
 
 void Walls::Draw(Graphics & gfx) const
 {
-	bev.DrawBeveledFrameNoBottom(innerBounds.GetExpanded(float(thickness)), thickness, gfx);
+	bev.DrawBeveledFrameNoBottom(innerBounds.GetExpanded(float(thickness)), thickness/2, gfx);
 }
