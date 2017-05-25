@@ -22,16 +22,18 @@
 #include "Game.h"
 #include "Beveler.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	walls(RectF(20.0f, float(gfx.ScreenWidth)-20.0f, 150.0f, float(gfx.ScreenHeight)), 20, Color(0,50,200)),
+	wnd(wnd),
+	gfx(wnd),
+	wallColor(0, 50, 200),
+	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, gfx.ScreenHeight-fieldHeight, float(gfx.ScreenHeight)), wallThickness),
 	ball(Vec2(150, 450), Vec2(300, 300)),
 	paddle(Vec2(400,810), 75, 10),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\fho.wav")
 {
+	walls.SetColor(wallColor);
 	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
 	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
@@ -121,6 +123,4 @@ void Game::ComposeFrame()
 	}
 	paddle.Draw(gfx);
 	walls.Draw(gfx);
-	//RectF frame(0.0f, float(gfx.ScreenWidth), 130.0f, float(gfx.ScreenHeight));
-	//ev.DrawBeveledFrameNoBottom(frame, 10, gfx);
 }

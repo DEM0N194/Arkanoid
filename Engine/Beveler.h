@@ -6,6 +6,7 @@
 class Beveler
 {
 public:
+	Beveler() = default;
 	Beveler(Color baseColor_in);
 	void DrawOuterBevel(const RectF& rect, int size, Graphics& gfx) const;
 	void DrawInnerBevel(const RectF& rect, int size, Graphics& gfx) const;

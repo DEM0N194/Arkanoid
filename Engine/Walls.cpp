@@ -1,11 +1,10 @@
 #include "Walls.h"
 #include <cassert>
 
-Walls::Walls(const RectF & innerBounds_in, int thickness_in, Color baseColor_in)
+Walls::Walls(const RectF & innerBounds_in, int thickness_in)
 	:
 	innerBounds(innerBounds_in),
-	thickness(thickness_in),
-	bev(baseColor_in)
+	thickness(thickness_in)
 {
 #ifndef NDEBUG
 	innerBounds.bottom -= thickness;
@@ -27,4 +26,9 @@ const RectF & Walls::GetInnerBounds() const
 void Walls::Draw(Graphics & gfx) const
 {
 	bev.DrawBeveledFrameNoBottom(innerBounds.GetExpanded(float(thickness)), thickness/2, gfx);
+}
+
+void Walls::SetColor(Color c)
+{
+	bev.SetBaseColor(c);
 }

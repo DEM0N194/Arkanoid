@@ -50,6 +50,8 @@ private:
 	/*  User Variables              */
 	static constexpr float brickWidth = 60.0f;
 	static constexpr float brickHeight = 25.0f;
+	static constexpr float wallThickness = 20.0f;
+	static constexpr int fieldHeight = 750;
 	static constexpr int nBricksAcross = 13;
 	static constexpr int nBricksDown = 4;
 	static constexpr int nBricks = nBricksAcross * nBricksDown;
@@ -58,6 +60,7 @@ private:
 	Ball ball;
 	Paddle paddle;
 	Walls walls;
+	Color wallColor;
 	Sound soundPad;
 	Sound soundBrick;
 	/********************************/
