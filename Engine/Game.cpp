@@ -26,8 +26,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	walls(20.0f, float(gfx.ScreenWidth)-20.0f, 100.0f, float(gfx.ScreenHeight)),
-	ball(Vec2(150, 250), Vec2(200, 200)),
-	paddle(Vec2(400,850), 100, 10),
+	ball(Vec2(150, 250), Vec2(300, 300)),
+	paddle(Vec2(400,860), 75, 10),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\fho.wav")
 {

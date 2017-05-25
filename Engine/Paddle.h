@@ -21,6 +21,6 @@ private:
 	Vec2 pos;
 	float halfWidth;
 	float halfHeight;
-	float speed = 300.0f;
+	float speed = 450.0f;
 	bool coolDown = false;
 };
