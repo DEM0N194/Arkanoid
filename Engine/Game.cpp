@@ -119,4 +119,8 @@ void Game::ComposeFrame()
 		b.Draw(gfx);
 	}
 	paddle.Draw(gfx);
+	gfx.DrawIsoRightTriUR(500, 500,50, Colors::Cyan);
+	gfx.DrawIsoRightTriUL(500, 500, 50, Colors::Magenta);
+	gfx.DrawIsoRightTriBR(500, 500, 50, Colors::Blue);
+	gfx.DrawIsoRightTriBL(500, 500, 50, Colors::Red);
 }
