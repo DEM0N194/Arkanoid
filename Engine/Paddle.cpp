@@ -33,13 +33,12 @@ bool Paddle::DoBallCollision(Ball & ball)
 		if (rect.IsOverlappingWith(ball.GetRect()))
 		{
 			const Vec2 ballPos = ball.GetPosition();
-			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x)))
+			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x))
+				|| (ballPos.x <= rect.right && ballPos.x >= rect.left))
 			{
-				ball.ReboundY();
-			}
-			else if (ballPos.x <= rect.right && ballPos.x >= rect.left)
-			{
-				ball.ReboundY();
+				const float xDifference = ballPos.x - pos.x;
+				const Vec2 dir(xDifference * exitXFactor, -1.0f);
+				ball.SetDirection(dir);
 			}
 			else
 			{
