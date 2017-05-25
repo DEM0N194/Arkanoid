@@ -20,19 +20,20 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "Beveler.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	walls(20.0f, float(gfx.ScreenWidth)-20.0f, 100.0f, float(gfx.ScreenHeight)),
-	ball(Vec2(150, 250), Vec2(300, 300)),
-	paddle(Vec2(400,860), 75, 10),
+	walls(20.0f, float(gfx.ScreenWidth)-20.0f, 150.0f, float(gfx.ScreenHeight)),
+	ball(Vec2(150, 450), Vec2(300, 300)),
+	paddle(Vec2(400,810), 75, 10),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\fho.wav")
 {
 	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
-	const Vec2 topLeft(20.0f, 150.0f);
+	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
 	{
 		const Color c = colors[y];
@@ -119,8 +120,7 @@ void Game::ComposeFrame()
 		b.Draw(gfx);
 	}
 	paddle.Draw(gfx);
-	gfx.DrawIsoRightTriUR(500, 500,50, Colors::Cyan);
-	gfx.DrawIsoRightTriUL(500, 500, 50, Colors::Magenta);
-	gfx.DrawIsoRightTriBR(500, 500, 50, Colors::Blue);
-	gfx.DrawIsoRightTriBL(500, 500, 50, Colors::Red);
+	const Beveler bev(Color {0,100,200});
+	RectF frame(0.0f, gfx.ScreenWidth, 130.0f, gfx.ScreenHeight);
+	bev.DrawBeveledFrameNoBottom(frame, 10, gfx);
 }
