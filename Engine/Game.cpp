@@ -105,7 +105,10 @@ void Game::UpdateModel(float dt)
 	}
 	if (ball.DoWallCollisions(walls.GetInnerBounds()) == 1)
 	{
-		paddle.ResetCooldown();
+		if (!paddle.GetRect().IsOverlappingWith(ball.GetRect()))
+		{
+			paddle.ResetCooldown();
+		}
 		//soundPad.Play();
 	}
 	else if (ball.DoWallCollisions(walls.GetInnerBounds()) == 2)
