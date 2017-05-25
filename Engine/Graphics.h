@@ -67,6 +67,7 @@ public:
 	void DrawIsoRightTriUR(int x, int y, int size, Color c);
 	void DrawIsoRightTriBL(int x, int y, int size, Color c);
 	void DrawIsoRightTriBR(int x, int y, int size, Color c);
+#include "GraphicsFont.h"
 	~Graphics();
 	static RectF GetScreenRect();
 private:
