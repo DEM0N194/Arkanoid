@@ -100,10 +100,14 @@ void Game::UpdateModel(float dt)
 	{
 		//soundPad.Play();
 	}
-	if (ball.DoWallCollisions(walls))
+	if (ball.DoWallCollisions(walls) == 1)
 	{
 		paddle.ResetCooldown();
 		//soundPad.Play();
+	}
+	else if (ball.DoWallCollisions(walls) == 2)
+	{
+
 	}
 }
 
