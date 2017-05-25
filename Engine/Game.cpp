@@ -25,14 +25,14 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	walls(0.0f, float(gfx.ScreenWidth), 0.0f, float(gfx.ScreenHeight)),
-	ball(Vec2(150, 200), Vec2(200, 200)),
-	paddle(Vec2(400,550), 100, 15),
+	walls(20.0f, float(gfx.ScreenWidth)-20.0f, 100.0f, float(gfx.ScreenHeight)),
+	ball(Vec2(150, 250), Vec2(200, 200)),
+	paddle(Vec2(400,850), 100, 10),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\fho.wav")
 {
 	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
-	const Vec2 topLeft(40.0f, 60.0f);
+	const Vec2 topLeft(20.0f, 150.0f);
 	for (int y = 0; y < nBricksDown; y++)
 	{
 		const Color c = colors[y];
