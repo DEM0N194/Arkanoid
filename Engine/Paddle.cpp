@@ -6,6 +6,7 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	halfWidth(halfWidth_in),
 	halfHeight(halfHeight_in)
 {
+	UpdateExitFactors();
 }
 
 void Paddle::Draw(Graphics & gfx) const
@@ -36,8 +37,23 @@ bool Paddle::DoBallCollision(Ball & ball)
 			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x))
 				|| (ballPos.x <= rect.right && ballPos.x >= rect.left))
 			{
+				Vec2 dir;
 				const float xDifference = ballPos.x - pos.x;
-				const Vec2 dir(xDifference * exitXFactor, -1.0f);
+				if (abs(xDifference) < fixedZoneHalfWidth)
+				{
+					if (xDifference < 0.0f)
+					{
+						dir = Vec2(-fixedZoneExitX, -1.0f);
+					}
+					else
+					{
+						dir = Vec2(fixedZoneExitX, -1.0f);
+					}
+				}
+				else
+				{
+					dir = Vec2(xDifference * exitXFactor, -1.0f);
+				}
 				ball.SetDirection(dir);
 			}
 			else
@@ -72,4 +88,11 @@ RectF Paddle::GetRect() const
 void Paddle::ResetCooldown()
 {
 	coolDown = false;
+}
+
+void Paddle::UpdateExitFactors()
+{
+	exitXFactor = 1.2f/halfWidth;
+	fixedZoneHalfWidth = halfWidth/4.0f;
+	fixedZoneExitX = fixedZoneHalfWidth * exitXFactor;
 }

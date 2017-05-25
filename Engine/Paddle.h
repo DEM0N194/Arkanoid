@@ -17,11 +17,15 @@ public:
 	RectF GetRect() const;
 	void ResetCooldown();
 private:
+	void UpdateExitFactors();
+private:
 	Color color = Colors::White;
 	Vec2 pos;
 	float halfWidth;
 	float halfHeight;
-	float exitXFactor = 0.013f;
+	float exitXFactor;
+	float fixedZoneHalfWidth;
+	float fixedZoneExitX;
 	float speed = 450.0f;
 	bool coolDown = false;
 };
