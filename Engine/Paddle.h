@@ -3,7 +3,7 @@
 #include "Graphics.h"
 #include "Keyboard.h"
 #include "RectF.h"
-#include "Colors.h"
+#include "Beveler.h"
 #include "Ball.h"
 
 class Paddle
@@ -19,7 +19,7 @@ public:
 private:
 	void UpdateExitFactors();
 private:
-	Color color = Colors::White;
+	Beveler bev;
 	Vec2 pos;
 	float halfWidth;
 	float halfHeight;

@@ -4,14 +4,15 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	:
 	pos(pos_in),
 	halfWidth(halfWidth_in),
-	halfHeight(halfHeight_in)
+	halfHeight(halfHeight_in),
+	bev(Color(130,130,130))
 {
 	UpdateExitFactors();
 }
 
 void Paddle::Draw(Graphics & gfx) const
 {
-	gfx.DrawRect(GetRect(), color);
+	bev.DrawBeveledBrick(GetRect(), 5, gfx);
 }
 
 void Paddle::Update(Keyboard & kbd, float dt)
