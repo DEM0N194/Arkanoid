@@ -121,6 +121,6 @@ void Game::ComposeFrame()
 	}
 	paddle.Draw(gfx);
 	const Beveler bev(Color {0,100,200});
-	RectF frame(0.0f, gfx.ScreenWidth, 130.0f, gfx.ScreenHeight);
+	RectF frame(0.0f, float(gfx.ScreenWidth), 130.0f, float(gfx.ScreenHeight));
 	bev.DrawBeveledFrameNoBottom(frame, 10, gfx);
 }
