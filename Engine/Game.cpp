@@ -34,7 +34,7 @@ Game::Game(MainWindow& wnd)
 	soundBrick(L"Sounds\\fho.wav")
 {
 	walls.SetColor(wallColor);
-	const Color colors[4] = {Colors::Magenta, Colors::Cyan, Colors::Yellow, Colors::Green};
+	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
 	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
 	{

@@ -3,6 +3,7 @@
 #include "Colors.h"
 #include "Graphics.h"
 #include "Ball.h"
+#include "Beveler.h"
 
 class Brick
 {
@@ -14,8 +15,9 @@ public:
 	void ExecuteBallCollision(Ball& ball);
 	Vec2 GetCenter() const;
 private:
-	static constexpr float padding = 1;
+	static constexpr float padding = 1.0f;
+	static constexpr int bevelSize = 3;
 	RectF rect;
-	Color color;
+	Beveler bev;
 	bool destroyed;
 };
