@@ -20,7 +20,17 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "Beveler.h"
+
+//TODO: add LivesCounter
+//TODO: add gamestates: 
+//TODO: Start Screen 
+//TODO: End Screen 
+//TODO: Levels and ready times
+//TODO: make the ball stick to the paddle during ready time and start from there
+//TODO: Different kinds of bricks with different values
+//TODO: Special bricks
+//TODO: Score and HighScore Counter
+//TODO: PowerUps
 
 Game::Game(MainWindow& wnd)
 	:
