@@ -39,12 +39,15 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
+	// game objects
 	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
 	ball(Vec2(150, 450), Vec2(300, 300)),
 	paddle(Vec2(400, 810), 75, 10),
 	life(Vec2(30,880), 3),
 	gameState(START)
 {
+	InitializeText();
+
 	walls.SetColor(Color(0,50,200));
 	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
 	const Vec2 topLeft(20.0f, 225.0f);
@@ -211,6 +214,7 @@ void Game::Game_End(float dt)
 
 void Game::Draw_Start()
 {
+	t_Title.Draw(gfx);
 }
 
 void Game::Draw_Game()
@@ -227,4 +231,11 @@ void Game::Draw_Game()
 
 void Game::Draw_End()
 {
+}
+
+void Game::InitializeText()
+{
+	t_Title.SetText("ARKANOID");
+	t_Title.SetPostion(250, 100);
+	t_Title.SetColor(Colors::White);
 }

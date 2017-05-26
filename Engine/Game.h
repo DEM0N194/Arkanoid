@@ -25,6 +25,9 @@
 #include "Graphics.h"
 #include "Sound.h"
 #include "FrameTimer.h"
+#include "Text.h"
+#include "Counter.h"
+
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
@@ -52,6 +55,8 @@ private:
 	void Draw_Start();
 	void Draw_Game();
 	void Draw_End();
+
+	void InitializeText();
 private:
 	enum eGameStates
 	{
@@ -66,6 +71,7 @@ private:
 	FrameTimer ft;
 	/********************************/
 	/*  User Variables              */
+	/********************************/
 	eGameStates gameState;
 	bool spacePressed = false;
 
@@ -83,5 +89,6 @@ private:
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
-	/********************************/
+private:
+	Text t_Title;
 };

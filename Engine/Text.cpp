@@ -1,7 +1,6 @@
 #include "Text.h"
 
-Text::Text(Graphics & in_gfx)
-	:gfx(in_gfx)
+Text::Text()
 {
 	Reset();
 }
@@ -11,7 +10,7 @@ void Text::Reset()
 	c = Colors::White;
 	pos = {0,0};
 	box1 = {0,0};
-	box2 = {gfx.ScreenWidth-1, gfx.ScreenHeight-1};
+	box2 = {Graphics::ScreenWidth-1, Graphics::ScreenHeight-1};
 	text = "";
 	spacing = 5;
 	lineSpacing = 30 + 5;
@@ -41,8 +40,8 @@ void Text::SetBoxSize(int x1, int y1, int x2, int y2)
 	box2.y = y2;
 	if (x1 < 0) box1.x = 0;
 	if (y1 < 0) box1.y = 0;
-	if (x2 >= gfx.ScreenWidth) box2.x = gfx.ScreenWidth - 1;
-	if (y2 >= gfx.ScreenHeight) box2.y = gfx.ScreenHeight - 1;
+	if (x2 >= Graphics::ScreenWidth) box2.x = Graphics::ScreenWidth - 1;
+	if (y2 >= Graphics::ScreenHeight) box2.y = Graphics::ScreenHeight - 1;
 }
 
 void Text::SetSpacing(int in_spacing)
@@ -61,7 +60,7 @@ void Text::SetText(std::string in_text)
 	for (auto& c : text) c = toupper(c);
 }
 
-void Text::Draw()
+void Text::Draw(Graphics& gfx)
 {
 	Position PosOld = pos;
 	int row = 0;
@@ -83,13 +82,13 @@ void Text::Draw()
 		else
 		{
 			if(pos.y < box2.y - lineSpacing)
-			DrawCh(ch);
+			DrawCh(ch, gfx);
 		}
 	}
 	pos = PosOld;
 }
 
-void Text::DrawCh(char ch)
+void Text::DrawCh(char ch, Graphics& gfx)
 {
 	switch (ch)
 	{
