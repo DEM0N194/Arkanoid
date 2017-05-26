@@ -178,7 +178,7 @@
       <Filter>Source Files\Engine Extensions</Filter>
     </ClCompile>
     <ClCompile Include="LifeCounter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -44,26 +44,44 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void Game_Start(float dt);
+	void Game_Ready(float dt);
+	void Game_Play(float dt);
+	void Game_End(float dt);
+
+	void Draw_Start();
+	void Draw_Game();
+	void Draw_End();
+private:
+	enum eGameStates
+	{
+		START,
+		READY,
+		PLAY,
+		END
+	};
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	FrameTimer ft;
 	/********************************/
 	/*  User Variables              */
+	eGameStates gameState;
+	bool spacePressed = false;
+
 	static constexpr float brickWidth = 60.0f;
 	static constexpr float brickHeight = 25.0f;
-	static constexpr float wallThickness = 20.0f;
-	static constexpr int fieldHeight = 750;
 	static constexpr int nBricksAcross = 13;
 	static constexpr int nBricksDown = 4;
 	static constexpr int nBricks = nBricksAcross * nBricksDown;
-	FrameTimer ft;
 	Brick bricks[nBricks];
+
+	static constexpr float wallThickness = 20.0f;
+	static constexpr int fieldHeight = 750;
+	Walls walls;
+
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
-	Walls walls;
-	Color wallColor;
-	Sound soundPad;
-	Sound soundBrick;
 	/********************************/
 };

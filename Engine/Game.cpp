@@ -21,11 +21,13 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-//TODO: add LivesCounter
-//TODO: add gamestates: 
-//TODO: Start Screen 
-//TODO: End Screen 
-//TODO: Levels and ready times
+//TODO: gamestates:
+//TODO:		Start
+//TODO:		Ready
+//TODO:		Play
+//TODO:		End
+
+//TODO: Levels
 //TODO: make the ball stick to the paddle during ready time and start from there
 //TODO: Different kinds of bricks with different values
 //TODO: Special bricks
@@ -37,15 +39,13 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	wallColor(0, 50, 200),
-	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, gfx.ScreenHeight-fieldHeight, float(gfx.ScreenHeight)), wallThickness),
+	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
 	ball(Vec2(150, 450), Vec2(300, 300)),
 	paddle(Vec2(400, 810), 75, 10),
 	life(Vec2(30,880), 3),
-	soundPad(L"Sounds\\arkpad.wav"),
-	soundBrick(L"Sounds\\fho.wav")
+	gameState(START)
 {
-	walls.SetColor(wallColor);
+	walls.SetColor(Color(0,50,200));
 	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
 	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
@@ -73,6 +73,65 @@ void Game::Go()
 }
 
 void Game::UpdateModel(float dt)
+{
+	switch (gameState)
+	{
+		case START:
+			Game_Start(dt);
+			break;
+		case READY:
+			Game_Ready(dt);
+			break;
+		case PLAY:
+			Game_Play(dt);
+			break;
+		case END:
+			Game_End(dt);
+			break;
+	}
+}
+
+void Game::ComposeFrame()
+{
+	switch (gameState)
+	{
+		case START:
+			Draw_Start();
+			break;
+		case READY:
+			Draw_Game();
+			break;
+		case PLAY:
+			Draw_Game();
+			break;
+		case END:
+			Draw_End();
+			break;
+	}
+}
+
+void Game::Game_Start(float dt)
+{
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (!spacePressed)
+		{
+			gameState = READY;
+			spacePressed = true;
+		}
+	}
+	else
+	{
+		spacePressed = false;
+	}
+}
+
+void Game::Game_Ready(float dt)
+{
+	gameState = PLAY;
+}
+
+void Game::Game_Play(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
@@ -129,12 +188,32 @@ void Game::UpdateModel(float dt)
 		// true if you consume your last life
 		if (life.ConsumeLife())
 		{
-			//TODO: end game call goes here
+			gameState = END;
 		}
 	}
 }
 
-void Game::ComposeFrame()
+void Game::Game_End(float dt)
+{
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (!spacePressed)
+		{
+			gameState = START;
+			spacePressed = true;
+		}
+	}
+	else
+	{
+		spacePressed = false;
+	}
+}
+
+void Game::Draw_Start()
+{
+}
+
+void Game::Draw_Game()
 {
 	life.Draw(gfx);
 	ball.Draw(gfx);
@@ -144,4 +223,8 @@ void Game::ComposeFrame()
 	}
 	paddle.Draw(gfx);
 	walls.Draw(gfx);
+}
+
+void Game::Draw_End()
+{
 }

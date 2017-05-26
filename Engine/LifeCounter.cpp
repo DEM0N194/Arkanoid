@@ -15,7 +15,7 @@ void LifeCounter::SetLives(int lives_in)
 	// because that's the paddle that the player is currently using
 	for (int i = 0; i < lives-1; i++)
 	{
-		pads.push_back(Paddle(pos + offset*i, padHalfWidth, padHalfHeight));
+		pads.push_back(Paddle(pos + offset*float(i), padHalfWidth, padHalfHeight));
 	}
 }
 
@@ -35,7 +35,7 @@ void LifeCounter::AddLife()
 	const Vec2 offset(spacing + 2.0f*padHalfWidth, 0.0f);
 	if (lives < 10)
 	{
-		pads.push_back(Paddle(pos + (offset * (lives-1) ), padHalfWidth, padHalfHeight));
+		pads.push_back(Paddle(pos + (offset * float(lives-1) ), padHalfWidth, padHalfHeight));
 	}
 	lives++;
 }
