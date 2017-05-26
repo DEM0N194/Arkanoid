@@ -98,12 +98,17 @@ private:
 	LifeCounter life;
 	
 	Counter lvl;
+	Counter highScore;
+	Counter score;
 
 	static constexpr float readyWaitTime = 2.0f;
 	float currentWaitTime = 0.0f;
 private:
 	Text t_Title;
 	Text t_GameOver;
+	Text t_level;
 	Text t_lvl;
 	Text t_Ready;
+	Text t_HighScore;
+	Text t_Score;
 };

@@ -53,8 +53,10 @@ Game::Game(MainWindow& wnd)
 	walls.SetColor(Color(0, 75, 150));
 	thinWalls.SetColor(Color(0, 75, 150));
 	infoWalls.SetColor(Color(0, 75, 150));
-	lvl.SetPostion(460, 500);
 	lvl.SetNumOf0(1);
+	highScore.SetPostion(410, 80);
+	highScore.AlignMiddle();
+	score.SetPostion(30, 80);
 
 	InitializeText();
 	ResetGame();
@@ -66,10 +68,17 @@ void Game::InitializeText()
 	t_Title.SetPostion(250, 60);
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(250, 250);
-	t_lvl.SetText("LEVEL");
-	t_lvl.SetPostion(260, 500);
+	t_level.SetText("LEVEL");
+	t_level.SetPostion(260, 500);
+	t_lvl.SetText("LVL");
+	t_lvl.SetPostion(670, 30);
 	t_Ready.SetText("READY");
 	t_Ready.SetPostion(300, 600);
+	t_HighScore.SetText("HIGHSCORE");
+	t_HighScore.SetPostion(250, 30);
+	t_HighScore.SetColor(Colors::Red);
+	t_Score.SetText("SCORE");
+	t_Score.SetPostion(0, 30);
 }
 
 void Game::ResetGame()
@@ -305,8 +314,18 @@ void Game::Draw_Ready()
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
+
+	lvl.SetPostion(715, 80);
+	lvl.Draw(gfx);
+	lvl.SetPostion(460, 500);
 	lvl.Draw(gfx);
 	t_lvl.Draw(gfx);
+	t_level.Draw(gfx);
+
+	t_HighScore.Draw(gfx);
+	highScore.Draw(gfx);
+	t_Score.Draw(gfx);
+	score.Draw(gfx);
 }
 
 void Game::Draw_Play()
@@ -321,6 +340,15 @@ void Game::Draw_Play()
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
+
+	t_lvl.Draw(gfx);
+	lvl.SetPostion(715, 80);
+	lvl.Draw(gfx);
+
+	t_HighScore.Draw(gfx);
+	highScore.Draw(gfx);
+	t_Score.Draw(gfx);
+	score.Draw(gfx);
 }
 
 void Game::Draw_End()
