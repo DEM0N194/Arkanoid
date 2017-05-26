@@ -31,6 +31,7 @@
 //TODO: Special bricks
 //TODO: Score and HighScore Counter
 //TODO: PowerUps
+//TODO: Sounds, possibly a sound manager
 
 Game::Game(MainWindow& wnd)
 	:
