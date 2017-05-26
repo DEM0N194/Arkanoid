@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Beveler.h" />
+    <ClInclude Include="Border.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />

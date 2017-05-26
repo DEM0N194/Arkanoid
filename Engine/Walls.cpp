@@ -11,7 +11,7 @@ Walls::Walls(const RectF & innerBounds_in, int thickness_in)
 #endif // !NDEBUG
 
 	assert(thickness % 2 == 0);
-	assert(innerBounds.GetExpanded(thickness).IsContainedBy(Graphics::GetScreenRect()));
+	assert(innerBounds.GetExpanded(float(thickness)).IsContainedBy(Graphics::GetScreenRect()));
 
 #ifndef NDEBUG
 	innerBounds.bottom += thickness;

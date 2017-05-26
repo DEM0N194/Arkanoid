@@ -33,6 +33,7 @@
 #include "Paddle.h"
 #include "Walls.h"
 #include "LifeCounter.h"
+#include "Border.h"
 
 class Game
 {
@@ -85,10 +86,13 @@ private:
 	static constexpr float wallThickness = 20.0f;
 	static constexpr int fieldHeight = 750;
 	Walls walls;
+	Border infoBorder;
+	Border border;
 
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
 private:
 	Text t_Title;
+	Text t_GameOver;
 };

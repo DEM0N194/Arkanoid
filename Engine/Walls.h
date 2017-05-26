@@ -9,11 +9,12 @@ class Walls
 public:
 	Walls(const RectF& innerBounds_in, int thickness_in);
 	const RectF& GetInnerBounds() const;
-	void Draw( Graphics& gfx) const;
+	virtual void Draw( Graphics& gfx) const;
 	void SetColor(const Color c);
-private:
-	RectF innerBounds;
+protected:
 	int thickness;
-	Color baseColor;
+	RectF innerBounds;
 	Beveler bev;
+private:
+	Color baseColor;
 };

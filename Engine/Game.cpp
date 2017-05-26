@@ -40,14 +40,17 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	// game objects
-	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
+	walls(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight),float(gfx.ScreenHeight)),int(wallThickness)),
+	border(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,wallThickness,float(gfx.ScreenHeight)-wallThickness),wallThickness),
+	infoBorder(RectF(10,float(gfx.ScreenWidth)-10,10,float(gfx.ScreenHeight-fieldHeight)-wallThickness-10),int(10)),
 	ball(Vec2(150, 450), Vec2(300, 300)),
 	paddle(Vec2(400, 810), 75, 10),
 	life(Vec2(30,880), 3),
 	gameState(START)
 {
 	InitializeText();
-
+	border.SetColor(Color(130, 130, 130));
+	infoBorder.SetColor(Color(130, 130, 130));
 	walls.SetColor(Color(0,50,200));
 	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
 	const Vec2 topLeft(20.0f, 225.0f);
@@ -214,6 +217,7 @@ void Game::Game_End(float dt)
 
 void Game::Draw_Start()
 {
+	border.Draw(gfx);
 	t_Title.Draw(gfx);
 }
 
@@ -226,16 +230,20 @@ void Game::Draw_Game()
 		b.Draw(gfx);
 	}
 	paddle.Draw(gfx);
+	infoBorder.Draw(gfx);
 	walls.Draw(gfx);
 }
 
 void Game::Draw_End()
 {
+	border.Draw(gfx);
+	t_GameOver.Draw(gfx);
 }
 
 void Game::InitializeText()
 {
 	t_Title.SetText("ARKANOID");
 	t_Title.SetPostion(250, 100);
-	t_Title.SetColor(Colors::White);
+	t_GameOver.SetText("GAME OVER");
+	t_GameOver.SetPostion(250, 100);
 }
