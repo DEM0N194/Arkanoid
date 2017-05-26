@@ -2,14 +2,9 @@
 
 LifeCounter::LifeCounter(Vec2 pos_in, int lives_in)
 	:
-	pos(pos_in + Vec2(padHalfWidth,padHalfHeight))
+	pos(pos_in + Vec2(padHalfWidth,padHalfHeight)),
+	lives(lives_in)
 {
-	SetLives(lives_in);
-}
-
-void LifeCounter::SetLives(int lives_in)
-{
-	lives = lives_in;
 	const Vec2 offset(spacing + 2.0f*padHalfWidth, 0.0f);
 	// I substract 1 form lives because we don't want to draw the last paddle,
 	// because that's the paddle that the player is currently using

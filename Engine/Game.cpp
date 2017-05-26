@@ -43,15 +43,23 @@ Game::Game(MainWindow& wnd)
 	walls(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight),float(gfx.ScreenHeight)),int(wallThickness)),
 	border(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,wallThickness,float(gfx.ScreenHeight)-wallThickness),wallThickness),
 	infoBorder(RectF(10,float(gfx.ScreenWidth)-10,10,float(gfx.ScreenHeight-fieldHeight)-wallThickness-10),int(10)),
-	ball(Vec2(150, 450), Vec2(300, 300)),
-	paddle(Vec2(400, 810), 75, 10),
-	life(Vec2(30,880), 3),
 	gameState(START)
 {
 	InitializeText();
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
 	walls.SetColor(Color(0,50,200));
+
+	ResetGame();
+}
+
+void Game::ResetGame()
+{
+	ball = Ball(Vec2(150, 450), Vec2(300, 300));
+	paddle = Paddle(Vec2(400, 810), 75, 10);
+	life = LifeCounter(Vec2(30, 880), 3);
+
+	//TODO: move this code to lvl1
 	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
 	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
@@ -59,7 +67,7 @@ Game::Game(MainWindow& wnd)
 		const Color c = colors[y];
 		for (int x = 0; x < nBricksAcross; x++)
 		{
-			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight),c);
+			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), c);
 		}
 	}
 }
@@ -195,6 +203,13 @@ void Game::Game_Play(float dt)
 		if (life.ConsumeLife())
 		{
 			gameState = END;
+			ResetGame();
+		}
+		else
+		{
+			gameState = READY;
+			ball = Ball(Vec2(150, 450), Vec2(300, 300)); //TODO: remove this line when making the ball stick to the paddle
+			paddle = Paddle(Vec2(400, 810), 75, 10);
 		}
 	}
 }

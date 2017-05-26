@@ -7,8 +7,8 @@
 class LifeCounter
 {
 public:
+	LifeCounter() = default;
 	LifeCounter(Vec2 pos_in, int lives_in);
-	void SetLives(int lives_in);
 	bool ConsumeLife();
 	void AddLife();
 	void Draw(Graphics& gfx);

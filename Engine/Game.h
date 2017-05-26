@@ -58,6 +58,7 @@ private:
 	void Draw_End();
 
 	void InitializeText();
+	void ResetGame();
 private:
 	enum eGameStates
 	{
