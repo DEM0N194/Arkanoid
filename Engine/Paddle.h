@@ -17,8 +17,11 @@ public:
 	void DoWallCollision(const RectF& walls);
 	RectF GetRect() const;
 	void ResetCooldown();
+	void Destroy();
+	void Restore();
 private:
 	void UpdateExitFactors();
+	void FadeToColor(Color goal);
 private:
 	Beveler bev;
 	Vec2 pos;
@@ -29,4 +32,5 @@ private:
 	float fixedZoneExitX;
 	float speed = 650.0f;
 	bool coolDown = false;
+	bool destroyed = false;
 };

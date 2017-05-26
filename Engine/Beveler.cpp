@@ -1,8 +1,25 @@
 #include "Beveler.h"
 
 Beveler::Beveler(Color baseColor_in)
+	:
+	baseColor(baseColor_in)
 {
-	SetBaseColor(baseColor_in);
+	topColor = Color(
+		int(float(baseColor.GetR()) * topFactor),
+		int(float(baseColor.GetG()) * topFactor),
+		int(float(baseColor.GetB()) * topFactor));
+	bottomColor = Color(
+		int(float(baseColor.GetR()) * bottomFactor),
+		int(float(baseColor.GetG()) * bottomFactor),
+		int(float(baseColor.GetB()) * bottomFactor));
+	leftColor = Color(
+		int(float(baseColor.GetR()) * leftFactor),
+		int(float(baseColor.GetG()) * leftFactor),
+		int(float(baseColor.GetB()) * leftFactor));
+	rightColor = Color(
+		int(float(baseColor.GetR()) * rightFactor),
+		int(float(baseColor.GetG()) * rightFactor),
+		int(float(baseColor.GetB()) * rightFactor));
 }
 
 void Beveler::DrawOuterBevel(const RectF & rect, int size, Graphics & gfx) const
@@ -74,27 +91,6 @@ void Beveler::DrawBeveledFrameNoBottom(const RectF & rect, int bevelSize, Graphi
 Color Beveler::GetBaseColor() const
 {
 	return baseColor;
-}
-
-void Beveler::SetBaseColor(Color baseColor_in)
-{
-	baseColor = baseColor_in;
-	topColor = Color(
-		int(float(baseColor.GetR()) * topFactor),
-		int(float(baseColor.GetG()) * topFactor),
-		int(float(baseColor.GetB()) * topFactor));
-	bottomColor = Color(
-		int(float(baseColor.GetR()) * bottomFactor),
-		int(float(baseColor.GetG()) * bottomFactor),
-		int(float(baseColor.GetB()) * bottomFactor));
-	leftColor = Color(
-		int(float(baseColor.GetR()) * leftFactor),
-		int(float(baseColor.GetG()) * leftFactor),
-		int(float(baseColor.GetB()) * leftFactor));
-	rightColor = Color(
-		int(float(baseColor.GetR()) * rightFactor),
-		int(float(baseColor.GetG()) * rightFactor),
-		int(float(baseColor.GetB()) * rightFactor));
 }
 
 void Beveler::DrawOuterBevelNoBottom(const RectF & rect, int size, Graphics & gfx) const

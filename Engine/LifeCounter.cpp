@@ -39,6 +39,7 @@ void LifeCounter::Draw(Graphics & gfx)
 {
 	for (int i = 0; i < pads.size(); i++)
 	{
+		pads.at(i).Restore();
 		pads.at(i).Draw(gfx);
 	}
 }

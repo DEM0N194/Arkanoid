@@ -56,6 +56,11 @@ void Counter::AlignRight()
 	alignment = Right;
 }
 
+int Counter::GetNum() const
+{
+	return num;
+}
+
 void Counter::Draw(Graphics & gfx)
 {
 	Position posOld = pos;

@@ -54,7 +54,8 @@ private:
 	void Game_End(float dt);
 
 	void Draw_Start();
-	void Draw_Game();
+	void Draw_Ready();
+	void Draw_Play();
 	void Draw_End();
 
 	void InitializeText();
@@ -87,13 +88,22 @@ private:
 	static constexpr float wallThickness = 20.0f;
 	static constexpr int fieldHeight = 750;
 	Walls walls;
+	Walls thinWalls;
+	Walls infoWalls;
 	Border infoBorder;
 	Border border;
 
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
+	
+	Counter lvl;
+
+	static constexpr float readyWaitTime = 2.0f;
+	float currentWaitTime = 0.0f;
 private:
 	Text t_Title;
 	Text t_GameOver;
+	Text t_lvl;
+	Text t_Ready;
 };

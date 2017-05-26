@@ -28,6 +28,7 @@ public:
 	void AlignLeft();
 	void AlignMiddle();
 	void AlignRight();
+	int GetNum() const;
 	void Draw(Graphics& gfx);
 private:
 	void DrawCh(char ch, Graphics& gfx);

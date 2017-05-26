@@ -112,11 +112,11 @@
     <ClInclude Include="Vec2.h">
       <Filter>Header Files\Engine Extensions</Filter>
     </ClInclude>
-    <ClInclude Include="LifeCounter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Border.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeCounter.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

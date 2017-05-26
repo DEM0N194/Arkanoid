@@ -23,9 +23,10 @@
 
 //TODO: gamestates:
 //TODO:		Start
-//TODO:		Ready
-//TODO:		Play
+//TODO:		Ready - add logic and text
+//TODO:		Play - done
 //TODO:		End
+//TODO: make the look nice
 
 //TODO: Levels
 //TODO: make the ball stick to the paddle during ready time and start from there
@@ -39,18 +40,36 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	// game objects
+	// Walls and borders
 	walls(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight),float(gfx.ScreenHeight)),int(wallThickness)),
+	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), int(10)),
+	infoWalls(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-10), int(10)),
 	border(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,wallThickness,float(gfx.ScreenHeight)-wallThickness),wallThickness),
 	infoBorder(RectF(10,float(gfx.ScreenWidth)-10,10,float(gfx.ScreenHeight-fieldHeight)-wallThickness-10),int(10)),
 	gameState(START)
 {
-	InitializeText();
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
-	walls.SetColor(Color(0,50,200));
+	walls.SetColor(Color(0, 75, 150));
+	thinWalls.SetColor(Color(0, 75, 150));
+	infoWalls.SetColor(Color(0, 75, 150));
+	lvl.SetPostion(460, 500);
+	lvl.SetNumOf0(1);
 
+	InitializeText();
 	ResetGame();
+}
+
+void Game::InitializeText()
+{
+	t_Title.SetText("ARKANOID");
+	t_Title.SetPostion(250, 60);
+	t_GameOver.SetText("GAME OVER");
+	t_GameOver.SetPostion(250, 250);
+	t_lvl.SetText("LEVEL");
+	t_lvl.SetPostion(260, 500);
+	t_Ready.SetText("READY");
+	t_Ready.SetPostion(300, 600);
 }
 
 void Game::ResetGame()
@@ -58,6 +77,8 @@ void Game::ResetGame()
 	ball = Ball(Vec2(150, 450), Vec2(300, 300));
 	paddle = Paddle(Vec2(400, 810), 75, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
+
+	lvl = 1;
 
 	//TODO: move this code to lvl1
 	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
@@ -113,10 +134,10 @@ void Game::ComposeFrame()
 			Draw_Start();
 			break;
 		case READY:
-			Draw_Game();
+			Draw_Ready();
 			break;
 		case PLAY:
-			Draw_Game();
+			Draw_Play();
 			break;
 		case END:
 			Draw_End();
@@ -142,11 +163,43 @@ void Game::Game_Start(float dt)
 
 void Game::Game_Ready(float dt)
 {
-	gameState = PLAY;
+	paddle.Update(wnd.kbd, dt);
+	paddle.DoWallCollision(walls.GetInnerBounds());
+
+	// the ball sticks to the paddle
+	ball = Ball(paddle.GetRect().GetCenter() + Vec2(50,-20),Vec2(0.6f,-1.0f));
+
+	currentWaitTime += dt;
+	if (currentWaitTime > readyWaitTime)
+	{
+		currentWaitTime = 0.0f;
+		gameState = PLAY;
+	}
+	else if (currentWaitTime > readyWaitTime/2)
+	{
+		paddle.Restore();
+	}
 }
 
 void Game::Game_Play(float dt)
 {
+	//? TEST CODE START
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (!spacePressed)
+		{
+			life.AddLife();
+			lvl++;
+			spacePressed = true;
+		}
+	}
+	else
+	{
+		spacePressed = false;
+	}
+	//? TEST CODE END
+
+
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 
@@ -176,7 +229,6 @@ void Game::Game_Play(float dt)
 			}
 		}
 	}
-
 	if (ball2brickCollisionHappened)
 	{
 		paddle.ResetCooldown();
@@ -188,6 +240,7 @@ void Game::Game_Play(float dt)
 	{
 		//x sound for ball and paddle collsion goes here
 	}
+
 	const int ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
 	if (ball2wallCollsion == 1)
 	{
@@ -207,9 +260,8 @@ void Game::Game_Play(float dt)
 		}
 		else
 		{
+			paddle.Destroy();
 			gameState = READY;
-			ball = Ball(Vec2(150, 450), Vec2(300, 300)); //TODO: remove this line when making the ball stick to the paddle
-			paddle = Paddle(Vec2(400, 810), 75, 10);
 		}
 	}
 }
@@ -232,11 +284,32 @@ void Game::Game_End(float dt)
 
 void Game::Draw_Start()
 {
-	border.Draw(gfx);
+	infoBorder.Draw(gfx);
 	t_Title.Draw(gfx);
+	border.Draw(gfx);
 }
 
-void Game::Draw_Game()
+void Game::Draw_Ready()
+{
+	life.Draw(gfx);
+	if (currentWaitTime > readyWaitTime/2)
+	{
+		ball.Draw(gfx);
+		t_Ready.Draw(gfx);
+	}
+	paddle.Draw(gfx);
+	for (const Brick& b : bricks)
+	{
+		b.Draw(gfx);
+	}
+	walls.Draw(gfx);
+	thinWalls.Draw(gfx);
+	infoWalls.Draw(gfx);
+	lvl.Draw(gfx);
+	t_lvl.Draw(gfx);
+}
+
+void Game::Draw_Play()
 {
 	life.Draw(gfx);
 	ball.Draw(gfx);
@@ -245,20 +318,15 @@ void Game::Draw_Game()
 		b.Draw(gfx);
 	}
 	paddle.Draw(gfx);
-	infoBorder.Draw(gfx);
 	walls.Draw(gfx);
+	thinWalls.Draw(gfx);
+	infoWalls.Draw(gfx);
 }
 
 void Game::Draw_End()
 {
+	infoBorder.Draw(gfx);
+	t_Title.Draw(gfx);
 	border.Draw(gfx);
 	t_GameOver.Draw(gfx);
-}
-
-void Game::InitializeText()
-{
-	t_Title.SetText("ARKANOID");
-	t_Title.SetPostion(250, 100);
-	t_GameOver.SetText("GAME OVER");
-	t_GameOver.SetPostion(250, 100);
 }

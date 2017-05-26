@@ -30,5 +30,5 @@ void Walls::Draw(Graphics & gfx) const
 
 void Walls::SetColor(Color c)
 {
-	bev.SetBaseColor(c);
+	bev = Beveler(c);
 }

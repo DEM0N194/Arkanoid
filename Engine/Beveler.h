@@ -14,7 +14,6 @@ public:
 	void DrawBeveledFrame(const RectF& rect, int bevelSize, Graphics& gfx) const;
 	void DrawBeveledFrameNoBottom(const RectF& rect, int bevelSize, Graphics& gfx) const;
 	Color GetBaseColor() const;
-	void SetBaseColor(Color baseColor_in);
 private:
 	void DrawOuterBevelNoBottom(const RectF& rect, int size, Graphics& gfx) const;
 	void DrawInnerBevelNoBottom(const RectF& rect, int size, Graphics& gfx) const;
