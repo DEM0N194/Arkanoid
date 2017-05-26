@@ -29,6 +29,7 @@
 #include "Brick.h"
 #include "Paddle.h"
 #include "Walls.h"
+#include "LifeCounter.h"
 
 class Game
 {
@@ -59,6 +60,7 @@ private:
 	Brick bricks[nBricks];
 	Ball ball;
 	Paddle paddle;
+	LifeCounter life;
 	Walls walls;
 	Color wallColor;
 	Sound soundPad;

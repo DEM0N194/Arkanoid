@@ -40,7 +40,8 @@ Game::Game(MainWindow& wnd)
 	wallColor(0, 50, 200),
 	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, gfx.ScreenHeight-fieldHeight, float(gfx.ScreenHeight)), wallThickness),
 	ball(Vec2(150, 450), Vec2(300, 300)),
-	paddle(Vec2(400,810), 75, 10),
+	paddle(Vec2(400, 810), 75, 10),
+	life(Vec2(30,880), 3),
 	soundPad(L"Sounds\\arkpad.wav"),
 	soundBrick(L"Sounds\\fho.wav")
 {
@@ -78,7 +79,7 @@ void Game::UpdateModel(float dt)
 
 	ball.Update(dt);
 
-	bool collisionHappened = false;
+	bool ball2brickCollisionHappened = false;
 	float curColDistSq;
 	int curColIndex;
 	for (int i = 0; i < nBricks; i++)
@@ -86,7 +87,7 @@ void Game::UpdateModel(float dt)
 		if (bricks[i].CheckBallCollision(ball))
 		{
 			const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
-			if (collisionHappened)
+			if (ball2brickCollisionHappened)
 			{
 				if (newColDistSq < curColDistSq)
 				{
@@ -98,38 +99,44 @@ void Game::UpdateModel(float dt)
 			{
 				curColDistSq = newColDistSq;
 				curColIndex = i;
-				collisionHappened = true;
+				ball2brickCollisionHappened = true;
 			}
 		}
 	}
 
-	if (collisionHappened)
+	if (ball2brickCollisionHappened)
 	{
 		paddle.ResetCooldown();
 		bricks[curColIndex].ExecuteBallCollision(ball);
-		//soundBrick.Play();
+		//x sound for ball and brick collision goes here
 	}
 
 	if (paddle.DoBallCollision(ball))
 	{
-		//soundPad.Play();
+		//x sound for ball and paddle collsion goes here
 	}
-	if (ball.DoWallCollisions(walls.GetInnerBounds()) == 1)
+	const int ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
+	if (ball2wallCollsion == 1)
 	{
 		if (!paddle.GetRect().IsOverlappingWith(ball.GetRect()))
 		{
 			paddle.ResetCooldown();
 		}
-		//soundPad.Play();
+		//x Sound for ball and wall collision goes here
 	}
-	else if (ball.DoWallCollisions(walls.GetInnerBounds()) == 2)
+	else if (ball2wallCollsion == 2)
 	{
-
+		// true if you consume your last life
+		if (life.ConsumeLife())
+		{
+			//TODO: end game call goes here
+		}
 	}
 }
 
 void Game::ComposeFrame()
 {
+	life.Draw(gfx);
 	ball.Draw(gfx);
 	for (const Brick& b : bricks)
 	{
