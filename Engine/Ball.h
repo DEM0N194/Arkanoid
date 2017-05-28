@@ -20,7 +20,7 @@ public:
 	void SetDirection(const Vec2& dir);
 private:
 	static constexpr float radius = 7.0f;
-	float speed = 450.0f;
+	float speed = 600.0f;
 	Vec2 pos;
 	Vec2 vel;
 };

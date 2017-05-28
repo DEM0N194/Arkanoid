@@ -22,17 +22,16 @@
 #include "Game.h"
 
 //TODO: gamestates:
-//TODO:		Start
-//TODO:		Ready - add logic and text
+//TODO:		Start - finish this when power ups are added
+//TODO:		Ready - done
 //TODO:		Play - done
-//TODO:		End
+//TODO:		End - finish this when scores are implemented
 //TODO: make the look nice
 
 //TODO: Levels
-//TODO: make the ball stick to the paddle during ready time and start from there
 //TODO: Different kinds of bricks with different values
 //TODO: Special bricks
-//TODO: Score and HighScore Counter
+//TODO: Score and HighScore Counter - added - make it work when the bricks are done
 //TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
 
@@ -41,11 +40,11 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	// Walls and borders
-	walls(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,float(gfx.ScreenHeight-fieldHeight),float(gfx.ScreenHeight)),int(wallThickness)),
-	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), int(10)),
+	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
+	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), 10),
 	infoWalls(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-10), int(10)),
-	border(RectF(wallThickness,float(gfx.ScreenWidth)-wallThickness,wallThickness,float(gfx.ScreenHeight)-wallThickness),wallThickness),
-	infoBorder(RectF(10,float(gfx.ScreenWidth)-10,10,float(gfx.ScreenHeight-fieldHeight)-wallThickness-10),int(10)),
+	border(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, wallThickness, float(gfx.ScreenHeight)-wallThickness), int(wallThickness)),
+	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness-10), 10),
 	gameState(START)
 {
 	border.SetColor(Color(130, 130, 130));
@@ -83,7 +82,7 @@ void Game::InitializeText()
 
 void Game::ResetGame()
 {
-	ball = Ball(Vec2(150, 450), Vec2(300, 300));
+	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
 	paddle = Paddle(Vec2(400, 810), 75, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
 
@@ -149,7 +148,14 @@ void Game::ComposeFrame()
 			Draw_Play();
 			break;
 		case END:
-			Draw_End();
+			if (currentWaitTime < 1.0f)
+			{
+				Draw_Play();
+			}
+			else
+			{
+				Draw_End();
+			}
 			break;
 	}
 }
@@ -197,7 +203,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			life.AddLife();
+			life.ConsumeLife();
 			lvl++;
 			spacePressed = true;
 		}
@@ -265,7 +271,6 @@ void Game::Game_Play(float dt)
 		if (life.ConsumeLife())
 		{
 			gameState = END;
-			ResetGame();
 		}
 		else
 		{
@@ -277,18 +282,25 @@ void Game::Game_Play(float dt)
 
 void Game::Game_End(float dt)
 {
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	currentWaitTime += dt;
+	if (currentWaitTime > 1.0f)
 	{
-		if (!spacePressed)
+		if (wnd.kbd.KeyIsPressed(VK_SPACE))
 		{
-			gameState = START;
-			spacePressed = true;
+			if (!spacePressed)
+			{
+				gameState = START;
+				ResetGame();
+				currentWaitTime = 0.0f;
+				spacePressed = true;
+			}
+		}
+		else
+		{
+			spacePressed = false;
 		}
 	}
-	else
-	{
-		spacePressed = false;
-	}
+	
 }
 
 void Game::Draw_Start()

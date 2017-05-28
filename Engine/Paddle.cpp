@@ -128,9 +128,9 @@ void Paddle::FadeToColor(Color goal)
 		updated.SetR(current.GetR()+2);
 		changed = true;
 	}
-	if (rDif < -1)
+	if (rDif < -2)
 	{
-		updated.SetR(current.GetR()-1);
+		updated.SetR(current.GetR()-2);
 		changed = true;
 	}
 
@@ -139,9 +139,9 @@ void Paddle::FadeToColor(Color goal)
 		updated.SetG(current.GetG()+2);
 		changed = true;
 	}
-	if (gDif < -1)
+	if (gDif < -2)
 	{
-		updated.SetG(current.GetG()-1);
+		updated.SetG(current.GetG()-2);
 		changed = true;
 	}
 
@@ -150,9 +150,9 @@ void Paddle::FadeToColor(Color goal)
 		updated.SetB(current.GetB()+2);
 		changed = true;
 	}
-	if (bDif < -1)
+	if (bDif < -2)
 	{
-		updated.SetB(current.GetB()-1);
+		updated.SetB(current.GetB()-2);
 		changed = true;
 	}
 
