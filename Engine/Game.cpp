@@ -62,26 +62,26 @@ Game::Game(MainWindow& wnd)
 void Game::InitializeText()
 {
 	t_Title.SetText("ARKANOID");
-	t_Title.SetPostion(250, 60);
+	t_Title.SetPostion(290, 60);
 	t_GameOver.SetText("GAME OVER");
-	t_GameOver.SetPostion(250, 250);
+	t_GameOver.SetPostion(275, 250);
 	t_level.SetText("LEVEL");
-	t_level.SetPostion(260, 500);
+	t_level.SetPostion(305, 500);
 	t_lvl.SetText("LVL");
-	t_lvl.SetPostion(670, 30);
+	t_lvl.SetPostion(700, 30);
 	t_Ready.SetText("READY");
-	t_Ready.SetPostion(300, 600);
+	t_Ready.SetPostion(335, 600);
 	t_HighScore.SetText("HIGHSCORE");
-	t_HighScore.SetPostion(260, 30);
+	t_HighScore.SetPostion(290, 30);
 	t_HighScore.SetColor(Colors::Red);
 	t_Score.SetText("SCORE");
-	t_Score.SetPostion(0, 30);
+	t_Score.SetPostion(30, 30);
 }
 
 void Game::ResetGame()
 {
 	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
-	paddle = Paddle(Vec2(400, 810), 75, 10);
+	paddle = Paddle(Vec2(410, 810), 75, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
 
 	lvl = 1;
@@ -345,8 +345,8 @@ void Game::Draw_Ready()
 	lvl.Draw(gfx);
 	t_lvl.Draw(gfx);
 	// draw lvl in the middle of the screen
-	lvl.SetPostion(460, 500);
-	lvl.AlignLeft();
+	lvl.SetPostion(550, 500);
+	lvl.AlignRight();
 	lvl.Draw(gfx);
 	t_level.Draw(gfx);
 

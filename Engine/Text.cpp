@@ -93,172 +93,172 @@ void Text::DrawCh(char ch, Graphics& gfx)
 	switch (ch)
 	{
 		case 'A':
-			column += spacing + 25;
 			gfx.chA(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'B':
-			column += spacing + 25;
 			gfx.chB(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'C':
-			column += spacing + 25;
 			gfx.chC(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'D':
-			column += spacing + 25;
 			gfx.chD(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'E':
-			column += spacing + 25;
 			gfx.chE(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'F':
-			column += spacing + 25;
 			gfx.chF(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'G':
-			column += spacing + 25;
 			gfx.chG(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'H':
-			column += spacing + 25;
 			gfx.chH(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'I':
-			column += spacing + 25;
 			gfx.chI(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'J':
-			column += spacing + 25;
 			gfx.chJ(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'K':
-			column += spacing + 25;
 			gfx.chK(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'L':
-			column += spacing + 25;
 			gfx.chL(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'M':
-			column += spacing + 25;
 			gfx.chM(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'N':
-			column += spacing + 25;
 			gfx.chN(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'O':
-			column += spacing + 25;
 			gfx.chO(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'P':
-			column += spacing + 25;
 			gfx.chP(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'Q':
-			column += spacing + 25;
 			gfx.chQ(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'R':
-			column += spacing + 25;
 			gfx.chR(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'S':
-			column += spacing + 25;
 			gfx.chS(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'T':
-			column += spacing + 25;
 			gfx.chT(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'U':
-			column += spacing + 25;
 			gfx.chU(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'V':
-			column += spacing + 25;
 			gfx.chV(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'W':
-			column += spacing + 25;
 			gfx.chW(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'X':
-			column += spacing + 25;
 			gfx.chX(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'Y':
-			column += spacing + 25;
 			gfx.chY(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case 'Z':
-			column += spacing + 25;
 			gfx.chZ(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '0':
-			column += spacing + 25;
 			gfx.ch0(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '1':
+			gfx.ch1(pos.x - 10 + column, pos.y, c);
 			column += spacing + 15;
-			gfx.ch1(pos.x + column, pos.y, c);
 			break;
 		case '2':
-			column += spacing + 25;
 			gfx.ch2(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '3':
-			column += spacing + 25;
 			gfx.ch3(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '4':
-			column += spacing + 25;
 			gfx.ch4(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '5':
-			column += spacing + 25;
 			gfx.ch5(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '6':
-			column += spacing + 25;
 			gfx.ch6(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '7':
-			column += spacing + 25;
 			gfx.ch7(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '8':
-			column += spacing + 25;
 			gfx.ch8(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '9':
-			column += spacing + 25;
 			gfx.ch9(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '.':
+			gfx.chDot(pos.x - 15 + column, pos.y, c);
 			column += spacing + 10;
-			gfx.chDot(pos.x + column, pos.y, c);
 			break;
 		case ',':
+			gfx.chComma(pos.x + 15 + column, pos.y, c);
 			column += spacing + 10;
-			gfx.chComma(pos.x + column, pos.y, c);
 			break;
 		case '\'':
+			gfx.chApostrophe(pos.x - 20 + column, pos.y, c);
 			column += spacing + 5;
-			gfx.chApostrophe(pos.x + column, pos.y, c);
 			break;
 		case '!':
+			gfx.chExMark(pos.x - 20 + column, pos.y, c);
 			column += spacing + 5;
-			gfx.chExMark(pos.x + column, pos.y, c);
 			break;
 		case '?':
-			column += spacing + 25;
 			gfx.chQMark(pos.x + column, pos.y, c);
+			column += spacing + 25;
 			break;
 		case '-':
+			gfx.chDash(pos.x - 10 + column, pos.y, c);
 			column += spacing + 15;
-			gfx.chDash(pos.x + column, pos.y, c);
 			break;
 		default:
 			column += spacing + 25;
