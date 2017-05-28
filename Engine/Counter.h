@@ -28,10 +28,10 @@ public:
 	void AlignLeft();
 	void AlignMiddle();
 	void AlignRight();
-	int GetNum() const;
 	void Draw(Graphics& gfx);
 private:
 	void DrawCh(char ch, Graphics& gfx);
+	int GetLength(std::string snum);
 public:
 	int operator+(int rhs);
 	int operator+(const Counter& rhs);
@@ -80,4 +80,5 @@ private:
 	int num;
 	int spacing;
 	int numOf0;
+	int relativeXPos;
 };

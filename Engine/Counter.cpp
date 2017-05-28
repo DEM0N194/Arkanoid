@@ -12,7 +12,7 @@ void Counter::Reset()
 	alignment = Left;
 	c = Colors::White;
 	num = 0;
-	spacing = 25 + 5;
+	spacing = 5;
 	numOf0 = 0;
 }
 
@@ -33,7 +33,7 @@ void Counter::SetColor(int r, int g, int b)
 
 void Counter::SetSpacing(int in_spacing)
 {
-	spacing = 25 + in_spacing;
+	spacing = in_spacing;
 }
 
 void Counter::SetNumOf0(int in_numOf0)
@@ -56,11 +56,6 @@ void Counter::AlignRight()
 	alignment = Right;
 }
 
-int Counter::GetNum() const
-{
-	return num;
-}
-
 void Counter::Draw(Graphics & gfx)
 {
 	Position posOld = pos;
@@ -71,28 +66,27 @@ void Counter::Draw(Graphics & gfx)
 	}
 	if (num < 0) snum.insert(0, "-");
 
-	int digit = 0;
+	relativeXPos = 0;
 	for (auto& ch : snum)
 	{
 		switch (alignment)
 		{
 			case Left:
-				pos.x = posOld.x + digit*spacing;
+				pos.x = posOld.x;
 				break;
 			case Middle:
-				pos.x = posOld.x - int(snum.size()/2.0f)*spacing + digit*spacing;
+				pos.x = posOld.x - GetLength(snum)/2;
 				break;
 			case Right:
-				pos.x = posOld.x - int(snum.size())*spacing + digit*spacing;
+				pos.x = posOld.x - GetLength(snum);
 				break;
 		}
-		digit++;
 		if (pos.x >= 0 &&
-			pos.x + 25 < gfx.ScreenWidth &&
+			pos.x + relativeXPos + 25 < gfx.ScreenWidth &&
 			pos.y >= 0 &&
 			pos.y + 30 < gfx.ScreenHeight)
 		{
-			DrawCh(ch,gfx);
+			DrawCh(ch, gfx);
 		}
 	}
 	pos = posOld;
@@ -103,39 +97,95 @@ void Counter::DrawCh(char ch, Graphics & gfx)
 	switch (ch)
 	{
 		case '0':
-			gfx.ch0(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch0(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '1':
-			gfx.ch1(pos.x, pos.y, c);
+			relativeXPos += spacing + 15;
+			gfx.ch1(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '2':
-			gfx.ch2(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch2(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '3':
-			gfx.ch3(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch3(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '4':
-			gfx.ch4(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch4(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '5':
-			gfx.ch5(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch5(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '6':
-			gfx.ch6(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch6(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '7':
-			gfx.ch7(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch7(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '8':
-			gfx.ch8(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch8(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '9':
-			gfx.ch9(pos.x, pos.y, c);
+			relativeXPos += spacing + 25;
+			gfx.ch9(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '-':
-			gfx.chDash(pos.x, pos.y, c);
+			relativeXPos += spacing + 15;
+			gfx.chDash(pos.x + relativeXPos, pos.y, c);
 			break;
 	}
+}
+
+int Counter::GetLength(std::string snum)
+{
+	int length = 25;
+	for (auto& ch : snum)
+	{
+		switch (ch)
+		{
+			case '0':
+				length += spacing + 25;
+				break;
+			case '1':
+				length += spacing + 15;
+				break;
+			case '2':
+				length += spacing + 25;
+				break;
+			case '3':
+				length += spacing + 25;
+				break;
+			case '4':
+				length += spacing + 25;
+				break;
+			case '5':
+				length += spacing + 25;
+				break;
+			case '6':
+				length += spacing + 25;
+				break;
+			case '7':
+				length += spacing + 25;
+				break;
+			case '8':
+				length += spacing + 25;
+				break;
+			case '9':
+				length += spacing + 25;
+				break;
+			case '-':
+				length += spacing + 15;
+				break;
+		}
+	}
+	return length;
 }
 
 int Counter::operator+(int rhs)
@@ -189,7 +239,7 @@ int Counter::operator%(const Counter & rhs)
 }
 
 Counter Counter::operator++(int)
-{					
+{
 	return ++(*this);
 }
 
