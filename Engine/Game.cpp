@@ -29,9 +29,7 @@
 //TODO: make the look nice
 
 //TODO: Levels
-//TODO: Different kinds of bricks with different values
-//TODO: Special bricks
-//TODO: Score and HighScore Counter - added - make it work when the bricks are done
+//TODO: win condition, go to next level
 //TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
 
@@ -87,16 +85,18 @@ void Game::ResetGame()
 	life = LifeCounter(Vec2(30, 880), 3);
 
 	lvl = 1;
+	Brick::SetLevel(lvl.GetNum());
+	score = 0;
 
-	//TODO: move this code to lvl1
-	const Color colors[4] = {Color(230,0,230), Color(0,230,230), Color(230,230,0), Color(0,230,0)};
+	//TODO: move this code to lvl1					magenta			cyan		yellow			green
+	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::MAGENTA, Brick::CYAN, Brick::YELLOW, Brick::GREEN};
 	const Vec2 topLeft(20.0f, 225.0f);
 	for (int y = 0; y < nBricksDown; y++)
 	{
-		const Color c = colors[y];
+		const Brick::eBrickType brickType = brickTypes[y];
 		for (int x = 0; x < nBricksAcross; x++)
 		{
-			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), c);
+			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
 		}
 	}
 }
@@ -220,6 +220,7 @@ void Game::Game_Play(float dt)
 
 	ball.Update(dt);
 
+	// collision of the ball with the bricks
 	bool ball2brickCollisionHappened = false;
 	float curColDistSq;
 	int curColIndex;
@@ -247,15 +248,26 @@ void Game::Game_Play(float dt)
 	if (ball2brickCollisionHappened)
 	{
 		paddle.ResetCooldown();
-		bricks[curColIndex].ExecuteBallCollision(ball);
+		// returns true if the brick is destroyed
+		if (bricks[curColIndex].ExecuteBallCollision(ball))
+		{
+			// track scores
+			score += bricks[curColIndex].GetValue();
+			if (score > highScore)
+			{
+				highScore = score;
+			}
+		}
 		//x sound for ball and brick collision goes here
 	}
 
+	// collision of the ball with the paddle
 	if (paddle.DoBallCollision(ball))
 	{
 		//x sound for ball and paddle collsion goes here
 	}
 
+	// collision of the ball with the wall is handled here
 	const int ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
 	if (ball2wallCollsion == 1)
 	{
@@ -306,8 +318,8 @@ void Game::Game_End(float dt)
 void Game::Draw_Start()
 {
 	infoBorder.Draw(gfx);
-	t_Title.Draw(gfx);
 	border.Draw(gfx);
+	t_Title.Draw(gfx);
 }
 
 void Game::Draw_Ready()
@@ -326,12 +338,14 @@ void Game::Draw_Ready()
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
-
+	
+	// draw lvl in the infoWalls
 	lvl.SetPostion(715, 80);
 	lvl.Draw(gfx);
+	t_lvl.Draw(gfx);
+	// draw lvl in the middle of the screen
 	lvl.SetPostion(460, 500);
 	lvl.Draw(gfx);
-	t_lvl.Draw(gfx);
 	t_level.Draw(gfx);
 
 	t_HighScore.Draw(gfx);
@@ -353,6 +367,7 @@ void Game::Draw_Play()
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
 
+	// draw stuff in infoWalls
 	t_lvl.Draw(gfx);
 	lvl.SetPostion(715, 80);
 	lvl.Draw(gfx);
