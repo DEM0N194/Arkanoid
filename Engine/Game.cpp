@@ -51,7 +51,7 @@ Game::Game(MainWindow& wnd)
 	thinWalls.SetColor(Color(0, 75, 150));
 	infoWalls.SetColor(Color(0, 75, 150));
 	lvl.SetNumOf0(1);
-	highScore.SetPostion(410, 80);
+	highScore.SetPostion(440, 80);
 	highScore.AlignMiddle();
 	score.SetPostion(30, 80);
 
@@ -72,7 +72,7 @@ void Game::InitializeText()
 	t_Ready.SetText("READY");
 	t_Ready.SetPostion(300, 600);
 	t_HighScore.SetText("HIGHSCORE");
-	t_HighScore.SetPostion(250, 30);
+	t_HighScore.SetPostion(260, 30);
 	t_HighScore.SetColor(Colors::Red);
 	t_Score.SetText("SCORE");
 	t_Score.SetPostion(0, 30);
@@ -203,7 +203,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			life.ConsumeLife();
+			//life.ConsumeLife();
 			lvl++;
 			spacePressed = true;
 		}
@@ -340,11 +340,13 @@ void Game::Draw_Ready()
 	infoWalls.Draw(gfx);
 	
 	// draw lvl in the infoWalls
-	lvl.SetPostion(715, 80);
+	lvl.SetPostion(755, 80);
+	lvl.AlignMiddle();
 	lvl.Draw(gfx);
 	t_lvl.Draw(gfx);
 	// draw lvl in the middle of the screen
 	lvl.SetPostion(460, 500);
+	lvl.AlignLeft();
 	lvl.Draw(gfx);
 	t_level.Draw(gfx);
 
@@ -369,7 +371,8 @@ void Game::Draw_Play()
 
 	// draw stuff in infoWalls
 	t_lvl.Draw(gfx);
-	lvl.SetPostion(715, 80);
+	lvl.SetPostion(755, 80);
+	lvl.AlignMiddle();
 	lvl.Draw(gfx);
 
 	t_HighScore.Draw(gfx);

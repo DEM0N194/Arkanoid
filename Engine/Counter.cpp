@@ -102,48 +102,48 @@ void Counter::DrawCh(char ch, Graphics & gfx)
 	switch (ch)
 	{
 		case '0':
-			relativeXPos += spacing + 25;
 			gfx.ch0(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '1':
+			gfx.ch1(pos.x - 10 + relativeXPos, pos.y, c);
 			relativeXPos += spacing + 15;
-			gfx.ch1(pos.x + relativeXPos, pos.y, c);
 			break;
 		case '2':
-			relativeXPos += spacing + 25;
 			gfx.ch2(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '3':
-			relativeXPos += spacing + 25;
 			gfx.ch3(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '4':
-			relativeXPos += spacing + 25;
 			gfx.ch4(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '5':
-			relativeXPos += spacing + 25;
 			gfx.ch5(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '6':
-			relativeXPos += spacing + 25;
 			gfx.ch6(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '7':
-			relativeXPos += spacing + 25;
 			gfx.ch7(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '8':
-			relativeXPos += spacing + 25;
 			gfx.ch8(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '9':
-			relativeXPos += spacing + 25;
 			gfx.ch9(pos.x + relativeXPos, pos.y, c);
+			relativeXPos += spacing + 25;
 			break;
 		case '-':
+			gfx.chDash(pos.x - 10 + relativeXPos, pos.y, c);
 			relativeXPos += spacing + 15;
-			gfx.chDash(pos.x + relativeXPos, pos.y, c);
 			break;
 	}
 }
