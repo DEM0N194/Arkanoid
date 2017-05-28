@@ -17,7 +17,7 @@ LifeCounter::LifeCounter(Vec2 pos_in, int lives_in)
 // returns true if u have no life
 bool LifeCounter::ConsumeLife()
 {
-	lives--;
+	lives = max(lives--,0);
 	if (lives > 0 && lives < 10)
 	{
 		pads.pop_back();
