@@ -27,7 +27,7 @@
 //TODO:		Ready - done
 //TODO:		Play - done
 //TODO:		End - finish this when scores are implemented
-//TODo:		WIN - same as end just change the 
+//TODo:		WIN - same as end just change the text
 //TODO: make the look nice
 
 //TODO: add "press space to start" and "press space to continue" text to the START and END/WIN gamestates
@@ -37,6 +37,7 @@
 //TODO: Sounds, possibly a sound manager
 //TODO: fine tune brick colors
 //TODO: fine tune the game speed so it's not as easy as it is now
+//TODO: Add fireworks to WIN screen so it feels more rewarding xD
 
 Game::Game(MainWindow& wnd)
 	:
@@ -68,12 +69,15 @@ Game::Game(MainWindow& wnd)
 
 void Game::InitializeText()
 {
-	t_Title.SetText("Arkanoid");
+	t_Title.SetText("ARKANOID");
 	t_Title.SetPostion(0, 60);
 	t_Title.AlignMiddle();
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(0, 250);
 	t_GameOver.AlignMiddle();
+	t_YouWin.SetText("YOU WIN");
+	t_YouWin.SetPostion(0, 250);
+	t_YouWin.AlignMiddle();
 	t_DEM0N194.SetText("DEM0N194");
 	t_DEM0N194.SetPostion(0, 760);
 	t_DEM0N194.AlignMiddle();
@@ -131,7 +135,10 @@ void Game::UpdateModel(float dt)
 			Game_Play(dt);
 			break;
 		case END:
-			Game_End(dt);
+			Game_EndWin(dt);
+			break;
+		case WIN:
+			Game_EndWin(dt);
 			break;
 	}
 }
@@ -157,6 +164,16 @@ void Game::ComposeFrame()
 			else
 			{
 				Draw_End();
+			}
+			break;
+		case WIN:
+			if (currentWaitTime < 1.0f)
+			{
+				Draw_Play();
+			}
+			else
+			{
+				Draw_Win();
 			}
 			break;
 	}
@@ -279,8 +296,8 @@ void Game::Game_Play(float dt)
 		}
 		else
 		{
-			paddle.Destroy();
 			gameState = READY;
+			paddle.Destroy();
 		}
 	}
 
@@ -291,7 +308,7 @@ void Game::Game_Play(float dt)
 		{
 			//life.ConsumeLife();
 			//lvl++;
-			lvl = lvl == 2 ? 0 : 1;
+			//lvl = lvl == 2 ? 0 : 1;
 			levelCleared = true;
 			spacePressed = true;
 		}
@@ -305,14 +322,14 @@ void Game::Game_Play(float dt)
 	//! LEVEL CLEARED
 	if (levelCleared)
 	{
+		gameState = READY;
+		paddle.Destroy();
 		lvl++;
 		LoadLevel();
-		paddle.Destroy();
-		gameState = READY;
 	}
 }
 
-void Game::Game_End(float dt)
+void Game::Game_EndWin(float dt)
 {
 	currentWaitTime += dt;
 	if (currentWaitTime > 1.0f)
@@ -409,6 +426,20 @@ void Game::Draw_End()
 
 	t_Title.Draw(gfx);
 	t_GameOver.Draw(gfx);
+	t_DEM0N194.Draw(gfx);
+
+	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
+	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
+}
+
+void Game::Draw_Win()
+{
+	infoBorder.Draw(gfx);
+	bottomBorder.Draw(gfx);
+	border.Draw(gfx);
+
+	t_Title.Draw(gfx);
+	t_YouWin.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);

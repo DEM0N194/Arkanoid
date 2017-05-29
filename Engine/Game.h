@@ -51,12 +51,13 @@ private:
 	void Game_Start(float dt);
 	void Game_Ready(float dt);
 	void Game_Play(float dt);
-	void Game_End(float dt);
+	void Game_EndWin(float dt);
 
 	void Draw_Start();
 	void Draw_Ready();
 	void Draw_Play();
 	void Draw_End();
+	void Draw_Win();
 
 	void InitializeText();
 	void ResetGame();
@@ -112,6 +113,7 @@ private:
 private:
 	Text t_Title;
 	Text t_GameOver;
+	Text t_YouWin;
 	Text t_DEM0N194;
 	Text t_level;
 	Text t_lvl;
