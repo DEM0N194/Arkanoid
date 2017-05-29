@@ -2,8 +2,8 @@
 
 void SpriteCodex::DrawBall( const Vec2& topLeft,Graphics& gfx )
 {
-	const int x = int( topLeft.x ) - 7;
-	const int y = int( topLeft.y ) - 7;
+	const int x = static_cast<int>( topLeft.x ) - 7;
+	const int y = static_cast<int>( topLeft.y ) - 7;
 
 	gfx.PutPixel(5 + x, 0 + y, 48, 48, 48);
 	gfx.PutPixel(6 + x, 0 + y, 48, 48, 48);
@@ -157,8 +157,8 @@ void SpriteCodex::DrawBall( const Vec2& topLeft,Graphics& gfx )
 
 void SpriteCodex::DrawLogo(const Vec2 & topLeft, Graphics & gfx)
 {
-	const int x = topLeft.x;
-	const int y = topLeft.y;
+	const int x = static_cast<int>(topLeft.x);
+	const int y = static_cast<int>(topLeft.y);
 
 	gfx.PutPixel(71 + x, 0 + y, 255, 255, 255);
 	gfx.PutPixel(102 + x, 0 + y, 255, 255, 255);

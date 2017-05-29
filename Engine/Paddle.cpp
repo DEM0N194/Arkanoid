@@ -116,11 +116,11 @@ void Paddle::UpdateExitFactors()
 
 void Paddle::FadeToColor(Color goal)
 {
-	Color current = bev.GetBaseColor();
+	const Color current = bev.GetBaseColor();
 	Color updated;
-	float rDif = goal.GetR() - current.GetR();
-	float gDif = goal.GetG() - current.GetG();
-	float bDif = goal.GetB() - current.GetB();
+	const int rDif = goal.GetR() - current.GetR();
+	const int gDif = goal.GetG() - current.GetG();
+	const int bDif = goal.GetB() - current.GetB();
 	bool changed = false;
 
 	if (rDif > 2)
