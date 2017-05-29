@@ -79,6 +79,7 @@ void Text::AlignRight()
 void Text::Draw(Graphics& gfx)
 {
 	Position PosOld = pos;
+	PosOld.y = max(0,PosOld.y);
 	int textLen = GetLength(text);
 	int row = 0;
 	column = 0;
@@ -98,10 +99,11 @@ void Text::Draw(Graphics& gfx)
 	}
 	for (int i = 0; i < text.length(); i++)
 	{
+		std::string currCharStr(1, text[i]);
 		switch (alignment)
 		{
 			case Left:
-				if (!(pos.x + column < box2.x - 25))
+				if (pos.x + column > box2.x - GetLength(currCharStr))
 				{
 					column = 0;
 					row++;
@@ -125,7 +127,7 @@ void Text::Draw(Graphics& gfx)
 				{
 					pos.x = box1.x;
 				}
-				if (pos.x + column > box2.x - 25)
+				if (pos.x + column > box2.x - GetLength(currCharStr))
 				{
 					std::string newLine = text;
 					newLine.erase(0, i-1);
@@ -154,7 +156,6 @@ void Text::Draw(Graphics& gfx)
 				{
 					pos.x = box1.x;
 				}
-				std::string currCharStr(1, text[i]);
 				if (pos.x + column + GetLength(currCharStr) > box2.x)
 				{
 					std::string newLine = text;

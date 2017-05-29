@@ -66,21 +66,22 @@ Game::Game(MainWindow& wnd)
 
 void Game::InitializeText()
 {
-	t_Title.SetText("Arkanoid is the\nbest game ever ....\nThank god it's finally working");
-	t_Title.SetBoxSize(50, 160, gfx.ScreenWidth - 50, gfx.ScreenHeight);
+	t_Title.SetText("Arkanoid");
 	t_Title.SetPostion(0, 60);
-	t_Title.AlignRight();
-	
+	t_Title.AlignMiddle();
 	t_GameOver.SetText("GAME OVER");
-	t_GameOver.SetPostion(275, 250);
+	t_GameOver.SetPostion(0, 250);
+	t_GameOver.AlignMiddle();
 	t_DEM0N194.SetText("DEM0N194");
-	t_DEM0N194.SetPostion(290, 760);
+	t_DEM0N194.SetPostion(0, 760);
+	t_DEM0N194.AlignMiddle();
 	t_level.SetText("LEVEL");
 	t_level.SetPostion(305, 500);
 	t_lvl.SetText("LVL");
 	t_lvl.SetPostion(700, 30);
 	t_Ready.SetText("READY");
-	t_Ready.SetPostion(335, 600);
+	t_Ready.SetPostion(0, 600);
+	t_Ready.AlignMiddle();
 	t_HighScore.SetText("HIGHSCORE");
 	t_HighScore.SetPostion(290, 30);
 	t_HighScore.SetColor(Colors::Red);
@@ -330,16 +331,6 @@ void Game::Draw_Start()
 	infoBorder.Draw(gfx);
 	border.Draw(gfx);
 	t_Title.Draw(gfx);
-
-	//? Test Code Start
-	for (int i = 0; i < 300; i++)
-	{
-		gfx.PutPixel(50, i, Colors::Yellow);
-		gfx.PutPixel(770, i, Colors::Yellow);
-	}
-
-	//? Test Code End
-
 }
 
 void Game::Draw_Ready()
