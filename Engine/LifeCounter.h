@@ -13,8 +13,8 @@ public:
 	void AddLife();
 	void Draw(Graphics& gfx);
 private:
-	static constexpr float spacing = 10.0f;
-	static constexpr float padHalfWidth = 37.5f;
+	static constexpr float spacing = 11.0f;
+	static constexpr float padHalfWidth = 33.0f;
 	static constexpr float padHalfHeight = 5.0f;
 	int lives;
 	// pos origin upper left corner

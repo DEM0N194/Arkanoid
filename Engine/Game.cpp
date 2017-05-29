@@ -97,7 +97,7 @@ void Game::InitializeText()
 void Game::ResetGame()
 {
 	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
-	paddle = Paddle(Vec2(410, 810), 75, 10);
+	paddle = Paddle(Vec2(410, 810), 60, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
 
 	lvl = 1;
@@ -316,10 +316,10 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			//life.ConsumeLife();
+			life.AddLife();
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
-			levelCleared = true;
+			//levelCleared = true;
 			spacePressed = true;
 		}
 	}

@@ -21,12 +21,14 @@ public:
 	void Restore();
 private:
 	void UpdateExitFactors();
-	void FadeToColor(Color goal);
+	void FadeToColor(Beveler & beveler, Color goal);
 private:
 	Beveler bev;
+	Beveler wingBev;
 	Vec2 pos;
 	float halfWidth;
 	float halfHeight;
+	float wingWidth;
 	float exitXFactor;
 	float fixedZoneHalfWidth;
 	float fixedZoneExitX;

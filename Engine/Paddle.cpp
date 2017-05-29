@@ -5,14 +5,25 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	pos(pos_in),
 	halfWidth(halfWidth_in),
 	halfHeight(halfHeight_in),
-	bev(Color(0,0,0))
+	wingWidth(halfWidth/4),
+	bev(Color(0,0,0)),
+	wingBev(Color(0,0,0))
 {
 	UpdateExitFactors();
 }
 
 void Paddle::Draw(Graphics & gfx) const
 {
-	bev.DrawBeveledBrick(GetRect(), 5, gfx);
+	RectF body = GetRect();
+	//body.left += wingWidth;
+	//body.right -= wingWidth;
+	RectF wingLeft = GetRect();
+	wingLeft.right -= (2*halfWidth - wingWidth);
+	RectF wingRight = GetRect();
+	wingRight.left += (2*halfWidth - wingWidth);
+	bev.DrawBeveledBrick(body, 5, gfx);
+	wingBev.DrawBeveledBrick(wingLeft, 5, gfx);
+	wingBev.DrawBeveledBrick(wingRight, 5, gfx);
 }
 
 void Paddle::Update(Keyboard & kbd, float dt)
@@ -28,7 +39,8 @@ void Paddle::Update(Keyboard & kbd, float dt)
 
 	if (destroyed)
 	{
-		FadeToColor(Color(0, 0, 0));
+		FadeToColor(bev,Color(0, 0, 0));
+		FadeToColor(wingBev, Color(0, 0, 0));
 	}
 }
 
@@ -104,7 +116,8 @@ void Paddle::Destroy()
 void Paddle::Restore()
 {
 	destroyed = false;
-	FadeToColor(Color(130, 130, 130));
+	FadeToColor(bev, Color(130, 130, 130));
+	FadeToColor(wingBev, Color(130, 50, 50));
 }
 
 void Paddle::UpdateExitFactors()
@@ -114,10 +127,10 @@ void Paddle::UpdateExitFactors()
 	fixedZoneExitX = fixedZoneHalfWidth * exitXFactor;
 }
 
-void Paddle::FadeToColor(Color goal)
+void Paddle::FadeToColor(Beveler& beveler, Color goal)
 {
-	const Color current = bev.GetBaseColor();
-	Color updated;
+	const Color current = beveler.GetBaseColor();
+	Color updated = current;
 	const int rDif = goal.GetR() - current.GetR();
 	const int gDif = goal.GetG() - current.GetG();
 	const int bDif = goal.GetB() - current.GetB();
@@ -158,6 +171,6 @@ void Paddle::FadeToColor(Color goal)
 
 	if (changed)
 	{
-		bev = Beveler(updated);
+		beveler = Beveler(updated);
 	}
 }

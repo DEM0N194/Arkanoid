@@ -18,7 +18,7 @@ LifeCounter::LifeCounter(Vec2 pos_in, int lives_in)
 bool LifeCounter::ConsumeLife()
 {
 	lives = max(lives--,0);
-	if (lives > 0 && lives < 10)
+	if (lives > 0 && lives < 11)
 	{
 		pads.pop_back();
 	}
@@ -28,7 +28,7 @@ bool LifeCounter::ConsumeLife()
 void LifeCounter::AddLife()
 {
 	const Vec2 offset(spacing + 2.0f*padHalfWidth, 0.0f);
-	if (lives < 10)
+	if (lives < 11)
 	{
 		pads.push_back(Paddle(pos + (offset * float(lives-1) ), padHalfWidth, padHalfHeight));
 	}
