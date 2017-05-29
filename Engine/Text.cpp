@@ -1,4 +1,5 @@
 #include "Text.h"
+#include <algorithm>
 
 Text::Text()
 {
@@ -339,7 +340,7 @@ void Text::DrawCh(char ch, Graphics& gfx)
 			column += spacing + 10;
 			break;
 		case ',':
-			gfx.chComma(pos.x + 15 + column, pos.y, c);
+			gfx.chComma(pos.x - 15 + column, pos.y, c);
 			column += spacing + 10;
 			break;
 		case '\'':

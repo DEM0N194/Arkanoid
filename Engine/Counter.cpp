@@ -155,38 +155,14 @@ int Counter::GetLength(std::string snum)
 	{
 		switch (ch)
 		{
-			case '0':
-				length += spacing + 25;
-				break;
 			case '1':
 				length += spacing + 15;
 				break;
-			case '2':
-				length += spacing + 25;
-				break;
-			case '3':
-				length += spacing + 25;
-				break;
-			case '4':
-				length += spacing + 25;
-				break;
-			case '5':
-				length += spacing + 25;
-				break;
-			case '6':
-				length += spacing + 25;
-				break;
-			case '7':
-				length += spacing + 25;
-				break;
-			case '8':
-				length += spacing + 25;
-				break;
-			case '9':
-				length += spacing + 25;
-				break;
 			case '-':
 				length += spacing + 15;
+				break;
+			default:
+				length += spacing + 25;
 				break;
 		}
 	}
