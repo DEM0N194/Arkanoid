@@ -85,12 +85,14 @@ void Text::Draw(Graphics& gfx)
 	switch (alignment)
 	{
 		case Left:
+			PosOld.x = max(0, PosOld.x);
 			pos.x = box1.x + PosOld.x;
 			break;
 		case Middle:
 			pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(textLen/2, (box2.x - box1.x)/2);
 			break;
 		case Right:
+			PosOld.x = min(0, PosOld.x);
 			pos.x = box2.x + PosOld.x - min(textLen,box2.x - box1.x);
 			break;
 	}
@@ -148,6 +150,10 @@ void Text::Draw(Graphics& gfx)
 				}
 				break;
 			case Right:
+				if (pos.x < box1.x)
+				{
+					pos.x = box1.x;
+				}
 				std::string currCharStr(1, text[i]);
 				if (pos.x + column + GetLength(currCharStr) > box2.x)
 				{

@@ -68,7 +68,7 @@ void Game::InitializeText()
 {
 	t_Title.SetText("Arkanoid is the\nbest game ever ....\nThank god it's finally working");
 	t_Title.SetBoxSize(50, 160, gfx.ScreenWidth - 50, gfx.ScreenHeight);
-	//t_Title.SetPostion(0, 60);
+	t_Title.SetPostion(0, 60);
 	t_Title.AlignRight();
 	
 	t_GameOver.SetText("GAME OVER");
