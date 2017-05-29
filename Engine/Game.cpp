@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 //TODO: gamestates:
 //TODO:		Start - finish this when power ups are added
@@ -33,6 +34,8 @@
 //TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
 
+//TODO: add Alignment functions to Text before adding all the text to the game (START, END)
+
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
@@ -42,11 +45,13 @@ Game::Game(MainWindow& wnd)
 	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), 10),
 	infoWalls(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-10), int(10)),
 	border(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, wallThickness, float(gfx.ScreenHeight)-wallThickness), int(wallThickness)),
-	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness-10), 10),
+	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness), 10),
+	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(START)
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
+	bottomBorder.SetColor(Color(130, 130, 130));
 	walls.SetColor(Color(0, 75, 150));
 	thinWalls.SetColor(Color(0, 75, 150));
 	infoWalls.SetColor(Color(0, 75, 150));
@@ -65,6 +70,8 @@ void Game::InitializeText()
 	t_Title.SetPostion(290, 60);
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(275, 250);
+	t_DEM0N194.SetText("DEM0N194");
+	t_DEM0N194.SetPostion(290, 760);
 	t_level.SetText("LEVEL");
 	t_level.SetPostion(305, 500);
 	t_lvl.SetText("LVL");
@@ -384,7 +391,13 @@ void Game::Draw_Play()
 void Game::Draw_End()
 {
 	infoBorder.Draw(gfx);
-	t_Title.Draw(gfx);
+	bottomBorder.Draw(gfx);
 	border.Draw(gfx);
+
+	t_Title.Draw(gfx);
 	t_GameOver.Draw(gfx);
+	t_DEM0N194.Draw(gfx);
+
+	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
+	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
 }

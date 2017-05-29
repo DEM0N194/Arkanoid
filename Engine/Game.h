@@ -91,6 +91,7 @@ private:
 	Walls thinWalls;
 	Walls infoWalls;
 	Border infoBorder;
+	Border bottomBorder;
 	Border border;
 
 	Ball ball;
@@ -106,6 +107,7 @@ private:
 private:
 	Text t_Title;
 	Text t_GameOver;
+	Text t_DEM0N194;
 	Text t_level;
 	Text t_lvl;
 	Text t_Ready;
