@@ -120,4 +120,5 @@ private:
 	Text t_Ready;
 	Text t_HighScore;
 	Text t_Score;
+	Text t_PressSpace;
 };

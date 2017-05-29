@@ -30,8 +30,6 @@
 //TODo:		WIN - same as end just change the text
 //TODO: make the look nice
 
-//TODO: add "press space to start" and "press space to continue" text to the START and END/WIN gamestates
-
 //TODO: add more Levels
 //TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
@@ -78,6 +76,7 @@ void Game::InitializeText()
 	t_YouWin.SetText("YOU WIN");
 	t_YouWin.SetPostion(0, 250);
 	t_YouWin.AlignMiddle();
+	t_PressSpace.AlignMiddle();
 	t_DEM0N194.SetText("DEM0N194");
 	t_DEM0N194.SetPostion(0, 760);
 	t_DEM0N194.AlignMiddle();
@@ -192,6 +191,17 @@ void Game::Game_Start(float dt)
 	else
 	{
 		spacePressed = false;
+	}
+
+	currentWaitTime += dt;
+	if (currentWaitTime > 1.0f)
+	{
+		t_PressSpace.SetColor(Colors::White);
+		currentWaitTime = 0.0f;
+	}
+	else if (currentWaitTime > 0.5f)
+	{
+		t_PressSpace.SetColor(Colors::Yellow);
 	}
 }
 
@@ -349,7 +359,15 @@ void Game::Game_EndWin(float dt)
 			spacePressed = false;
 		}
 	}
-	
+	if (currentWaitTime > 2.0f)
+	{
+		t_PressSpace.SetColor(Colors::White);
+		currentWaitTime = 1.0f;
+	}
+	else if (currentWaitTime > 1.5f)
+	{
+		t_PressSpace.SetColor(Colors::Yellow);
+	}
 }
 
 void Game::Draw_Start()
@@ -357,6 +375,10 @@ void Game::Draw_Start()
 	infoBorder.Draw(gfx);
 	border.Draw(gfx);
 	t_Title.Draw(gfx);
+
+	t_PressSpace.SetText("Press Space to START");
+	t_PressSpace.SetPostion(0, 800);
+	t_PressSpace.Draw(gfx);
 }
 
 void Game::Draw_Ready()
@@ -428,6 +450,10 @@ void Game::Draw_End()
 	t_GameOver.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
 
+	t_PressSpace.SetText("Press Space to Continue");
+	t_PressSpace.SetPostion(0, 600);
+	t_PressSpace.Draw(gfx);
+
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
 }
@@ -441,6 +467,10 @@ void Game::Draw_Win()
 	t_Title.Draw(gfx);
 	t_YouWin.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
+
+	t_PressSpace.SetText("Press Space to Continue");
+	t_PressSpace.SetPostion(0, 600);
+	t_PressSpace.Draw(gfx);
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
