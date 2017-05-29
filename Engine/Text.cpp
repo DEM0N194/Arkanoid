@@ -10,7 +10,8 @@ void Text::Reset()
 	c = Colors::White;
 	pos = {0,0};
 	box1 = {0,0};
-	box2 = {Graphics::ScreenWidth-1, Graphics::ScreenHeight-1};
+	box2 = {Graphics::ScreenWidth, Graphics::ScreenHeight};
+	alignment = Left;
 	text = "";
 	spacing = 5;
 	lineSpacing = 30 + 5;
@@ -60,29 +61,90 @@ void Text::SetText(std::string in_text)
 	for (auto& c : text) c = toupper(c);
 }
 
+void Text::AlignLeft()
+{
+	alignment = Left;
+}
+
+void Text::AlignMiddle()
+{
+	alignment = Middle;
+}
+
+void Text::AlignRight()
+{
+	alignment = Right;
+}
+
 void Text::Draw(Graphics& gfx)
 {
 	Position PosOld = pos;
+	int textLen = GetLength(text);
 	int row = 0;
 	column = 0;
-	pos.x = box1.x + PosOld.x;
-	for (auto& ch : text)
+	switch (alignment)
 	{
-		if (!(pos.x + column < box2.x - 2* 25))
+		case Left:
+			pos.x = box1.x + PosOld.x;
+			break;
+		case Middle:
+			pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(textLen/2, (box2.x - box1.x)/2);
+			break;
+		case Right:
+			pos.x = box1.x + PosOld.x - textLen;
+			break;
+	}
+	for (int i = 0; i < text.length(); i++)
+	{
+		switch (alignment)
 		{
-			column = 0;
-			row++;
-		}
-		pos.y = box1.y + PosOld.y + row * lineSpacing;
-		if (ch == '\n')
-		{
-			column = 0;
-			row++;
-		}
-		else
-		{
-			if(pos.y < box2.y - lineSpacing)
-			DrawCh(ch, gfx);
+			case Left:
+				if (!(pos.x + column < box2.x - 2* 25))
+				{
+					column = 0;
+					row++;
+				}
+				pos.y = box1.y + PosOld.y + row * lineSpacing;
+				if (text[i] == '\n')
+				{
+					column = 0;
+					row++;
+				}
+				else
+				{
+					if (pos.y < box2.y - lineSpacing)
+					{
+						DrawCh(text[i], gfx);
+					}
+				}
+				break;
+			case Middle:
+				if ((pos.x + column > box2.x - 25))
+				{
+					std::string newLine = text;
+					newLine.erase(0, i-1);
+					column = (box2.x - box1.x)/2 - min(GetLength(newLine)/2,(box2.x - box1.x)/2);
+					row++;
+				}
+				pos.y = box1.y + PosOld.y + row * lineSpacing;
+				if (text[i] == '\n')
+				{
+					std::string newLine = text;
+					newLine.erase(0, i+1);
+					pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(GetLength(newLine)/2, (box2.x - box1.x)/2);
+					column = 0;
+					row++;
+				}
+				else
+				{
+					if (pos.y < box2.y - lineSpacing)
+					{
+						DrawCh(text[i], gfx);
+					}
+				}
+				break;
+			case Right:
+				break;
 		}
 	}
 	pos = PosOld;
@@ -264,4 +326,40 @@ void Text::DrawCh(char ch, Graphics& gfx)
 			column += spacing + 25;
 			break;
 	}
+}
+
+int Text::GetLength(std::string s)
+{
+	int length = 0;
+	for (auto& ch : s)
+	{
+		switch (ch)
+		{
+			case '1':
+				length += spacing + 15;
+				break;
+			case '.':
+				length += spacing + 10;
+				break;
+			case ',':
+				length += spacing + 10;
+				break;
+			case '!':
+				length += spacing + 5;
+				break;
+			case '\'':
+				length += spacing + 5;
+				break;
+			case '-':
+				length += spacing + 15;
+				break;
+			case '\n':
+				return length;
+				break;
+			default:
+				length += spacing + 25;
+				break;
+		}
+	}
+	return length;
 }

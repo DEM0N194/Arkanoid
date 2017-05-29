@@ -66,8 +66,13 @@ Game::Game(MainWindow& wnd)
 
 void Game::InitializeText()
 {
-	t_Title.SetText("ARKANOID");
-	t_Title.SetPostion(290, 60);
+	t_Title.SetText("Arkanoid is the\nbest game ever ....\n Thank god it's finally working");
+	t_Title.SetPostion(290 - 290, 60);
+	t_Title.AlignMiddle();
+	//? Test Code Start
+	t_Title.SetBoxSize(50, 100, 820 - 50, 900);
+
+	//? Test Code End
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(275, 250);
 	t_DEM0N194.SetText("DEM0N194");
@@ -327,6 +332,16 @@ void Game::Draw_Start()
 	infoBorder.Draw(gfx);
 	border.Draw(gfx);
 	t_Title.Draw(gfx);
+
+	//? Test Code Start
+	for (int i = 0; i < 300; i++)
+	{
+		gfx.PutPixel(50, i, Colors::Yellow);
+		gfx.PutPixel(770, i, Colors::Yellow);
+	}
+
+	//? Test Code End
+
 }
 
 void Game::Draw_Ready()
