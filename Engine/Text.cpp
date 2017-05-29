@@ -91,7 +91,7 @@ void Text::Draw(Graphics& gfx)
 			pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(textLen/2, (box2.x - box1.x)/2);
 			break;
 		case Right:
-			pos.x = box1.x + PosOld.x - textLen;
+			pos.x = box2.x + PosOld.x - min(textLen,box2.x - box1.x);
 			break;
 	}
 	for (int i = 0; i < text.length(); i++)
@@ -99,7 +99,7 @@ void Text::Draw(Graphics& gfx)
 		switch (alignment)
 		{
 			case Left:
-				if (!(pos.x + column < box2.x - 2* 25))
+				if (!(pos.x + column < box2.x - 25))
 				{
 					column = 0;
 					row++;
@@ -119,11 +119,15 @@ void Text::Draw(Graphics& gfx)
 				}
 				break;
 			case Middle:
-				if ((pos.x + column > box2.x - 25))
+				if (pos.x < box1.x)
+				{
+					pos.x = box1.x;
+				}
+				if (pos.x + column > box2.x - 25)
 				{
 					std::string newLine = text;
 					newLine.erase(0, i-1);
-					column = (box2.x - box1.x)/2 - min(GetLength(newLine)/2,(box2.x - box1.x)/2);
+					column = PosOld.x + (box2.x - box1.x)/2 - min(GetLength(newLine)/2,(box2.x - box1.x)/2);
 					row++;
 				}
 				pos.y = box1.y + PosOld.y + row * lineSpacing;
@@ -144,6 +148,31 @@ void Text::Draw(Graphics& gfx)
 				}
 				break;
 			case Right:
+				std::string currCharStr(1, text[i]);
+				if (pos.x + column + GetLength(currCharStr) > box2.x)
+				{
+					std::string newLine = text;
+					newLine.erase(0, i);
+					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - min(GetLength(newLine), (box2.x - box1.x));
+					column = 0;
+					row++;
+				}
+				pos.y = box1.y + PosOld.y + row * lineSpacing;
+				if (text[i] == '\n')
+				{
+					std::string newLine = text;
+					newLine.erase(0, i+1);
+					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - min(GetLength(newLine), (box2.x - box1.x));
+					column = 0;
+					row++;
+				}
+				else
+				{
+					if (pos.y < box2.y - lineSpacing)
+					{
+						DrawCh(text[i], gfx);
+					}
+				}
 				break;
 		}
 	}

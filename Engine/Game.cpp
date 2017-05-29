@@ -66,13 +66,11 @@ Game::Game(MainWindow& wnd)
 
 void Game::InitializeText()
 {
-	t_Title.SetText("Arkanoid is the\nbest game ever ....\n Thank god it's finally working");
-	t_Title.SetPostion(290 - 290, 60);
-	t_Title.AlignMiddle();
-	//? Test Code Start
-	t_Title.SetBoxSize(50, 100, 820 - 50, 900);
-
-	//? Test Code End
+	t_Title.SetText("Arkanoid is the\nbest game ever ....\nThank god it's finally working");
+	t_Title.SetBoxSize(50, 160, gfx.ScreenWidth - 50, gfx.ScreenHeight);
+	//t_Title.SetPostion(0, 60);
+	t_Title.AlignRight();
+	
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(275, 250);
 	t_DEM0N194.SetText("DEM0N194");
