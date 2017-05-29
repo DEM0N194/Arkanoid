@@ -29,6 +29,7 @@ public:
 	bool ExecuteBallCollision(Ball& ball);
 	Vec2 GetCenter() const;
 	int GetValue() const;
+	bool IsDestroyed() const;
 	static void SetLevel(int lvl_in);
 private:
 	static constexpr float padding = 1.0f;

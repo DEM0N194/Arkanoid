@@ -60,13 +60,18 @@ private:
 
 	void InitializeText();
 	void ResetGame();
+	void LoadLevel();
+
+	void Lvl_01();
+	void Lvl_02();
 private:
 	enum eGameStates
 	{
 		START,
 		READY,
 		PLAY,
-		END
+		END,
+		WIN
 	};
 private:
 	MainWindow& wnd;

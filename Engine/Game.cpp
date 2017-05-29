@@ -27,14 +27,16 @@
 //TODO:		Ready - done
 //TODO:		Play - done
 //TODO:		End - finish this when scores are implemented
+//TODo:		WIN - same as end just change the 
 //TODO: make the look nice
 
-//TODO: Levels
-//TODO: win condition, go to next level
+//TODO: add "press space to start" and "press space to continue" text to the START and END/WIN gamestates
+
+//TODO: add more Levels
 //TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
-
-//TODO: add Alignment functions to Text before adding all the text to the game (START, END)
+//TODO: fine tune brick colors
+//TODO: fine tune the game speed so it's not as easy as it is now
 
 Game::Game(MainWindow& wnd)
 	:
@@ -96,20 +98,9 @@ void Game::ResetGame()
 	life = LifeCounter(Vec2(30, 880), 3);
 
 	lvl = 1;
-	Brick::SetLevel(lvl.GetNum());
 	score = 0;
 
-	//TODO: move this code to lvl1					magenta			cyan		yellow			green
-	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::MAGENTA, Brick::CYAN, Brick::YELLOW, Brick::GREEN};
-	const Vec2 topLeft(20.0f, 225.0f);
-	for (int y = 0; y < nBricksDown; y++)
-	{
-		const Brick::eBrickType brickType = brickTypes[y];
-		for (int x = 0; x < nBricksAcross; x++)
-		{
-			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
-		}
-	}
+	LoadLevel();
 }
 
 void Game::Go()
@@ -209,34 +200,18 @@ void Game::Game_Ready(float dt)
 
 void Game::Game_Play(float dt)
 {
-	//? TEST CODE START
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		if (!spacePressed)
-		{
-			//life.ConsumeLife();
-			lvl++;
-			spacePressed = true;
-		}
-	}
-	else
-	{
-		spacePressed = false;
-	}
-	//? TEST CODE END
-
-
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
-
 	ball.Update(dt);
 
-	// collision of the ball with the bricks
+
+	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
 	float curColDistSq;
 	int curColIndex;
 	for (int i = 0; i < nBricks; i++)
 	{
+		// collision of the ball with the bricks
 		if (bricks[i].CheckBallCollision(ball))
 		{
 			const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
@@ -255,6 +230,12 @@ void Game::Game_Play(float dt)
 				ball2brickCollisionHappened = true;
 			}
 		}
+
+		// if any of the bricks is not destroyed, the level is not cleared
+		if (bricks[i].IsDestroyed() == false)
+		{
+			levelCleared = false;
+		}
 	}
 	if (ball2brickCollisionHappened)
 	{
@@ -268,6 +249,7 @@ void Game::Game_Play(float dt)
 			{
 				highScore = score;
 			}
+
 		}
 		//x sound for ball and brick collision goes here
 	}
@@ -300,6 +282,33 @@ void Game::Game_Play(float dt)
 			paddle.Destroy();
 			gameState = READY;
 		}
+	}
+
+	//? TEST CODE START
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (!spacePressed)
+		{
+			//life.ConsumeLife();
+			//lvl++;
+			lvl = lvl == 2 ? 0 : 1;
+			levelCleared = true;
+			spacePressed = true;
+		}
+	}
+	else
+	{
+		spacePressed = false;
+	}
+	//? TEST CODE END
+
+	//! LEVEL CLEARED
+	if (levelCleared)
+	{
+		lvl++;
+		LoadLevel();
+		paddle.Destroy();
+		gameState = READY;
 	}
 }
 
@@ -404,4 +413,49 @@ void Game::Draw_End()
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
+}
+
+void Game::LoadLevel()
+{
+	Brick::SetLevel(lvl.GetNum());
+	switch (lvl.GetNum())
+	{
+		case 1:
+			Lvl_01();
+			break;
+		case 2:
+			Lvl_02();
+			break;
+		default:
+			gameState = WIN;
+			break;
+	}
+}
+
+void Game::Lvl_01()
+{
+	const Vec2 topLeft(20.0f, 225.0f);
+	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::RED, Brick::YELLOW, Brick::BLUE, Brick::GREEN};
+	for (int y = 0; y < nBricksDown; y++)
+	{
+		const Brick::eBrickType brickType = brickTypes[y];
+		for (int x = 0; x < nBricksAcross; x++)
+		{
+			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
+		}
+	}
+}
+
+void Game::Lvl_02()
+{
+	const Vec2 topLeft(20.0f, 225.0f);
+	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::MAGENTA, Brick::CYAN, Brick::YELLOW, Brick::GREEN};
+	for (int y = 0; y < nBricksDown; y++)
+	{
+		const Brick::eBrickType brickType = brickTypes[y];
+		for (int x = 0; x < nBricksAcross; x++)
+		{
+			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
+		}
+	}
 }

@@ -105,6 +105,11 @@ int Brick::GetValue() const
 	return value;
 }
 
+bool Brick::IsDestroyed() const
+{
+	return destroyed;
+}
+
 void Brick::SetLevel(int lvl_in)
 {
 	lvl = lvl_in;
