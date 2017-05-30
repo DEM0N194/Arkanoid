@@ -15,8 +15,6 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 void Paddle::Draw(Graphics & gfx) const
 {
 	RectF body = GetRect();
-	//body.left += wingWidth;
-	//body.right -= wingWidth;
 	RectF wingLeft = GetRect();
 	wingLeft.right -= (2*halfWidth - wingWidth);
 	RectF wingRight = GetRect();
@@ -147,23 +145,23 @@ void Paddle::FadeToColor(Beveler& beveler, Color goal)
 		changed = true;
 	}
 
-	if (gDif > 2)
+	if (gDif > 2 && rDif < gDif)
 	{
 		updated.SetG(current.GetG()+2);
 		changed = true;
 	}
-	if (gDif < -2)
+	if (gDif < -2 && rDif > gDif)
 	{
 		updated.SetG(current.GetG()-2);
 		changed = true;
 	}
 
-	if (bDif > 2)
+	if (bDif > 2 && rDif < bDif)
 	{
 		updated.SetB(current.GetB()+2);
 		changed = true;
 	}
-	if (bDif < -2)
+	if (bDif < -2 && rDif > bDif)
 	{
 		updated.SetB(current.GetB()-2);
 		changed = true;
