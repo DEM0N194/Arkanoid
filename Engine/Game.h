@@ -34,6 +34,7 @@
 #include "Walls.h"
 #include "LifeCounter.h"
 #include "Border.h"
+#include "PowerUps.h"
 
 class Game
 {
@@ -103,6 +104,9 @@ private:
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
+
+	//: Test Code
+	PowerUps::PowerUp powerup;
 	
 	Counter lvl;
 	Counter highScore;

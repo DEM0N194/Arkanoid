@@ -28,10 +28,18 @@
 //TODO:		Play - done
 //TODO:		End - finish this when scores are implemented
 //TODo:		WIN - same as end just change the text
-//TODO: make the look nice
+//TODO: make it look pretty
+
+//TODO: PowerUps:
+//TODO:		Laser		-Red
+//TODO:		Enlarge		-Blue
+//TODO:		Catch		-Green
+//TODO:		Slow		-Orange
+//TODO:		Break		-Magenta
+//TODO:		Disruption	-Cyan
+//TODO:		Vaus		-Grey
 
 //TODO: add more Levels
-//TODO: PowerUps
 //TODO: Sounds, possibly a sound manager
 //TODO: fine tune brick colors
 //TODO: fine tune the game speed so it's not as easy as it is now
@@ -48,7 +56,9 @@ Game::Game(MainWindow& wnd)
 	border(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, wallThickness, float(gfx.ScreenHeight)-wallThickness), int(wallThickness)),
 	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness), 10),
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
-	gameState(START)
+	gameState(START),
+	//? Test Code Start
+	powerup(Vec2(500, 500), PowerUps::ePowerType::Enlarge, paddle)
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
@@ -312,19 +322,27 @@ void Game::Game_Play(float dt)
 	}
 
 	//? TEST CODE START
+	powerup.Update(dt);
+	if (powerup.DoPaddleCollision())
+	{
+		powerup.ActivatePowerUp();
+	}
+
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		if (!spacePressed)
 		{
-			life.AddLife();
+			//life.AddLife();
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
+			powerup.DisablePowerUp();
 			spacePressed = true;
 		}
 	}
 	else
 	{
+		//powerup.DisablePowerUp();
 		spacePressed = false;
 	}
 	//? TEST CODE END
@@ -438,6 +456,10 @@ void Game::Draw_Play()
 	highScore.Draw(gfx);
 	t_Score.Draw(gfx);
 	score.Draw(gfx);
+
+	//? Test Code Start
+
+	powerup.Draw(gfx);
 }
 
 void Game::Draw_End()

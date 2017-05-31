@@ -5,20 +5,21 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	pos(pos_in),
 	halfWidth(halfWidth_in),
 	halfHeight(halfHeight_in),
-	wingWidth(halfWidth/4),
+	enlargedHalfWidth(1.5f*halfWidth),
 	bev(Color(0,0,0)),
 	wingBev(Color(0,0,0))
 {
 	UpdateExitFactors();
 }
 
-void Paddle::Draw(Graphics & gfx) const
+void Paddle::Draw(Graphics & gfx)
 {
 	RectF body = GetRect();
 	RectF wingLeft = GetRect();
-	wingLeft.right -= (2*halfWidth - wingWidth);
+	wingWidth = (enlarged ? enlargedHalfWidth : halfWidth)/4;
+	wingLeft.right -= (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
 	RectF wingRight = GetRect();
-	wingRight.left += (2*halfWidth - wingWidth);
+	wingRight.left += (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
 	bev.DrawBeveledBrick(body, 5, gfx);
 	wingBev.DrawBeveledBrick(wingLeft, 5, gfx);
 	wingBev.DrawBeveledBrick(wingRight, 5, gfx);
@@ -98,7 +99,7 @@ void Paddle::DoWallCollision(const RectF & walls)
 
 RectF Paddle::GetRect() const
 {
-	return RectF::fromCenter(pos, halfWidth, halfHeight);
+	return RectF::fromCenter(pos, enlarged ? enlargedHalfWidth : halfWidth, halfHeight);
 }
 
 void Paddle::ResetCooldown()
@@ -116,6 +117,16 @@ void Paddle::Restore()
 	destroyed = false;
 	FadeToColor(bev, Color(130, 130, 130));
 	FadeToColor(wingBev, Color(130, 50, 50));
+}
+
+void Paddle::Enlarge()
+{
+	enlarged = true;
+}
+
+void Paddle::Shrink()
+{
+	enlarged = false;
 }
 
 void Paddle::UpdateExitFactors()
