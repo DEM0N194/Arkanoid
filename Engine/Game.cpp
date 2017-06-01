@@ -32,7 +32,7 @@
 
 //TODO: PowerUps:
 //TODO:		Laser		-Red
-//TODO:		Enlarge		-Blue
+//TODO:		Enlarge		-Blue		- done
 //TODO:		Catch		-Green
 //TODO:		Slow		-Orange
 //TODO:		Break		-Magenta
@@ -298,8 +298,8 @@ void Game::Game_Play(float dt)
 	}
 
 	// collision of the ball with the wall is handled here
-	const int ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
-	if (ball2wallCollsion == 1)
+	const Ball::Collision ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
+	if (ball2wallCollsion == Ball::Collision::SIDE_TOP)
 	{
 		if (!paddle.GetRect().IsOverlappingWith(ball.GetRect()))
 		{
@@ -307,7 +307,7 @@ void Game::Game_Play(float dt)
 		}
 		//x Sound for ball and wall collision goes here
 	}
-	else if (ball2wallCollsion == 2)
+	else if (ball2wallCollsion == Ball::Collision::BOTTOM)
 	{
 		// true if you consume your last life
 		if (life.ConsumeLife())
@@ -318,8 +318,8 @@ void Game::Game_Play(float dt)
 		{
 			gameState = READY;
 			paddle.Destroy();
-
-			powerups.Gimme(Vec2(200, 500), PowerUps::ePowerType::Enlarge);
+			//? test
+			powerups.Gimme(Vec2(200, 500), PowerUps::Type::ENLARGE);
 		}
 	}
 
@@ -334,7 +334,7 @@ void Game::Game_Play(float dt)
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
-			powerups.Gimme(Vec2(500, 500), PowerUps::ePowerType::Enlarge);
+			powerups.Gimme(Vec2(500, 500), PowerUps::Type::ENLARGE);
 			spacePressed = true;
 		}
 	}
@@ -344,7 +344,7 @@ void Game::Game_Play(float dt)
 	}
 
 	if (wnd.kbd.KeyIsPressed(VK_UP))
-		powerups.Gimme(Vec2(350, 500), PowerUps::ePowerType::Vaus);
+		powerups.Gimme(Vec2(350, 500), PowerUps::Type::VAUS);
 
 	//? TEST CODE END
 
@@ -519,10 +519,10 @@ void Game::LoadLevel()
 void Game::Lvl_01()
 {
 	const Vec2 topLeft(20.0f, 225.0f);
-	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::RED, Brick::YELLOW, Brick::BLUE, Brick::GREEN};
+	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::RED, Brick::Type::YELLOW, Brick::Type::BLUE, Brick::Type::GREEN};
 	for (int y = 0; y < nBricksDown; y++)
 	{
-		const Brick::eBrickType brickType = brickTypes[y];
+		const Brick::Type brickType = brickTypes[y];
 		for (int x = 0; x < nBricksAcross; x++)
 		{
 			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
@@ -533,10 +533,10 @@ void Game::Lvl_01()
 void Game::Lvl_02()
 {
 	const Vec2 topLeft(20.0f, 225.0f);
-	const Brick::eBrickType brickTypes[5] = {Brick::SILVER, Brick::MAGENTA, Brick::CYAN, Brick::YELLOW, Brick::GREEN};
+	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::MAGENTA, Brick::Type::CYAN, Brick::Type::YELLOW, Brick::Type::GREEN};
 	for (int y = 0; y < nBricksDown; y++)
 	{
-		const Brick::eBrickType brickType = brickTypes[y];
+		const Brick::Type brickType = brickTypes[y];
 		for (int x = 0; x < nBricksAcross; x++)
 		{
 			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);

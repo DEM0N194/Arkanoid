@@ -1,19 +1,19 @@
 #include "PowerUps.h"
 #include <vector>
 
-PowerUps::PowerUp::PowerUp(Vec2 pos_in, ePowerType type_in, Paddle& paddle_in, Ball& ball_in)
+PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in)
 	:
 	pos(pos_in),
 	type(type_in),
 	paddle(paddle_in),
 	ball(ball_in)
 {
-	switch (type)
+	switch (type) //TODO: add more colours
 	{
-		case ePowerType::Enlarge:
+		case Type::ENLARGE:
 			c = Colors::Cyan;
 			break;
-		case ePowerType::Vaus:
+		case Type::VAUS:
 			c = Colors::Gray;
 			break;
 	}
@@ -60,7 +60,7 @@ bool PowerUps::PowerUp::IsDestroyed() const
 	return destroyed;
 }
 
-PowerUps::ePowerType PowerUps::PowerUp::GetType() const
+PowerUps::Type PowerUps::PowerUp::GetType() const
 {
 	return type;
 }
@@ -69,7 +69,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 {
 	switch (type)
 	{
-		case ePowerType::Enlarge:
+		case Type::ENLARGE:
 			paddle.Enlarge();
 	}
 }
@@ -78,7 +78,7 @@ void PowerUps::PowerUp::DisablePowerUp()
 {
 	switch (type)
 	{
-		case ePowerType::Enlarge:
+		case Type::ENLARGE:
 			paddle.Shrink();
 	}
 }
@@ -142,7 +142,7 @@ void PowerUps::Update(float dt)
 		}
 }
 
-void PowerUps::Gimme(Vec2 pos, ePowerType type)
+void PowerUps::Gimme(Vec2 pos, Type type)
 {
 	powerUps.push_back(PowerUp(pos, type, paddle, ball));
 }

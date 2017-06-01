@@ -8,7 +8,7 @@
 class Brick
 {
 public:
-	enum eBrickType
+	enum class Type
 	{
 		WHITE,		// 50
 		ORANGE,		// 60
@@ -23,7 +23,7 @@ public:
 	};
 public:
 	Brick() = default;
-	Brick(const RectF& rect_in, eBrickType BrickType_in);
+	Brick(const RectF& rect_in, Type BrickType_in);
 	void Draw(Graphics& gfx) const;
 	bool CheckBallCollision(const Ball& ball) const;
 	bool ExecuteBallCollision(Ball& ball);
@@ -35,7 +35,7 @@ private:
 	static constexpr float padding = 1.0f;
 	static constexpr int bevelSize = 3;
 	RectF rect;
-	eBrickType brickType;
+	Type brickType;
 	Beveler bev;
 	int value;
 	int life = 1;

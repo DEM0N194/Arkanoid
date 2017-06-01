@@ -5,29 +5,31 @@
 #include "Ball.h"
 #include <random>
 
+
+// this is probably the worst way to do PowerUps, but hey it's working
 class PowerUps
 {
 public:
-	enum class ePowerType
+	enum class Type
 	{
-		Laser,		// Red
-		Enlarge,	// Blue
-		Catch,		// Green
-		Slow,		// Orange
-		Break,		// Magenta
-		Disruption,	// Cyan
-		Vaus		// Grey
+		LASER,		// Red
+		ENLARGE,	// Blue
+		CATCH,		// Green
+		SLOW,		// Orange
+		BREAK,		// Magenta
+		DISRUPTION,	// Cyan
+		VAUS		// Grey
 	};
 private:
 	class PowerUp
 	{
 	public:
-		PowerUp(Vec2 pos, ePowerType type, Paddle& paddle, Ball& ball);
+		PowerUp(Vec2 pos, Type type, Paddle& paddle, Ball& ball);
 		PowerUp& operator=(const PowerUp& rhs);
 		bool Update(float dt);
 		bool DoPaddleCollision();
 		bool IsDestroyed() const;
-		ePowerType GetType() const;
+		Type GetType() const;
 		void DisablePowerUp();
 		void Draw(Graphics& gfx) const;
 	private:
@@ -35,7 +37,7 @@ private:
 		RectF GetRect() const;
 	private:
 		Vec2 pos;
-		ePowerType type;
+		Type type;
 		Color c;
 		Paddle& paddle;
 		Ball& ball;
@@ -48,7 +50,7 @@ private:
 public:
 	PowerUps(Paddle& paddle, Ball& ball);
 	void Update(float dt);
-	void Gimme(Vec2 pos, ePowerType type);
+	void Gimme(Vec2 pos, Type type);
 	void Draw(Graphics& gfx);
 private:
 	Paddle& paddle;
