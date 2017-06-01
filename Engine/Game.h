@@ -106,7 +106,7 @@ private:
 	LifeCounter life;
 
 	//: Test Code
-	PowerUps::PowerUp powerup;
+	PowerUps powerups;
 	
 	Counter lvl;
 	Counter highScore;

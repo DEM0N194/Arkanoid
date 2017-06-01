@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Paddle.h"
 #include "Ball.h"
+#include <random>
 
 class PowerUps
 {
@@ -17,31 +18,42 @@ public:
 		Disruption,	// Cyan
 		Vaus		// Grey
 	};
-public:
+private:
 	class PowerUp
 	{
 	public:
-		PowerUp(Vec2 pos_in, ePowerType type_in, Paddle& paddle);
-		void Update(float dt);
+		PowerUp(Vec2 pos, ePowerType type, Paddle& paddle, Ball& ball);
+		PowerUp& operator=(const PowerUp& rhs);
+		bool Update(float dt);
 		bool DoPaddleCollision();
-		void ActivatePowerUp();
+		bool IsDestroyed() const;
+		ePowerType GetType() const;
 		void DisablePowerUp();
-		bool IsInUse() const;
-		void Draw(Graphics& gfx);
-		~PowerUp();
+		void Draw(Graphics& gfx) const;
 	private:
+		void ActivatePowerUp();
 		RectF GetRect() const;
 	private:
-		Paddle& paddle;
-		ePowerType type;
-		bool destroyed = false;
-		bool inUse = false;
 		Vec2 pos;
+		ePowerType type;
+		Color c;
+		Paddle& paddle;
+		Ball& ball;
+		bool destroyed = false;
 		static constexpr float width = 60.0f;
-		static constexpr float height = 25.0f;
+		static constexpr float halfHeight = 12.5f;
+		static constexpr float speed = 200.0f;
 
 	};
 public:
-	PowerUps(Ball& ball, Paddle& paddle);
-	
+	PowerUps(Paddle& paddle, Ball& ball);
+	void Update(float dt);
+	void Gimme(Vec2 pos, ePowerType type);
+	void Draw(Graphics& gfx);
+private:
+	Paddle& paddle;
+	Ball& ball;
+	std::vector<PowerUp> powerUps;
+	int index2Delete;
+	bool doDelete = false;
 };

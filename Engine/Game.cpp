@@ -58,7 +58,7 @@ Game::Game(MainWindow& wnd)
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(START),
 	//? Test Code Start
-	powerup(Vec2(500, 500), PowerUps::ePowerType::Enlarge, paddle)
+	powerups(paddle,ball)
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
@@ -318,15 +318,13 @@ void Game::Game_Play(float dt)
 		{
 			gameState = READY;
 			paddle.Destroy();
+
+			powerups.Gimme(Vec2(200, 500), PowerUps::ePowerType::Enlarge);
 		}
 	}
 
 	//? TEST CODE START
-	powerup.Update(dt);
-	if (powerup.DoPaddleCollision())
-	{
-		powerup.ActivatePowerUp();
-	}
+	powerups.Update(dt);
 
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
@@ -336,15 +334,18 @@ void Game::Game_Play(float dt)
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
-			powerup.DisablePowerUp();
+			powerups.Gimme(Vec2(500, 500), PowerUps::ePowerType::Enlarge);
 			spacePressed = true;
 		}
 	}
 	else
 	{
-		//powerup.DisablePowerUp();
 		spacePressed = false;
 	}
+
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+		powerups.Gimme(Vec2(350, 500), PowerUps::ePowerType::Vaus);
+
 	//? TEST CODE END
 
 	//! LEVEL CLEARED
@@ -459,7 +460,7 @@ void Game::Draw_Play()
 
 	//? Test Code Start
 
-	powerup.Draw(gfx);
+	powerups.Draw(gfx);
 }
 
 void Game::Draw_End()
