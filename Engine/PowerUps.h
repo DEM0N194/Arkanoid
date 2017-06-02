@@ -46,7 +46,7 @@ private:
 		bool destroyed = false;
 		static constexpr float halfWidth = 30.0f;
 		static constexpr float halfHeight = 12.5f;
-		static constexpr float speed = 200.0f;
+		static constexpr float speed = 300.0f;
 
 	};
 public:

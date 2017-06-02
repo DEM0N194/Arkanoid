@@ -108,21 +108,43 @@ void Game::InitializeText()
 	t_HighScore.SetColor(Colors::Red);
 	t_Score.SetText("SCORE");
 	t_Score.SetPostion(30, 30);
-	t_Laser.SetText("LASER");
+	t_L.SetText("L");
+	t_Laser.SetText(" ASER");
+	t_L.SetPostion(220, 280);
 	t_Laser.SetPostion(220, 280);
-	t_Expand.SetText("EXPAND");
+	t_L.SetColor(130, 50, 50);
+	t_E.SetText("E");
+	t_Expand.SetText(" XPAND");
+	t_E.SetPostion(530, 280);
 	t_Expand.SetPostion(530, 280);
-	t_Catch.SetText("CATCH");
+	t_E.SetColor(50, 50, 130);
+	t_C.SetText("C");
+	t_Catch.SetText(" ATCH");
+	t_C.SetPostion(220, 360);
 	t_Catch.SetPostion(220, 360);
-	t_Slow.SetText("SLOW");
+	t_C.SetColor(50, 130, 50);
+	t_S.SetText("S");
+	t_Slow.SetText(" LOW");
+	t_S.SetPostion(530, 360);
 	t_Slow.SetPostion(530, 360);
-	t_Triple.SetText("TRIPLE");
+	t_S.SetColor(130, 90, 50);
+	t_T.SetText("T");
+	t_Triple.SetText(" RIPLE");
+	t_T.SetPostion(220, 440);
 	t_Triple.SetPostion(220, 440);
-	t_Vaus.SetText("VAUS");
+	t_T.SetColor(50, 130, 130);
+	t_V.SetText("V");
+	t_Vaus.SetText(" AUS");
+	t_V.SetPostion(530, 440);
 	t_Vaus.SetPostion(530, 440);
-	t_PowerUps.SetText("POWER UPS");
+	t_V.SetColor(130, 130, 130);
+	t_PowerUps.SetText(" OWER UPS");
 	t_PowerUps.SetPostion(0, 200);
 	t_PowerUps.AlignMiddle();
+	t_P.SetText("P        ");
+	t_P.SetPostion(0, 200);
+	t_P.AlignMiddle();
+	t_P.SetColor(130, 50, 130);
 }
 
 void Game::ResetGame()
@@ -409,8 +431,8 @@ void Game::Game_EndWin(float dt)
 void Game::Draw_Start()
 {
 	infoBorder.Draw(gfx);
-	border.Draw(gfx);
 	bottomBorder.Draw(gfx);
+	border.Draw(gfx);
 	t_Title.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
 
@@ -428,12 +450,19 @@ void Game::Draw_Start()
 	p_Vaus.Draw(gfx);
 
 	t_Laser.Draw(gfx);
+	t_L.Draw(gfx);
 	t_Expand.Draw(gfx);
+	t_E.Draw(gfx);
 	t_Catch.Draw(gfx);
+	t_C.Draw(gfx);
 	t_Slow.Draw(gfx);
+	t_S.Draw(gfx);
 	t_Triple.Draw(gfx);
+	t_T.Draw(gfx);
 	t_Vaus.Draw(gfx);
+	t_V.Draw(gfx);
 	t_PowerUps.Draw(gfx);
+	t_P.Draw(gfx);
 }
 
 void Game::Draw_Ready()

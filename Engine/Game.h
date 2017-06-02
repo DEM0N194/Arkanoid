@@ -120,12 +120,12 @@ private:
 	PowerUps::PowerUpIcon p_Triple;
 	PowerUps::PowerUpIcon p_Vaus;
 
-	Text t_Laser;
-	Text t_Expand;
-	Text t_Catch;
-	Text t_Slow;
-	Text t_Triple;
-	Text t_Vaus;
+	Text t_Laser;	Text t_L;
+	Text t_Expand;	Text t_E;
+	Text t_Catch;	Text t_C;
+	Text t_Slow;	Text t_S;
+	Text t_Triple;	Text t_T;
+	Text t_Vaus;	Text t_V;
 
 	Text t_Title;
 	Text t_GameOver;
@@ -138,4 +138,5 @@ private:
 	Text t_Score;
 	Text t_PressSpace;
 	Text t_PowerUps;
+	Text t_P;
 };
