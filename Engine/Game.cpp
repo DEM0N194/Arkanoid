@@ -23,7 +23,7 @@
 #include "SpriteCodex.h"
 
 //TODO: gamestates:
-//TODO:		Start - finish this when power ups are added
+//TODO:		Start - done
 //TODO:		Ready - done
 //TODO:		Play - done
 //TODO:		End - finish this when scores are implemented
@@ -91,6 +91,7 @@ void Game::InitializeText()
 	t_YouWin.SetText("YOU WIN");
 	t_YouWin.SetPostion(0, 250);
 	t_YouWin.AlignMiddle();
+	t_PressSpace.SetPostion(0, 550);
 	t_PressSpace.AlignMiddle();
 	t_DEM0N194.SetText("DEM0N194");
 	t_DEM0N194.SetPostion(0, 760);
@@ -409,11 +410,15 @@ void Game::Draw_Start()
 {
 	infoBorder.Draw(gfx);
 	border.Draw(gfx);
+	bottomBorder.Draw(gfx);
 	t_Title.Draw(gfx);
+	t_DEM0N194.Draw(gfx);
 
 	t_PressSpace.SetText("Press Space to START");
-	t_PressSpace.SetPostion(0, 800);
 	t_PressSpace.Draw(gfx);
+
+	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
+	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
 
 	p_Laser.Draw(gfx);
 	p_Expand.Draw(gfx);
@@ -501,13 +506,12 @@ void Game::Draw_End()
 	infoBorder.Draw(gfx);
 	bottomBorder.Draw(gfx);
 	border.Draw(gfx);
-
 	t_Title.Draw(gfx);
-	t_GameOver.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
+	t_GameOver.Draw(gfx);
+
 
 	t_PressSpace.SetText("Press Space to Continue");
-	t_PressSpace.SetPostion(0, 600);
 	t_PressSpace.Draw(gfx);
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);

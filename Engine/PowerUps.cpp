@@ -130,6 +130,7 @@ void PowerUps::PowerUp::Draw(Graphics & gfx) const
 		RectF rect = GetRect();
 		rect.left += halfHeight;
 		rect.right -= halfHeight;
+		rect.bottom--;
 		gfx.DrawRect(rect, c);
 	}
 }
@@ -273,6 +274,7 @@ void PowerUps::PowerUpIcon::Draw(Graphics & gfx) const
 		RectF rect = GetRect();
 		rect.left += halfHeight;
 		rect.right -= halfHeight;
+		rect.bottom--;
 		gfx.DrawRect(rect, c);
 	}
 }
