@@ -26,8 +26,8 @@
 //TODO:		Start - done
 //TODO:		Ready - done
 //TODO:		Play - done
-//TODO:		End - finish this when scores are implemented
-//TODo:		WIN - same as end just change the text
+//TODO:		End - done
+//TODo:		WIN - done
 //TODO: make it look pretty
 
 //TODO: PowerUps:
@@ -74,7 +74,6 @@ Game::Game(MainWindow& wnd)
 	lvl.SetNumOf0(1);
 	highScore.SetPostion(440, 80);
 	highScore.AlignMiddle();
-	score.SetPostion(30, 80);
 
 	InitializeText();
 	ResetGame();
@@ -88,6 +87,7 @@ void Game::InitializeText()
 	t_GameOver.SetText("GAME OVER");
 	t_GameOver.SetPostion(0, 250);
 	t_GameOver.AlignMiddle();
+	t_GameOver.SetColor(Colors::Red);
 	t_YouWin.SetText("YOU WIN");
 	t_YouWin.SetPostion(0, 250);
 	t_YouWin.AlignMiddle();
@@ -96,6 +96,7 @@ void Game::InitializeText()
 	t_DEM0N194.SetText("DEM0N194");
 	t_DEM0N194.SetPostion(0, 760);
 	t_DEM0N194.AlignMiddle();
+	t_DEM0N194.SetColor(150, 150, 150);
 	t_level.SetText("LEVEL");
 	t_level.SetPostion(305, 500);
 	t_lvl.SetText("LVL");
@@ -145,6 +146,10 @@ void Game::InitializeText()
 	t_P.SetPostion(0, 200);
 	t_P.AlignMiddle();
 	t_P.SetColor(130, 50, 130);
+	t_Thanks.SetText("THANK YOU FOR PLAYING!");
+	t_Thanks.SetPostion(0, 430);
+	t_Thanks.AlignMiddle();
+	t_Thanks.SetColor(Colors::Gray);
 }
 
 void Game::ResetGame()
@@ -376,7 +381,7 @@ void Game::Game_Play(float dt)
 			//life.AddLife();
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
-			//levelCleared = true;
+			levelCleared = true;
 			powerUps.Gimme(Vec2(500, 300));
 			spacePressed = true;
 		}
@@ -433,6 +438,7 @@ void Game::Draw_Start()
 	infoBorder.Draw(gfx);
 	bottomBorder.Draw(gfx);
 	border.Draw(gfx);
+
 	t_Title.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
 
@@ -498,8 +504,9 @@ void Game::Draw_Ready()
 	t_HighScore.Draw(gfx);
 	highScore.Draw(gfx);
 	t_Score.Draw(gfx);
+	score.SetPostion(30, 80);
+	score.AlignLeft();
 	score.Draw(gfx);
-
 }
 
 void Game::Draw_Play()
@@ -526,8 +533,9 @@ void Game::Draw_Play()
 	t_HighScore.Draw(gfx);
 	highScore.Draw(gfx);
 	t_Score.Draw(gfx);
+	score.SetPostion(30, 80);
+	score.AlignLeft();
 	score.Draw(gfx);
-
 }
 
 void Game::Draw_End()
@@ -535,13 +543,18 @@ void Game::Draw_End()
 	infoBorder.Draw(gfx);
 	bottomBorder.Draw(gfx);
 	border.Draw(gfx);
-	t_Title.Draw(gfx);
-	t_DEM0N194.Draw(gfx);
-	t_GameOver.Draw(gfx);
 
+	t_Title.Draw(gfx);
+	t_GameOver.Draw(gfx);
+	t_DEM0N194.Draw(gfx);
+	t_Thanks.Draw(gfx);
 
 	t_PressSpace.SetText("Press Space to Continue");
 	t_PressSpace.Draw(gfx);
+
+	score.SetPostion(420, 320);
+	score.AlignMiddle();
+	score.Draw(gfx);
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
@@ -556,10 +569,14 @@ void Game::Draw_Win()
 	t_Title.Draw(gfx);
 	t_YouWin.Draw(gfx);
 	t_DEM0N194.Draw(gfx);
+	t_Thanks.Draw(gfx);
 
 	t_PressSpace.SetText("Press Space to Continue");
-	t_PressSpace.SetPostion(0, 600);
 	t_PressSpace.Draw(gfx);
+
+	score.SetPostion(420, 320);
+	score.AlignMiddle();
+	score.Draw(gfx);
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);

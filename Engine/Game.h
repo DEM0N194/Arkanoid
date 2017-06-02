@@ -139,4 +139,5 @@ private:
 	Text t_PressSpace;
 	Text t_PowerUps;
 	Text t_P;
+	Text t_Thanks;
 };
