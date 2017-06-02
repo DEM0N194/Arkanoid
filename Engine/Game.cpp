@@ -190,11 +190,13 @@ void Game::ComposeFrame()
 
 void Game::Game_Start(float dt)
 {
+	powerups.Update(dt);
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		if (!spacePressed)
 		{
-			gameState = READY;
+			//gameState = READY;
+			powerups.Gimme(Vec2(500, 150));
 			spacePressed = true;
 		}
 	}
@@ -318,8 +320,6 @@ void Game::Game_Play(float dt)
 		{
 			gameState = READY;
 			paddle.Destroy();
-			//? test
-			powerups.Gimme(Vec2(200, 500), PowerUps::Type::ENLARGE);
 		}
 	}
 
@@ -334,7 +334,7 @@ void Game::Game_Play(float dt)
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
-			powerups.Gimme(Vec2(500, 500), PowerUps::Type::ENLARGE);
+			powerups.Gimme(Vec2(500, 300));
 			spacePressed = true;
 		}
 	}
@@ -342,10 +342,6 @@ void Game::Game_Play(float dt)
 	{
 		spacePressed = false;
 	}
-
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-		powerups.Gimme(Vec2(350, 500), PowerUps::Type::VAUS);
-
 	//? TEST CODE END
 
 	//! LEVEL CLEARED
@@ -398,6 +394,10 @@ void Game::Draw_Start()
 	t_PressSpace.SetText("Press Space to START");
 	t_PressSpace.SetPostion(0, 800);
 	t_PressSpace.Draw(gfx);
+
+	//? Test Code Start
+	powerups.Draw(gfx);
+	//? Test Code End
 }
 
 void Game::Draw_Ready()

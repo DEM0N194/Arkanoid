@@ -6,21 +6,37 @@ PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& b
 {
 	switch (type) //TODO: add more colours
 	{
+		case Type::LASER:
+			c = Colors::Red;
+			break;
 		case Type::ENLARGE:
+			c = Colors::Blue;
+			break;
+		case Type::CATCH:
+			c = Colors::Green;
+			break;
+		case Type::SLOW:
+			c = Colors::Orange;
+			break;
+		case Type::DISRUPTION:
 			c = Colors::Cyan;
 			break;
 		case Type::VAUS:
 			c = Colors::Gray;
+			break;
+		case Type::BREAK:
+			c = Colors::Magenta;
 			break;
 	}
 }
 
 PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 {
+	pos = rhs.pos;
+	type = rhs.type;
+	c = rhs.c;
 	paddle = rhs.paddle;
 	ball = rhs.ball;
-	type = rhs.type;
-	pos = rhs.pos;
 	destroyed = rhs.destroyed;
 	return *this;
 }
@@ -95,7 +111,7 @@ RectF PowerUps::PowerUp::GetRect() const
 }
 
 PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in)
-	: paddle(paddle_in), ball(ball_in), rng(std::random_device()()), spawnDist(0.2)
+	: paddle(paddle_in), ball(ball_in), rng(std::random_device()()), spawnDist(0.2), typeDist(0,99)
 {
 }
 
@@ -138,10 +154,27 @@ void PowerUps::Update(float dt)
 		}
 }
 
-void PowerUps::Gimme(Vec2 pos, Type type)
+void PowerUps::Gimme(Vec2 pos)
 {
-	if (spawnDist(rng))
+	//? Test Code Start
+	pos.x = typeDist(rng) * 7.2 + 20;
+	//? Test Coce End
+	//if (spawnDist(rng))
 	{
+		const int currTypeDist = typeDist(rng);
+		Type type;
+		if (currTypeDist < 5)
+		{
+			type = Type::BREAK; // 5%
+		}
+		else if (currTypeDist < 20)
+		{
+			type = Type::VAUS; // 15%
+		}
+		else // 80%
+		{
+			type = Type(typeDist(rng)%5); // 20%
+		}
 		powerUps.push_back(PowerUp(pos, type, paddle, ball));
 	}
 }

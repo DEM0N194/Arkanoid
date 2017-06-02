@@ -16,9 +16,9 @@ public:
 		ENLARGE,	// Blue
 		CATCH,		// Green
 		SLOW,		// Orange
-		BREAK,		// Magenta
 		DISRUPTION,	// Cyan
-		VAUS		// Grey
+		VAUS,		// Grey
+		BREAK		// Magenta
 	};
 private:
 	class PowerUp
@@ -50,11 +50,12 @@ private:
 public:
 	PowerUps(Paddle& paddle, Ball& ball);
 	void Update(float dt);
-	void Gimme(Vec2 pos, Type type);
+	void Gimme(Vec2 pos);
 	void Draw(Graphics& gfx);
 private:
 	std::mt19937 rng;
 	std::bernoulli_distribution spawnDist;
+	std::uniform_int_distribution<int> typeDist;
 	Paddle& paddle;
 	Ball& ball;
 	std::vector<PowerUp> powerUps;
