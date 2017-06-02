@@ -195,8 +195,7 @@ void Game::Game_Start(float dt)
 	{
 		if (!spacePressed)
 		{
-			//gameState = READY;
-			powerups.Gimme(Vec2(500, 150));
+			gameState = READY;
 			spacePressed = true;
 		}
 	}
@@ -242,7 +241,7 @@ void Game::Game_Play(float dt)
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	ball.Update(dt);
-
+	powerups.Update(dt);
 
 	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
@@ -267,6 +266,7 @@ void Game::Game_Play(float dt)
 				curColDistSq = newColDistSq;
 				curColIndex = i;
 				ball2brickCollisionHappened = true;
+				powerups.Gimme(bricks[i].GetCenter());
 			}
 		}
 
@@ -324,8 +324,6 @@ void Game::Game_Play(float dt)
 	}
 
 	//? TEST CODE START
-	powerups.Update(dt);
-
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		if (!spacePressed)
@@ -394,10 +392,6 @@ void Game::Draw_Start()
 	t_PressSpace.SetText("Press Space to START");
 	t_PressSpace.SetPostion(0, 800);
 	t_PressSpace.Draw(gfx);
-
-	//? Test Code Start
-	powerups.Draw(gfx);
-	//? Test Code End
 }
 
 void Game::Draw_Ready()
@@ -458,8 +452,7 @@ void Game::Draw_Play()
 	t_Score.Draw(gfx);
 	score.Draw(gfx);
 
-	//? Test Code Start
-
+	//? Test Code
 	powerups.Draw(gfx);
 }
 

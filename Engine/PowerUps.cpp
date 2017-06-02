@@ -4,28 +4,28 @@
 PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in)
 	: pos(pos_in), type(type_in), paddle(paddle_in), ball(ball_in)
 {
-	switch (type) //TODO: add more colours
+	switch (type)
 	{
 		case Type::LASER:
-			c = Colors::Red;
+			c = Color(192, 64, 64); // Red
 			break;
 		case Type::ENLARGE:
-			c = Colors::Blue;
+			c = Color(64, 96, 192); // Blue
 			break;
 		case Type::CATCH:
-			c = Colors::Green;
+			c = Color(64, 192, 64); // Green
 			break;
 		case Type::SLOW:
-			c = Colors::Orange;
+			c = Color(192, 128, 64); // Orange
 			break;
 		case Type::DISRUPTION:
-			c = Colors::Cyan;
+			c = Color(64, 192, 192); // Cyan
 			break;
 		case Type::VAUS:
-			c = Colors::Gray;
+			c = Color(128, 128, 128);; // Gray
 			break;
 		case Type::BREAK:
-			c = Colors::Magenta;
+			c = Color(192,64,192); // Magenta
 			break;
 	}
 }
@@ -43,8 +43,6 @@ PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 
  bool PowerUps::PowerUp::Update(float dt)
 {
-
-	//? test code
 	if (pos.y + 2*halfHeight < Graphics::ScreenHeight)
 	{
 			pos.y += speed*dt;
@@ -81,8 +79,21 @@ void PowerUps::PowerUp::ActivatePowerUp()
 {
 	switch (type)
 	{
+		case Type::LASER:
+			break;
 		case Type::ENLARGE:
 			paddle.Enlarge();
+			break;
+		case Type::CATCH:
+			break;
+		case Type::SLOW:
+			break;
+		case Type::DISRUPTION:
+			break;
+		case Type::VAUS:
+			break;
+		case Type::BREAK:
+			break;
 	}
 }
 
@@ -90,8 +101,17 @@ void PowerUps::PowerUp::DisablePowerUp()
 {
 	switch (type)
 	{
-		case Type::ENLARGE:
+		case PowerUps::Type::LASER:
+			break;
+		case PowerUps::Type::ENLARGE:
 			paddle.Shrink();
+			break;
+		case PowerUps::Type::CATCH:
+			break;
+		case PowerUps::Type::SLOW:
+			break;
+		case PowerUps::Type::BREAK:
+			break;
 	}
 }
 
@@ -99,15 +119,19 @@ void PowerUps::PowerUp::Draw(Graphics & gfx) const
 {
 	if (!destroyed)
 	{
-		gfx.DrawCircle(int(pos.x + halfHeight), int(pos.y + halfHeight), int(halfHeight+1), c);
-		gfx.DrawCircle(int(pos.x + width - halfHeight), int(pos.y + halfHeight), int(halfHeight+1), c);
-		gfx.DrawRect(int(pos.x + halfHeight), int(pos.y), int(pos.x + width - halfHeight), int(pos.y + 2*halfHeight), c);
+		gfx.DrawCircle(pos.x - halfWidth + halfHeight, pos.y, halfHeight, c);
+		gfx.DrawCircle(pos.x + halfWidth - halfHeight, pos.y, halfHeight, c);
+
+		RectF rect = GetRect();
+		rect.left += halfHeight;
+		rect.right -= halfHeight;
+		gfx.DrawRect(rect, c);
 	}
 }
 
 RectF PowerUps::PowerUp::GetRect() const
 {
-	return RectF(pos,width, 2*halfHeight);
+	return RectF::fromCenter(pos, halfWidth, halfHeight);
 }
 
 PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in)
@@ -156,20 +180,17 @@ void PowerUps::Update(float dt)
 
 void PowerUps::Gimme(Vec2 pos)
 {
-	//? Test Code Start
-	pos.x = typeDist(rng) * 7.2 + 20;
-	//? Test Coce End
-	//if (spawnDist(rng))
+	if (spawnDist(rng))
 	{
 		const int currTypeDist = typeDist(rng);
 		Type type;
-		if (currTypeDist < 5)
+		if (currTypeDist < 5)  // 5%
 		{
-			type = Type::BREAK; // 5%
+			type = Type::BREAK;
 		}
-		else if (currTypeDist < 20)
+		else if (currTypeDist < 20) // 15%
 		{
-			type = Type::VAUS; // 15%
+			type = Type::VAUS;
 		}
 		else // 80%
 		{

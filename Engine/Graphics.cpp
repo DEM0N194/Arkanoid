@@ -358,6 +358,23 @@ void Graphics::DrawCircle( int x,int y,int radius,Color c )
 	}
 }
 
+void Graphics::DrawCircle(float x, float y, float radius, Color c)
+{
+	const float rad_sq = radius * radius;
+	for (float y_loop = floor(y) - radius + 1; y_loop < floor(y) + radius; y_loop++)
+	{
+		for (float x_loop = floor(x) - radius + 1; x_loop < floor(x) + radius; x_loop++)
+		{
+			const float x_diff = floor(x) - x_loop;
+			const float y_diff = floor(y) - y_loop;
+			if (x_diff * x_diff + y_diff * y_diff <= rad_sq)
+			{
+				PutPixel(int(x_loop), int(y_loop), c);
+			}
+		}
+	}
+}
+
 void Graphics::DrawIsoRightTriUL(int x, int y, int size, Color c)
 {
 	for (int loop_y = y; loop_y < y + size; loop_y++)
