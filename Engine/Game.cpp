@@ -33,7 +33,7 @@
 //TODO: PowerUps:
 //TODO:		Laser		-Red
 //TODO:		Enlarge		-Blue		- done
-//TODO:		Catch		-Green
+//TODO:		Catch		-Green		- done
 //TODO:		Slow		-Orange		- done
 //TODO:		Disruption	-Cyan
 //TODO:		Vaus		-Grey		- done
@@ -274,7 +274,7 @@ void Game::Game_Ready(float dt)
 	powerUps.Update(gameState, dt);
 
 	// the ball sticks to the paddle
-	ball = Ball(paddle.GetRect().GetCenter() + Vec2(ballRelativeX,-17),Vec2(-ballRelativeX,1.0f));
+	ball = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(ball));
 
 	currentWaitTime += dt;
 	if (currentWaitTime > readyWaitTime)
@@ -292,9 +292,17 @@ void Game::Game_Ready(float dt)
 void Game::Game_Play(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
-	ball.Update(dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(gameState, dt);
+
+	if (paddle.Catched())
+	{
+		ball = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX), -17),paddle.GetBallDir(ball));
+	}
+	else
+	{
+		ball.Update(dt);
+	}
 
 	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
@@ -350,6 +358,11 @@ void Game::Game_Play(float dt)
 	// collision of the ball with the paddle
 	if (paddle.DoBallCollision(ball))
 	{
+		if (paddle.CatchActive())
+		{
+			paddle.CatchBall();
+			ballRelativeX = ball.GetRect().GetCenter().x - paddle.GetRect().GetCenter().x;
+		}
 		//x sound for ball and paddle collsion goes here
 	}
 
@@ -389,6 +402,10 @@ void Game::Game_Play(float dt)
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
 			powerUps.Gimme(Vec2(500, 300));
+			if (paddle.Catched())
+			{
+				paddle.ReleaseBall();
+			}
 			spacePressed = true;
 		}
 	}

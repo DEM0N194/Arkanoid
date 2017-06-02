@@ -72,6 +72,11 @@ void Ball::SetDirection(const Vec2 & dir_in)
 	vel = dir_in.GetNormalized();
 }
 
+void Ball::SetPosition(const Vec2 & pos_in)
+{
+	pos = pos_in;
+}
+
 void Ball::SpeedUp()
 {
 	speed += sDist(rng);

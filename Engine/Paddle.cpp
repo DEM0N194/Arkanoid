@@ -54,24 +54,7 @@ bool Paddle::DoBallCollision(Ball & ball)
 			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x))
 				|| (ballPos.x <= rect.right && ballPos.x >= rect.left))
 			{
-				Vec2 dir;
-				const float xDifference = ballPos.x - pos.x;
-				if (abs(xDifference) < fixedZoneHalfWidth)
-				{
-					if (xDifference < 0.0f)
-					{
-						dir = Vec2(-fixedZoneExitX, -1.0f);
-					}
-					else
-					{
-						dir = Vec2(fixedZoneExitX, -1.0f);
-					}
-				}
-				else
-				{
-					dir = Vec2(xDifference * exitXFactor, -1.0f);
-				}
-				ball.SetDirection(dir);
+				ball.SetDirection(GetBallDir(ball));
 			}
 			else
 			{
@@ -102,6 +85,28 @@ RectF Paddle::GetRect() const
 	return RectF::fromCenter(pos, enlarged ? enlargedHalfWidth : halfWidth, halfHeight);
 }
 
+Vec2 Paddle::GetBallDir(Ball & ball)
+{
+	Vec2 dir;
+	const float xDifference = ball.GetPosition().x - pos.x;
+	if (abs(xDifference) < fixedZoneHalfWidth)
+	{
+		if (xDifference < 0.0f)
+		{
+			dir = Vec2(-fixedZoneExitX, -1.0f);
+		}
+		else
+		{
+			dir = Vec2(fixedZoneExitX, -1.0f);
+		}
+	}
+	else
+	{
+		dir = Vec2(xDifference * exitXFactor, -1.0f);
+	}
+	return dir;
+}
+
 void Paddle::ResetCooldown()
 {
 	coolDown = false;
@@ -127,6 +132,36 @@ void Paddle::Enlarge()
 void Paddle::Shrink()
 {
 	enlarged = false;
+}
+
+void Paddle::ActivateCatch()
+{
+	catchActive = true;
+}
+
+void Paddle::DisableCatch()
+{
+	catchActive = false;
+}
+
+bool Paddle::CatchActive()
+{
+	return catchActive;
+}
+
+void Paddle::CatchBall()
+{
+	catched = true;
+}
+
+void Paddle::ReleaseBall()
+{
+	catched = false;
+}
+
+bool Paddle::Catched()
+{
+	return catched;
 }
 
 void Paddle::UpdateExitFactors()

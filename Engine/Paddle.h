@@ -16,11 +16,18 @@ public:
 	bool DoBallCollision(Ball& ball);
 	void DoWallCollision(const RectF& walls);
 	RectF GetRect() const;
+	Vec2 GetBallDir(Ball& ball);
 	void ResetCooldown();
 	void Destroy();
 	void Restore();
 	void Enlarge();
 	void Shrink();
+	void ActivateCatch();
+	void DisableCatch();
+	bool CatchActive();
+	void CatchBall();
+	void ReleaseBall();
+	bool Catched();
 private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
@@ -39,4 +46,6 @@ private:
 	bool enlarged = false;
 	bool coolDown = false;
 	bool destroyed = false;
+	bool catchActive = false;
+	bool catched = false;
 };

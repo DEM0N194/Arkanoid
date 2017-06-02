@@ -25,6 +25,7 @@ public:
 	Vec2 GetVelocity() const;
 	Vec2 GetPosition() const;
 	void SetDirection(const Vec2& dir);
+	void SetPosition(const Vec2& pos_in);
 	static void SpeedUp();
 	static void SlowDown();
 	static void ResetSpeed();
