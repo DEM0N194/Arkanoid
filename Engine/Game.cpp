@@ -57,8 +57,13 @@ Game::Game(MainWindow& wnd)
 	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness), 10),
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(START),
-	//? Test Code Start
-	powerups(paddle, ball, life)
+	powerUps(paddle, ball, life),
+	p_Laser(Vec2(140,280),PowerUps::Type::LASER),
+	p_Expand(Vec2(450,280), PowerUps::Type::ENLARGE),
+	p_Catch(Vec2(140,360), PowerUps::Type::CATCH),
+	p_Slow(Vec2(450,360), PowerUps::Type::SLOW),
+	p_Triple(Vec2(140,440), PowerUps::Type::DISRUPTION),
+	p_Vaus(Vec2(450,440), PowerUps::Type::VAUS)
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
@@ -102,6 +107,21 @@ void Game::InitializeText()
 	t_HighScore.SetColor(Colors::Red);
 	t_Score.SetText("SCORE");
 	t_Score.SetPostion(30, 30);
+	t_Laser.SetText("LASER");
+	t_Laser.SetPostion(220, 280);
+	t_Expand.SetText("EXPAND");
+	t_Expand.SetPostion(530, 280);
+	t_Catch.SetText("CATCH");
+	t_Catch.SetPostion(220, 360);
+	t_Slow.SetText("SLOW");
+	t_Slow.SetPostion(530, 360);
+	t_Triple.SetText("TRIPLE");
+	t_Triple.SetPostion(220, 440);
+	t_Vaus.SetText("VAUS");
+	t_Vaus.SetPostion(530, 440);
+	t_PowerUps.SetText("POWER UPS");
+	t_PowerUps.SetPostion(0, 200);
+	t_PowerUps.AlignMiddle();
 }
 
 void Game::ResetGame()
@@ -109,7 +129,7 @@ void Game::ResetGame()
 	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
 	paddle = Paddle(Vec2(410, 810), 60, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
-	powerups.DestroyAll();
+	powerUps.DestroyAll();
 
 	lvl = 1;
 	score = 0;
@@ -220,7 +240,7 @@ void Game::Game_Ready(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
-	powerups.Update(gameState, dt);
+	powerUps.Update(gameState, dt);
 
 	// the ball sticks to the paddle
 	ball = Ball(paddle.GetRect().GetCenter() + Vec2(50,-20),Vec2(0.6f,-1.0f));
@@ -233,7 +253,7 @@ void Game::Game_Ready(float dt)
 	}
 	else if (currentWaitTime > readyWaitTime/2)
 	{
-		powerups.DisableCurrent();
+		powerUps.DisableCurrent();
 		paddle.Restore();
 	}
 }
@@ -243,7 +263,7 @@ void Game::Game_Play(float dt)
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	ball.Update(dt);
-	powerups.Update(gameState, dt);
+	powerUps.Update(gameState, dt);
 
 	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
@@ -268,7 +288,7 @@ void Game::Game_Play(float dt)
 				curColDistSq = newColDistSq;
 				curColIndex = i;
 				ball2brickCollisionHappened = true;
-				powerups.Gimme(bricks[i].GetCenter());
+				powerUps.Gimme(bricks[i].GetCenter());
 			}
 		}
 
@@ -334,7 +354,7 @@ void Game::Game_Play(float dt)
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
 			//levelCleared = true;
-			powerups.Gimme(Vec2(500, 300));
+			powerUps.Gimme(Vec2(500, 300));
 			spacePressed = true;
 		}
 	}
@@ -394,6 +414,21 @@ void Game::Draw_Start()
 	t_PressSpace.SetText("Press Space to START");
 	t_PressSpace.SetPostion(0, 800);
 	t_PressSpace.Draw(gfx);
+
+	p_Laser.Draw(gfx);
+	p_Expand.Draw(gfx);
+	p_Catch.Draw(gfx);
+	p_Slow.Draw(gfx);
+	p_Triple.Draw(gfx);
+	p_Vaus.Draw(gfx);
+
+	t_Laser.Draw(gfx);
+	t_Expand.Draw(gfx);
+	t_Catch.Draw(gfx);
+	t_Slow.Draw(gfx);
+	t_Triple.Draw(gfx);
+	t_Vaus.Draw(gfx);
+	t_PowerUps.Draw(gfx);
 }
 
 void Game::Draw_Ready()
@@ -405,7 +440,7 @@ void Game::Draw_Ready()
 		t_Ready.Draw(gfx);
 	}
 	paddle.Draw(gfx);
-	powerups.Draw(gfx);
+	powerUps.Draw(gfx);
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);
@@ -442,7 +477,7 @@ void Game::Draw_Play()
 	}
 	ball.Draw(gfx);
 	paddle.Draw(gfx);
-	powerups.Draw(gfx);
+	powerUps.Draw(gfx);
 
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);

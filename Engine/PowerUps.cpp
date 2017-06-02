@@ -7,25 +7,25 @@ PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& b
 	switch (type)
 	{
 		case Type::LASER:
-			c = Color(192, 64, 64); // Red
+			c = Color(130, 50, 50); // Red
 			break;
 		case Type::ENLARGE:
-			c = Color(64, 96, 192); // Blue
+			c = Color(50, 50, 130); // Blue
 			break;
 		case Type::CATCH:
-			c = Color(64, 192, 64); // Green
+			c = Color(50, 130, 50); // Green
 			break;
 		case Type::SLOW:
-			c = Color(192, 128, 64); // Orange
+			c = Color(130, 90, 50); // Orange
 			break;
 		case Type::DISRUPTION:
-			c = Color(64, 192, 192); // Cyan
+			c = Color(50, 130, 130); // Cyan
 			break;
 		case Type::VAUS:
-			c = Color(128, 128, 128);; // Gray
+			c = Color(90, 90, 90);; // Gray
 			break;
 		case Type::BREAK:
-			c = Color(192,64,192); // Magenta
+			c = Color(130, 50, 130); // Magenta
 			break;
 		case Type::INVALID:
 			destroyed = true;
@@ -232,4 +232,52 @@ void PowerUps::Draw(Graphics & gfx)
 	{
 		p.Draw(gfx);
 	}
+}
+
+PowerUps::PowerUpIcon::PowerUpIcon(Vec2 pos_in, Type type_in)
+	: pos(pos_in + Vec2(halfWidth,halfHeight)), type(type_in)
+{
+	switch (type)
+	{
+		case Type::LASER:
+			c = Color(130, 50, 50); // Red
+			break;
+		case Type::ENLARGE:
+			c = Color(50, 50, 130); // Blue
+			break;
+		case Type::CATCH:
+			c = Color(50, 130, 50); // Green
+			break;
+		case Type::SLOW:
+			c = Color(130, 90, 50); // Orange
+			break;
+		case Type::DISRUPTION:
+			c = Color(50, 130, 130); // Cyan
+			break;
+		case Type::VAUS:
+			c = Color(90, 90, 90);; // Gray
+			break;
+		case Type::BREAK:
+			c = Color(130, 50, 130); // Magenta
+			break;
+	}
+}
+
+void PowerUps::PowerUpIcon::Draw(Graphics & gfx) const
+{
+	if (type != Type::INVALID)
+	{
+		gfx.DrawCircle(pos.x - halfWidth + halfHeight, pos.y, halfHeight, c);
+		gfx.DrawCircle(pos.x + halfWidth - halfHeight, pos.y, halfHeight, c);
+
+		RectF rect = GetRect();
+		rect.left += halfHeight;
+		rect.right -= halfHeight;
+		gfx.DrawRect(rect, c);
+	}
+}
+
+RectF PowerUps::PowerUpIcon::GetRect() const
+{
+	return RectF::fromCenter(pos, halfWidth, halfHeight);
 }

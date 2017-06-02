@@ -50,6 +50,21 @@ private:
 
 	};
 public:
+	class PowerUpIcon
+	{
+	public:
+		PowerUpIcon(Vec2 pos, Type type);
+		void Draw(Graphics& gfx) const;
+	private:
+		RectF GetRect() const;
+	private:
+		Vec2 pos;
+		Type type;
+		Color c;
+		static constexpr float halfWidth = 30.0f;
+		static constexpr float halfHeight = 12.5f;
+	};
+public:
 	PowerUps(Paddle& paddle, Ball& ball, LifeCounter& life);
 	void Update(int gs, float dt);
 	void Gimme(Vec2 pos);

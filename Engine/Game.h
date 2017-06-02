@@ -104,9 +104,7 @@ private:
 	Ball ball;
 	Paddle paddle;
 	LifeCounter life;
-
-	//: Test Code
-	PowerUps powerups;
+	PowerUps powerUps;
 	
 	Counter lvl;
 	Counter highScore;
@@ -114,7 +112,21 @@ private:
 
 	static constexpr float readyWaitTime = 2.0f;
 	float currentWaitTime = 0.0f;
-private:
+
+	PowerUps::PowerUpIcon p_Laser;
+	PowerUps::PowerUpIcon p_Expand;
+	PowerUps::PowerUpIcon p_Catch;
+	PowerUps::PowerUpIcon p_Slow;
+	PowerUps::PowerUpIcon p_Triple;
+	PowerUps::PowerUpIcon p_Vaus;
+
+	Text t_Laser;
+	Text t_Expand;
+	Text t_Catch;
+	Text t_Slow;
+	Text t_Triple;
+	Text t_Vaus;
+
 	Text t_Title;
 	Text t_GameOver;
 	Text t_YouWin;
@@ -125,4 +137,5 @@ private:
 	Text t_HighScore;
 	Text t_Score;
 	Text t_PressSpace;
+	Text t_PowerUps;
 };
