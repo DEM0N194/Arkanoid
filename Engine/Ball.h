@@ -2,6 +2,7 @@
 #include "Vec2.h"
 #include "Graphics.h"
 #include "SpriteCodex.h"
+#include <random>
 
 class Ball
 {
@@ -24,9 +25,15 @@ public:
 	Vec2 GetVelocity() const;
 	Vec2 GetPosition() const;
 	void SetDirection(const Vec2& dir);
+	static void SpeedUp();
+	static void SlowDown();
+	static void ResetSpeed();
 private:
 	static constexpr float radius = 7.0f;
-	float speed = 600.0f;
+	static float speed;
 	Vec2 pos;
 	Vec2 vel;
+	static std::random_device rd;
+	static std::mt19937 rng;
+	static std::uniform_real_distribution<float> sDist;
 };

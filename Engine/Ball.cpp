@@ -1,8 +1,12 @@
 #include "Ball.h"
 
+float Ball::speed;
+std::random_device Ball::rd;
+std::mt19937 Ball::rng(rd());
+std::uniform_real_distribution<float> Ball::sDist(5.0f, 10.0f);
+
 Ball::Ball(const Vec2 & pos_in, const Vec2 & dir_in)
-	:
-	pos(pos_in)
+	: pos(pos_in)
 {
 	SetDirection(dir_in);
 }
@@ -14,7 +18,7 @@ void Ball::Draw(Graphics & gfx)
 
 void Ball::Update(float dt)
 {
-	pos += vel*dt;
+	pos += vel * speed * dt;
 }
 
 Ball::Collision Ball::DoWallCollisions(const RectF& walls)
@@ -63,9 +67,24 @@ Vec2 Ball::GetPosition() const
 	return pos;
 }
 
-void Ball::SetDirection(const Vec2 & dir)
+void Ball::SetDirection(const Vec2 & dir_in)
 {
-	vel = dir.GetNormalized() * speed;
+	vel = dir_in.GetNormalized();
+}
+
+void Ball::SpeedUp()
+{
+	speed += sDist(rng);
+}
+
+void Ball::SlowDown()
+{
+	speed -= 100.0f;
+}
+
+void Ball::ResetSpeed()
+{
+	speed = 500.0f;
 }
 
 void Ball::ReboundX()

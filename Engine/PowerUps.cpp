@@ -91,6 +91,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 		case Type::CATCH:
 			break;
 		case Type::SLOW:
+			Ball::SlowDown();
 			break;
 		case Type::DISRUPTION:
 			break;
@@ -112,8 +113,6 @@ void PowerUps::PowerUp::DisablePowerUp()
 			paddle.Shrink();
 			break;
 		case PowerUps::Type::CATCH:
-			break;
-		case PowerUps::Type::SLOW:
 			break;
 		case PowerUps::Type::BREAK:
 			break;

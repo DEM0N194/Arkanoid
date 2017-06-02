@@ -154,7 +154,7 @@ void Game::InitializeText()
 
 void Game::ResetGame()
 {
-	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
+	Ball::ResetSpeed();
 	paddle = Paddle(Vec2(410, 810), 60, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
 	powerUps.DestroyAll();
@@ -289,8 +289,8 @@ void Game::Game_Ready(float dt)
 void Game::Game_Play(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
-	paddle.DoWallCollision(walls.GetInnerBounds());
 	ball.Update(dt);
+	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(gameState, dt);
 
 	bool levelCleared = true;
@@ -317,6 +317,7 @@ void Game::Game_Play(float dt)
 				curColIndex = i;
 				ball2brickCollisionHappened = true;
 				powerUps.Gimme(bricks[i].GetCenter());
+				Ball::SpeedUp();
 			}
 		}
 
@@ -370,6 +371,7 @@ void Game::Game_Play(float dt)
 		{
 			gameState = READY;
 			paddle.Destroy();
+			Ball::ResetSpeed();
 		}
 	}
 
@@ -381,7 +383,7 @@ void Game::Game_Play(float dt)
 			//life.AddLife();
 			//lvl++;
 			//lvl = lvl == 2 ? 0 : 1;
-			levelCleared = true;
+			//levelCleared = true;
 			powerUps.Gimme(Vec2(500, 300));
 			spacePressed = true;
 		}
@@ -397,6 +399,7 @@ void Game::Game_Play(float dt)
 	{
 		gameState = READY;
 		paddle.Destroy();
+		Ball::ResetSpeed();
 		lvl++;
 		LoadLevel();
 	}
