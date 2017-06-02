@@ -1,8 +1,8 @@
 #include "PowerUps.h"
 #include <vector>
 
-PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in)
-	: pos(pos_in), type(type_in), paddle(paddle_in), ball(ball_in)
+PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in, LifeCounter& life_in)
+	: pos(pos_in), type(type_in), paddle(paddle_in), ball(ball_in), life(life_in)
 {
 	switch (type)
 	{
@@ -37,6 +37,7 @@ PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 	c = rhs.c;
 	paddle = rhs.paddle;
 	ball = rhs.ball;
+	life = rhs.life;
 	destroyed = rhs.destroyed;
 	return *this;
 }
@@ -56,7 +57,7 @@ PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 
 bool PowerUps::PowerUp::DoPaddleCollision()
 {
-	if (GetRect().IsOverlappingWith(paddle.GetRect()))
+	if (!destroyed && GetRect().IsOverlappingWith(paddle.GetRect()))
 	{
 		ActivatePowerUp();
 		destroyed = true;
@@ -91,6 +92,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 		case Type::DISRUPTION:
 			break;
 		case Type::VAUS:
+			life.AddLife();
 			break;
 		case Type::BREAK:
 			break;
@@ -134,8 +136,9 @@ RectF PowerUps::PowerUp::GetRect() const
 	return RectF::fromCenter(pos, halfWidth, halfHeight);
 }
 
-PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in)
-	: paddle(paddle_in), ball(ball_in), rng(std::random_device()()), spawnDist(0.2), typeDist(0,99)
+PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in, LifeCounter & life_in)
+	: paddle(paddle_in), ball(ball_in), life(life_in)
+	, rng(std::random_device()()), spawnDist(0.2), typeDist(0,99)
 {
 }
 
@@ -147,17 +150,14 @@ void PowerUps::Update(float dt)
 			{
 				if (powerUps.at(i).DoPaddleCollision())
 				{
-					if (powerUps.at(i).IsDestroyed() == true)
+					index2Delete = i-1;
+					if (i-1 >= 0)
 					{
 						index2Delete = i-1;
-						if (i-1 >= 0)
+						doDelete = true;
+						if (powerUps.at(i-1).GetType() != powerUps.at(i).GetType())
 						{
-							index2Delete = i-1;
-							doDelete = true;
-							if (powerUps.at(i-1).GetType() != powerUps.at(i).GetType())
-							{
-								powerUps.at(i-1).DisablePowerUp();
-							}
+							powerUps.at(i-1).DisablePowerUp();
 						}
 					}
 				}
@@ -196,7 +196,7 @@ void PowerUps::Gimme(Vec2 pos)
 		{
 			type = Type(typeDist(rng)%5); // 20%
 		}
-		powerUps.push_back(PowerUp(pos, type, paddle, ball));
+		powerUps.push_back(PowerUp(pos, type, paddle, ball, life));
 	}
 }
 

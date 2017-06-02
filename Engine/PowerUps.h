@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Paddle.h"
 #include "Ball.h"
+#include "LifeCounter.h"
 #include <random>
 
 
@@ -24,7 +25,7 @@ private:
 	class PowerUp
 	{
 	public:
-		PowerUp(Vec2 pos, Type type, Paddle& paddle, Ball& ball);
+		PowerUp(Vec2 pos, Type type, Paddle& paddle, Ball& ball, LifeCounter& life);
 		PowerUp& operator=(const PowerUp& rhs);
 		bool Update(float dt);
 		bool DoPaddleCollision();
@@ -41,6 +42,7 @@ private:
 		Color c;
 		Paddle& paddle;
 		Ball& ball;
+		LifeCounter& life;
 		bool destroyed = false;
 		static constexpr float halfWidth = 30.0f;
 		static constexpr float halfHeight = 12.5f;
@@ -48,7 +50,7 @@ private:
 
 	};
 public:
-	PowerUps(Paddle& paddle, Ball& ball);
+	PowerUps(Paddle& paddle, Ball& ball, LifeCounter& life);
 	void Update(float dt);
 	void Gimme(Vec2 pos);
 	void Draw(Graphics& gfx);
@@ -58,6 +60,7 @@ private:
 	std::uniform_int_distribution<int> typeDist;
 	Paddle& paddle;
 	Ball& ball;
+	LifeCounter& life;
 	std::vector<PowerUp> powerUps;
 	int index2Delete;
 	bool doDelete = false;

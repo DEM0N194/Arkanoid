@@ -37,7 +37,7 @@
 //TODO:		Slow		-Orange
 //TODO:		Break		-Magenta
 //TODO:		Disruption	-Cyan
-//TODO:		Vaus		-Grey
+//TODO:		Vaus		-Grey		- done
 
 //TODO: add more Levels
 //TODO: Sounds, possibly a sound manager
@@ -58,7 +58,7 @@ Game::Game(MainWindow& wnd)
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(START),
 	//? Test Code Start
-	powerups(paddle,ball)
+	powerups(paddle, ball, life)
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
@@ -452,7 +452,6 @@ void Game::Draw_Play()
 	t_Score.Draw(gfx);
 	score.Draw(gfx);
 
-	//? Test Code
 	powerups.Draw(gfx);
 }
 
