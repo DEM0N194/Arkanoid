@@ -36,6 +36,8 @@
 #include "Border.h"
 #include "PowerUps.h"
 
+#include <random>
+
 class Game
 {
 public:
@@ -82,6 +84,10 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	std::mt19937 rng;
+	std::uniform_int_distribution<int> rxDist;
+	int ballRelativeX;
+
 	eGameStates gameState;
 	bool spacePressed = false;
 

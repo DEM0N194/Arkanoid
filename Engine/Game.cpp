@@ -34,10 +34,10 @@
 //TODO:		Laser		-Red
 //TODO:		Enlarge		-Blue		- done
 //TODO:		Catch		-Green
-//TODO:		Slow		-Orange
-//TODO:		Break		-Magenta
+//TODO:		Slow		-Orange		- done
 //TODO:		Disruption	-Cyan
 //TODO:		Vaus		-Grey		- done
+//TODO:		Break		-Magenta
 
 //TODO: add more Levels
 //TODO: Sounds, possibly a sound manager
@@ -49,6 +49,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
+	rng(std::random_device()()),
+	rxDist(-45, 45),
 	// Walls and borders
 	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
 	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), 10),
@@ -244,6 +246,7 @@ void Game::Game_Start(float dt)
 		if (!spacePressed)
 		{
 			gameState = READY;
+			ballRelativeX = rxDist(rng);
 			spacePressed = true;
 		}
 	}
@@ -271,7 +274,7 @@ void Game::Game_Ready(float dt)
 	powerUps.Update(gameState, dt);
 
 	// the ball sticks to the paddle
-	ball = Ball(paddle.GetRect().GetCenter() + Vec2(50,-20),Vec2(0.6f,-1.0f));
+	ball = Ball(paddle.GetRect().GetCenter() + Vec2(ballRelativeX,-17),Vec2(-ballRelativeX,1.0f));
 
 	currentWaitTime += dt;
 	if (currentWaitTime > readyWaitTime)
@@ -372,6 +375,7 @@ void Game::Game_Play(float dt)
 			gameState = READY;
 			paddle.Destroy();
 			Ball::ResetSpeed();
+			ballRelativeX = rxDist(rng);
 		}
 	}
 
