@@ -27,6 +27,9 @@ PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& b
 		case Type::BREAK:
 			c = Color(192,64,192); // Magenta
 			break;
+		case Type::INVALID:
+			destroyed = true;
+			break;
 	}
 }
 
@@ -44,7 +47,7 @@ PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 
  bool PowerUps::PowerUp::Update(float dt)
 {
-	if (pos.y + 2*halfHeight < Graphics::ScreenHeight)
+	if (pos.y + halfHeight < Graphics::ScreenHeight)
 	{
 			pos.y += speed*dt;
 			return true;
@@ -142,24 +145,36 @@ PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in, LifeCounter & life_in)
 {
 }
 
-void PowerUps::Update(float dt)
+void PowerUps::Update(int gs, float dt)
 {
 		for (int i = 0; i < powerUps.size(); i++)
 		{
 			if (powerUps.at(i).Update(dt))
 			{
-				if (powerUps.at(i).DoPaddleCollision())
+				if (gs == 2 && powerUps.at(i).DoPaddleCollision())
 				{
 					index2Delete = i-1;
-					if (i-1 >= 0)
+					if (i-1 >= 0 && powerUps.at(i-1).IsDestroyed() == true)
 					{
-						index2Delete = i-1;
 						doDelete = true;
 						if (powerUps.at(i-1).GetType() != powerUps.at(i).GetType())
 						{
 							powerUps.at(i-1).DisablePowerUp();
 						}
 					}
+				}
+				else if (powerUps.at(i).GetType() == Type::INVALID)
+				{
+					index2Delete = i-1;
+					if (i-1 >= 0 && powerUps.at(i-1).IsDestroyed() == true)
+					{
+						doDelete = true;
+						if (powerUps.at(i-1).GetType() != powerUps.at(i).GetType())
+						{
+							powerUps.at(i-1).DisablePowerUp();
+						}
+					}
+					powerUps.erase(powerUps.begin() + i);
 				}
 			}
 			else
@@ -176,6 +191,17 @@ void PowerUps::Update(float dt)
 			powerUps.erase(powerUps.begin() + index2Delete);
 			doDelete = false;
 		}
+}
+
+
+void PowerUps::DisableCurrent()
+{
+	powerUps.push_back(PowerUp(Vec2(100, 100), Type::INVALID, paddle, ball, life));
+}
+
+void PowerUps::DestroyAll()
+{
+	powerUps.clear();
 }
 
 void PowerUps::Gimme(Vec2 pos)

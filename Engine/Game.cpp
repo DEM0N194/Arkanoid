@@ -109,6 +109,7 @@ void Game::ResetGame()
 	//ball = Ball(Vec2(150, 450), Vec2(300, 300));
 	paddle = Paddle(Vec2(410, 810), 60, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
+	powerups.DestroyAll();
 
 	lvl = 1;
 	score = 0;
@@ -190,7 +191,6 @@ void Game::ComposeFrame()
 
 void Game::Game_Start(float dt)
 {
-	powerups.Update(dt);
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		if (!spacePressed)
@@ -220,6 +220,7 @@ void Game::Game_Ready(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
+	powerups.Update(gameState, dt);
 
 	// the ball sticks to the paddle
 	ball = Ball(paddle.GetRect().GetCenter() + Vec2(50,-20),Vec2(0.6f,-1.0f));
@@ -232,6 +233,7 @@ void Game::Game_Ready(float dt)
 	}
 	else if (currentWaitTime > readyWaitTime/2)
 	{
+		powerups.DisableCurrent();
 		paddle.Restore();
 	}
 }
@@ -241,7 +243,7 @@ void Game::Game_Play(float dt)
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	ball.Update(dt);
-	powerups.Update(dt);
+	powerups.Update(gameState, dt);
 
 	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
@@ -403,10 +405,12 @@ void Game::Draw_Ready()
 		t_Ready.Draw(gfx);
 	}
 	paddle.Draw(gfx);
+	powerups.Draw(gfx);
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);
 	}
+
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
@@ -426,17 +430,20 @@ void Game::Draw_Ready()
 	highScore.Draw(gfx);
 	t_Score.Draw(gfx);
 	score.Draw(gfx);
+
 }
 
 void Game::Draw_Play()
 {
 	life.Draw(gfx);
-	ball.Draw(gfx);
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);
 	}
+	ball.Draw(gfx);
 	paddle.Draw(gfx);
+	powerups.Draw(gfx);
+
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
@@ -452,7 +459,6 @@ void Game::Draw_Play()
 	t_Score.Draw(gfx);
 	score.Draw(gfx);
 
-	powerups.Draw(gfx);
 }
 
 void Game::Draw_End()

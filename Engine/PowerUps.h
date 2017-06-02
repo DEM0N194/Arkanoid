@@ -6,7 +6,6 @@
 #include "LifeCounter.h"
 #include <random>
 
-
 // this is probably the worst way to do PowerUps, but hey it's working
 class PowerUps
 {
@@ -19,7 +18,8 @@ public:
 		SLOW,		// Orange
 		DISRUPTION,	// Cyan
 		VAUS,		// Grey
-		BREAK		// Magenta
+		BREAK,		// Magenta
+		INVALID
 	};
 private:
 	class PowerUp
@@ -51,8 +51,10 @@ private:
 	};
 public:
 	PowerUps(Paddle& paddle, Ball& ball, LifeCounter& life);
-	void Update(float dt);
+	void Update(int gs, float dt);
 	void Gimme(Vec2 pos);
+	void DisableCurrent();
+	void DestroyAll();
 	void Draw(Graphics& gfx);
 private:
 	std::mt19937 rng;
