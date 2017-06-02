@@ -2,11 +2,7 @@
 #include <vector>
 
 PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in)
-	:
-	pos(pos_in),
-	type(type_in),
-	paddle(paddle_in),
-	ball(ball_in)
+	: pos(pos_in), type(type_in), paddle(paddle_in), ball(ball_in)
 {
 	switch (type) //TODO: add more colours
 	{
@@ -99,7 +95,7 @@ RectF PowerUps::PowerUp::GetRect() const
 }
 
 PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in)
-	: paddle(paddle_in), ball(ball_in)
+	: paddle(paddle_in), ball(ball_in), rng(std::random_device()()), spawnDist(0.2)
 {
 }
 
@@ -144,7 +140,10 @@ void PowerUps::Update(float dt)
 
 void PowerUps::Gimme(Vec2 pos, Type type)
 {
-	powerUps.push_back(PowerUp(pos, type, paddle, ball));
+	if (spawnDist(rng))
+	{
+		powerUps.push_back(PowerUp(pos, type, paddle, ball));
+	}
 }
 
 void PowerUps::Draw(Graphics & gfx)

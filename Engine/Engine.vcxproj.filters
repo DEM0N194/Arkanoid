@@ -187,7 +187,7 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="PowerUps.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +204,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Chili.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="icon.ico">
       <Filter>Resource Files</Filter>
     </Image>

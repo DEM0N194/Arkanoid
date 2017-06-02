@@ -53,6 +53,8 @@ public:
 	void Gimme(Vec2 pos, Type type);
 	void Draw(Graphics& gfx);
 private:
+	std::mt19937 rng;
+	std::bernoulli_distribution spawnDist;
 	Paddle& paddle;
 	Ball& ball;
 	std::vector<PowerUp> powerUps;

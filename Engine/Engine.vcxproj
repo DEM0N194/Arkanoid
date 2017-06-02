@@ -254,7 +254,6 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Chili.ico" />
     <Image Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
