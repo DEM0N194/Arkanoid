@@ -3,7 +3,7 @@
 float Ball::speed;
 std::random_device Ball::rd;
 std::mt19937 Ball::rng(rd());
-std::uniform_real_distribution<float> Ball::sDist(5.0f, 10.0f);
+std::uniform_real_distribution<float> Ball::sDist(5.0f, 15.0f);
 
 Ball::Ball(const Vec2 & pos_in, const Vec2 & dir_in)
 	: pos(pos_in)

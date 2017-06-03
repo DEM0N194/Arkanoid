@@ -146,7 +146,7 @@ RectF PowerUps::PowerUp::GetRect() const
 
 PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in, LifeCounter & life_in)
 	: paddle(paddle_in), ball(ball_in), life(life_in)
-	, rng(std::random_device()()), spawnDist(0.2), typeDist(0,99)
+	, rng(std::random_device()()), spawnDist(0.25), typeDist(0,99)
 {
 }
 
@@ -215,15 +215,15 @@ void PowerUps::Gimme(Vec2 pos)
 	{
 		const int currTypeDist = typeDist(rng);
 		Type type;
-		if (currTypeDist < 5)  // 5%
+		if (currTypeDist < 1)  // 1%
 		{
 			type = Type::BREAK;
 		}
-		else if (currTypeDist < 20) // 15%
+		else if (currTypeDist < 10) // 9%
 		{
 			type = Type::VAUS;
 		}
-		else // 80%
+		else // 90%
 		{
 			type = Type(typeDist(rng)%5); // 20%
 		}
