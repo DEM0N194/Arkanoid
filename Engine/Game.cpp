@@ -361,7 +361,7 @@ void Game::Game_Play(float dt)
 		if (paddle.CatchActive())
 		{
 			paddle.CatchBall();
-			ballRelativeX = ball.GetRect().GetCenter().x - paddle.GetRect().GetCenter().x;
+			ballRelativeX = int(ball.GetRect().GetCenter().x - paddle.GetRect().GetCenter().x);
 		}
 		//x sound for ball and paddle collsion goes here
 	}

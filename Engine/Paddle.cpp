@@ -6,14 +6,31 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	halfWidth(halfWidth_in),
 	halfHeight(halfHeight_in),
 	enlargedHalfWidth(1.5f*halfWidth),
-	bev(Color(0,0,0)),
-	wingBev(Color(0,0,0))
+	bev(Color(0, 0, 0)),
+	wingBev(Color(0, 0, 0)),
+	laserBotBev(Color(130, 130, 130)),
+	laserLeftBev(Color(130, 130, 130)),
+	laserRightBev(Color(130, 130, 130))
+
 {
 	UpdateExitFactors();
 }
 
 void Paddle::Draw(Graphics & gfx)
 {
+	if (laserActive)
+	{
+		FadeToColor(laserBotBev, Color(130, 50, 50));
+		FadeToColor(laserLeftBev, Color(130, 50, 50));
+		FadeToColor(laserRightBev, Color(130, 50, 50));
+	}
+	else
+	{
+		FadeToColor(laserBotBev, Color(130, 130, 130));
+		FadeToColor(laserLeftBev, Color(130, 130, 130));
+		FadeToColor(laserRightBev, Color(130, 130, 130));
+	}
+
 	RectF body = GetRect();
 	RectF wingLeft = GetRect();
 	wingWidth = (enlarged ? enlargedHalfWidth : halfWidth)/4;
@@ -21,6 +38,23 @@ void Paddle::Draw(Graphics & gfx)
 	RectF wingRight = GetRect();
 	wingRight.left += (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
 	bev.DrawBeveledBrick(body, 5, gfx);
+
+	if (laserBotBev.GetBaseColor().GetG() > 50 && laserBotBev.GetBaseColor().GetG() < 120)
+	{
+		RectF laserBottom = body;
+		laserBottom.top += halfHeight*1.5f;
+		RectF laserLeft = body;
+		laserLeft.left = pos.x - 30;
+		laserLeft.right = pos.x - 25;
+		RectF laserRight = body;
+		laserRight.right = pos.x + 30;
+		laserRight.left = pos.x + 25;
+		laserLeftBev.DrawBeveledBrick(laserLeft, 2, gfx);
+		laserRightBev.DrawBeveledBrick(laserRight, 2, gfx);
+		laserBotBev.DrawBeveledBrick(laserBottom, 2, gfx);
+	}
+
+
 	wingBev.DrawBeveledBrick(wingLeft, 5, gfx);
 	wingBev.DrawBeveledBrick(wingRight, 5, gfx);
 }
@@ -40,7 +74,15 @@ void Paddle::Update(Keyboard & kbd, float dt)
 	{
 		FadeToColor(bev,Color(0, 0, 0));
 		FadeToColor(wingBev, Color(0, 0, 0));
+		if (laserActive)
+		{
+			FadeToColor(laserBotBev, Color(0, 0, 0));
+			FadeToColor(laserLeftBev, Color(0, 0, 0));
+			FadeToColor(laserRightBev, Color(0, 0, 0));
+		}
 	}
+
+	
 }
 
 bool Paddle::DoBallCollision(Ball & ball)
@@ -122,6 +164,12 @@ void Paddle::Restore()
 	destroyed = false;
 	FadeToColor(bev, Color(130, 130, 130));
 	FadeToColor(wingBev, Color(130, 50, 50));
+	if (!laserActive)
+	{
+		laserBotBev = Beveler(Color(130, 130, 130));
+		laserLeftBev = Beveler(Color(130, 130, 130));
+		laserRightBev = Beveler(Color(130, 130, 130));
+	}
 }
 
 void Paddle::Enlarge()
@@ -144,7 +192,7 @@ void Paddle::DisableCatch()
 	catchActive = false;
 }
 
-bool Paddle::CatchActive()
+bool Paddle::CatchActive() const
 {
 	return catchActive;
 }
@@ -159,9 +207,24 @@ void Paddle::ReleaseBall()
 	catched = false;
 }
 
-bool Paddle::Catched()
+bool Paddle::Catched() const
 {
 	return catched;
+}
+
+void Paddle::ActivateLaser()
+{
+	laserActive = true;
+}
+
+void Paddle::DisableLaser()
+{
+	laserActive = false;
+}
+
+bool Paddle::LaserActive() const
+{
+	return laserActive;
 }
 
 void Paddle::UpdateExitFactors()

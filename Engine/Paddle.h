@@ -20,20 +20,27 @@ public:
 	void ResetCooldown();
 	void Destroy();
 	void Restore();
+public: // powerups
 	void Enlarge();
 	void Shrink();
 	void ActivateCatch();
 	void DisableCatch();
-	bool CatchActive();
+	bool CatchActive() const;
 	void CatchBall();
 	void ReleaseBall();
-	bool Catched();
+	bool Catched() const;
+	void ActivateLaser();
+	void DisableLaser();
+	bool LaserActive() const;
 private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
 private:
 	Beveler bev;
 	Beveler wingBev;
+	Beveler laserBotBev;
+	Beveler laserLeftBev;
+	Beveler laserRightBev;
 	Vec2 pos;
 	float halfWidth;
 	float enlargedHalfWidth;
@@ -48,4 +55,5 @@ private:
 	bool destroyed = false;
 	bool catchActive = false;
 	bool catched = false;
+	bool laserActive = false;
 };

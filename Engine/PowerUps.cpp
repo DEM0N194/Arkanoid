@@ -84,6 +84,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 	switch (type)
 	{
 		case Type::LASER:
+			paddle.ActivateLaser();
 			break;
 		case Type::ENLARGE:
 			paddle.Enlarge();
@@ -109,6 +110,7 @@ void PowerUps::PowerUp::DisablePowerUp()
 	switch (type)
 	{
 		case PowerUps::Type::LASER:
+			paddle.DisableLaser();
 			break;
 		case PowerUps::Type::ENLARGE:
 			paddle.Shrink();
