@@ -37,6 +37,7 @@ public: // powerups
 private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
+	void AproachWidth(float goal, float dt);
 private:
 	Beveler bev;
 	Beveler wingBev;
@@ -46,8 +47,9 @@ private:
 	Vec2 pos;
 	RectF laserLeft;
 	RectF laserRight;
-	float halfWidth;
+	float baseHalfWidth;
 	float enlargedHalfWidth;
+	float currentHalfWidth;
 	float halfHeight;
 	float wingWidth;
 	float exitXFactor;

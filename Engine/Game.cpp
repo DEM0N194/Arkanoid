@@ -37,11 +37,10 @@
 //TODO:		Slow		-Orange		- done
 //TODO:		Disruption	-Cyan
 //TODO:		Vaus		-Grey		- done
-//TODO:		Break		-Magenta
+//TODO:		Break		-Magenta			<--- do this
 
-//TODO: add more Levels
 //TODO: Sounds, possibly a sound manager
-//TODO: fine tune brick colors
+//TODO: add more Levels
 //TODO: fine tune the game speed so it's not as easy as it is now
 //TODO: Add fireworks to WIN screen so it feels more rewarding xD
 
@@ -422,7 +421,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			//powerUps.Gimme(Vec2(500, 300));
+			powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();

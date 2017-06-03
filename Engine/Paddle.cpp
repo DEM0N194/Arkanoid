@@ -3,9 +3,10 @@
 Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	:
 	pos(pos_in),
-	halfWidth(halfWidth_in),
+	baseHalfWidth(halfWidth_in),
 	halfHeight(halfHeight_in),
-	enlargedHalfWidth(1.5f*halfWidth),
+	enlargedHalfWidth(1.5f*baseHalfWidth),
+	currentHalfWidth(baseHalfWidth),
 	bev(Color(0, 0, 0)),
 	wingBev(Color(0, 0, 0)),
 	laserBotBev(Color(130, 130, 130)),
@@ -32,14 +33,14 @@ void Paddle::Draw(Graphics & gfx)
 	}
 
 	RectF body = GetRect();
+	wingWidth = currentHalfWidth/4;
+	bev.DrawBeveledBrick(body, 5, gfx);
 
 	RectF wingLeft = GetRect();
-	wingWidth = (enlarged ? enlargedHalfWidth : halfWidth)/4;
-	wingLeft.right -= (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
+	wingLeft.right -= (2* currentHalfWidth - wingWidth);
 
 	RectF wingRight = GetRect();
-	wingRight.left += (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
-	bev.DrawBeveledBrick(body, 5, gfx);
+	wingRight.left += (2* currentHalfWidth - wingWidth);
 
 	if (laserBotBev.GetBaseColor().GetG() > 50 && laserBotBev.GetBaseColor().GetG() < 120)
 	{
@@ -87,7 +88,14 @@ void Paddle::Update(Keyboard & kbd, float dt)
 		}
 	}
 
-	
+	if (enlarged && !destroyed)
+	{
+		AproachWidth(enlargedHalfWidth, 200*dt);
+	}
+	else
+	{
+		AproachWidth(baseHalfWidth, 200*dt);
+	}
 }
 
 bool Paddle::DoBallCollision(Ball & ball)
@@ -129,7 +137,7 @@ void Paddle::DoWallCollision(const RectF & walls)
 
 RectF Paddle::GetRect() const
 {
-	return RectF::fromCenter(pos, enlarged ? enlargedHalfWidth : halfWidth, halfHeight);
+	return RectF::fromCenter(pos, currentHalfWidth, halfHeight);
 }
 
 Vec2 Paddle::GetBallDir(Ball & ball)
@@ -244,8 +252,8 @@ RectF Paddle::GetRectLaserRight() const
 
 void Paddle::UpdateExitFactors()
 {
-	exitXFactor = 1.2f/halfWidth;
-	fixedZoneHalfWidth = halfWidth/4.0f;
+	exitXFactor = 1.2f/baseHalfWidth;
+	fixedZoneHalfWidth = baseHalfWidth/4.0f;
 	fixedZoneExitX = fixedZoneHalfWidth * exitXFactor;
 }
 
@@ -294,5 +302,18 @@ void Paddle::FadeToColor(Beveler& beveler, Color goal)
 	if (changed)
 	{
 		beveler = Beveler(updated);
+	}
+}
+
+void Paddle::AproachWidth(float goal, float dt)
+{
+	const float wDif = goal - currentHalfWidth;
+	if (wDif > dt)
+	{
+		currentHalfWidth += dt;
+	}
+	if (wDif < -dt)
+	{
+		currentHalfWidth -= dt;
 	}
 }
