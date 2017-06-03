@@ -31,7 +31,7 @@
 //TODO: make it look pretty
 
 //TODO: PowerUps:
-//TODO:		Laser		-Red
+//TODO:		Laser		-Red		- done
 //TODO:		Enlarge		-Blue		- done
 //TODO:		Catch		-Green		- done
 //TODO:		Slow		-Orange		- done
@@ -60,6 +60,7 @@ Game::Game(MainWindow& wnd)
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(START),
 	powerUps(paddle, ball, life),
+	laser(paddle, walls),
 	p_Laser(Vec2(140,280),PowerUps::Type::LASER),
 	p_Expand(Vec2(450,280), PowerUps::Type::ENLARGE),
 	p_Catch(Vec2(140,360), PowerUps::Type::CATCH),
@@ -273,6 +274,18 @@ void Game::Game_Ready(float dt)
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(gameState, dt);
 
+	if (paddle.LaserActive())
+	{
+		laser.Update(dt);
+		for (int i = 0; i < nBricks; i++)
+		{
+			if (bricks[i].ExecuteLaserCollision(laser))
+			{
+				//x laser brick sound
+			}
+		}
+	}
+
 	// the ball sticks to the paddle
 	ball = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(ball));
 
@@ -294,6 +307,11 @@ void Game::Game_Play(float dt)
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(gameState, dt);
+
+	if (paddle.LaserActive())
+	{
+		laser.Update(dt);
+	}
 
 	if (paddle.Catched())
 	{
@@ -330,6 +348,14 @@ void Game::Game_Play(float dt)
 				powerUps.Gimme(bricks[i].GetCenter());
 				Ball::SpeedUp();
 			}
+		}
+		if (paddle.LaserActive())
+		{
+			if (bricks[i].ExecuteLaserCollision(laser))
+			{
+				//x laser brick sound
+			}
+
 		}
 
 		// if any of the bricks is not destroyed, the level is not cleared
@@ -392,19 +418,18 @@ void Game::Game_Play(float dt)
 		}
 	}
 
-	//? TEST CODE START
 	if (wnd.kbd.KeyIsPressed(VK_SPACE))
 	{
 		if (!spacePressed)
 		{
-			//life.AddLife();
-			//lvl++;
-			//lvl = lvl == 2 ? 0 : 1;
-			//levelCleared = true;
-			powerUps.Gimme(Vec2(500, 300));
+			//powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();
+			}
+			if (paddle.LaserActive())
+			{
+				laser.Shoot();
 			}
 			spacePressed = true;
 		}
@@ -413,13 +438,14 @@ void Game::Game_Play(float dt)
 	{
 		spacePressed = false;
 	}
-	//? TEST CODE END
 
 	//! LEVEL CLEARED
 	if (levelCleared)
 	{
 		gameState = READY;
 		paddle.Destroy();
+		laser.DestroyLeft();
+		laser.DestroyRight();
 		Ball::ResetSpeed();
 		lvl++;
 		LoadLevel();
@@ -510,6 +536,11 @@ void Game::Draw_Ready()
 		b.Draw(gfx);
 	}
 
+	if (paddle.LaserActive())
+	{
+		laser.Draw(gfx);
+	}
+
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);
 	infoWalls.Draw(gfx);
@@ -543,6 +574,11 @@ void Game::Draw_Play()
 	ball.Draw(gfx);
 	paddle.Draw(gfx);
 	powerUps.Draw(gfx);
+
+	if (paddle.LaserActive())
+	{
+		laser.Draw(gfx);
+	}
 
 	walls.Draw(gfx);
 	thinWalls.Draw(gfx);

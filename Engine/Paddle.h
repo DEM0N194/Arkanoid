@@ -32,6 +32,8 @@ public: // powerups
 	void ActivateLaser();
 	void DisableLaser();
 	bool LaserActive() const;
+	RectF GetRectLaserLeft() const;
+	RectF GetRectLaserRight() const;
 private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
@@ -42,6 +44,8 @@ private:
 	Beveler laserLeftBev;
 	Beveler laserRightBev;
 	Vec2 pos;
+	RectF laserLeft;
+	RectF laserRight;
 	float halfWidth;
 	float enlargedHalfWidth;
 	float halfHeight;

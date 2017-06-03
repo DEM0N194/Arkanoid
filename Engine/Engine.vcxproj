@@ -150,6 +150,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsFont.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="LifeCounter.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mouse.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GraphicsFont.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LifeCounter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />

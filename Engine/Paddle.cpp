@@ -32,9 +32,11 @@ void Paddle::Draw(Graphics & gfx)
 	}
 
 	RectF body = GetRect();
+
 	RectF wingLeft = GetRect();
 	wingWidth = (enlarged ? enlargedHalfWidth : halfWidth)/4;
 	wingLeft.right -= (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
+
 	RectF wingRight = GetRect();
 	wingRight.left += (2* (enlarged ? enlargedHalfWidth : halfWidth) - wingWidth);
 	bev.DrawBeveledBrick(body, 5, gfx);
@@ -43,12 +45,15 @@ void Paddle::Draw(Graphics & gfx)
 	{
 		RectF laserBottom = body;
 		laserBottom.top += halfHeight*1.5f;
-		RectF laserLeft = body;
-		laserLeft.left = pos.x - 30;
-		laserLeft.right = pos.x - 25;
-		RectF laserRight = body;
-		laserRight.right = pos.x + 30;
-		laserRight.left = pos.x + 25;
+
+		laserLeft = body;
+		laserLeft.left = pos.x - 20;
+		laserLeft.right = pos.x - 15;
+
+		laserRight = body;
+		laserRight.right = pos.x + 20;
+		laserRight.left = pos.x + 15;
+
 		laserLeftBev.DrawBeveledBrick(laserLeft, 2, gfx);
 		laserRightBev.DrawBeveledBrick(laserRight, 2, gfx);
 		laserBotBev.DrawBeveledBrick(laserBottom, 2, gfx);
@@ -225,6 +230,16 @@ void Paddle::DisableLaser()
 bool Paddle::LaserActive() const
 {
 	return laserActive;
+}
+
+RectF Paddle::GetRectLaserLeft() const
+{
+	return laserLeft;
+}
+
+RectF Paddle::GetRectLaserRight() const
+{
+	return laserRight;
 }
 
 void Paddle::UpdateExitFactors()

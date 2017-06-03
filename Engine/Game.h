@@ -35,6 +35,7 @@
 #include "LifeCounter.h"
 #include "Border.h"
 #include "PowerUps.h"
+#include "Laser.h"
 
 #include <random>
 
@@ -111,6 +112,7 @@ private:
 	Paddle paddle;
 	LifeCounter life;
 	PowerUps powerUps;
+	Laser laser;
 	
 	Counter lvl;
 	Counter highScore;

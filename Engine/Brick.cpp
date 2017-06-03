@@ -95,6 +95,34 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 	return false;
 }
 
+bool Brick::ExecuteLaserCollision(Laser & laser)
+{
+	if (!destroyed || brickType == Type::GOLD)
+	{
+		if (rect.IsOverlappingWith(laser.GetRectLeft()))
+		{
+			laser.DestroyLeft();
+			life = max(life--, 0);
+			if (life == 0)
+			{
+				destroyed = true;
+				return true;
+			}
+		}
+		if (rect.IsOverlappingWith(laser.GetRectRight()))
+		{
+			laser.DestroyRight();
+			life = max(life--, 0);
+			if (life == 0)
+			{
+				destroyed = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 Vec2 Brick::GetCenter() const
 {
 	return rect.GetCenter();
