@@ -38,6 +38,7 @@ private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
 	void AproachWidth(float goal, float dt);
+	void AproachSpeed(float goal, float dt);
 private:
 	Beveler bev;
 	Beveler wingBev;
@@ -55,7 +56,7 @@ private:
 	float exitXFactor;
 	float fixedZoneHalfWidth;
 	float fixedZoneExitX;
-	float speed = 800.0f;
+	float speed = 0;
 	bool enlarged = false;
 	bool coolDown = false;
 	bool destroyed = false;

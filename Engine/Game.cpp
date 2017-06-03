@@ -421,7 +421,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			powerUps.Gimme(Vec2(500, 300));
+			//powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();

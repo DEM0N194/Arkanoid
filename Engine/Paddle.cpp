@@ -67,14 +67,22 @@ void Paddle::Draw(Graphics & gfx)
 
 void Paddle::Update(Keyboard & kbd, float dt)
 {
-	if (kbd.KeyIsPressed(VK_LEFT))
+	if (!kbd.KeyIsPressed(VK_RIGHT) && !kbd.KeyIsPressed(VK_LEFT))
 	{
-		pos.x -= speed*dt;
+		AproachSpeed(0, 10000*dt);
 	}
-	if (kbd.KeyIsPressed(VK_RIGHT))
+	else
 	{
-		pos.x += speed*dt;
+		if (kbd.KeyIsPressed(VK_LEFT))
+		{
+			AproachSpeed(-800, 10000*dt);
+		}
+		if (kbd.KeyIsPressed(VK_RIGHT))
+		{
+			AproachSpeed(800, 10000*dt);
+		}
 	}
+	pos.x += speed*dt;
 
 	if (destroyed)
 	{
@@ -315,5 +323,18 @@ void Paddle::AproachWidth(float goal, float dt)
 	if (wDif < -dt)
 	{
 		currentHalfWidth -= dt;
+	}
+}
+
+void Paddle::AproachSpeed(float goal, float dt)
+{
+	const float sDif = goal - speed;
+	if (sDif > dt)
+	{
+		speed += dt;
+	}
+	if (sDif < -dt)
+	{
+		speed -= dt;
 	}
 }
