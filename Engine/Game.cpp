@@ -76,6 +76,7 @@ Game::Game(MainWindow& wnd)
 	lvl.SetNumOf0(1);
 	highScore.SetPostion(440, 80);
 	highScore.AlignMiddle();
+	countDown.SetPostion(400, 580);
 
 	InitializeText();
 	ResetGame();
@@ -509,13 +510,38 @@ void Game::Game_Pause(float dt)
 	{
 		if (!escapePressed)
 		{
-			gameState = PLAY;
+			countDownStarted = true;
 			escapePressed = true;
 		}
 	}
 	else
 	{
 		escapePressed = false;
+	}
+
+	if (countDownStarted)
+	{
+		currentWaitTime += dt;
+
+		if (currentWaitTime < 0.5f)
+		{
+			countDown = 3;
+		}
+		else if (currentWaitTime < 1.0f)
+		{
+			countDown = 2;
+		}
+		else if (currentWaitTime < 1.5f)
+		{
+			countDown = 1;
+		}
+		else
+		{
+			currentWaitTime = 0.0f;
+			countDownStarted = false;
+			gameState = PLAY;
+		}
+
 	}
 }
 
@@ -682,6 +708,10 @@ void Game::Draw_Pause()
 {
 	Draw_Play();
 	t_Pause.Draw(gfx);
+	if (currentWaitTime != 0.0f)
+	{
+		countDown.Draw(gfx);
+	}
 }
 
 void Game::LoadLevel()

@@ -95,6 +95,7 @@ private:
 	eGameStates gameState;
 	bool spacePressed = false;
 	bool escapePressed = false;
+	bool countDownStarted = false;
 
 	static constexpr float brickWidth = 60.0f;
 	static constexpr float brickHeight = 25.0f;
@@ -121,6 +122,7 @@ private:
 	Counter lvl;
 	Counter highScore;
 	Counter score;
+	Counter countDown;
 
 	static constexpr float readyWaitTime = 2.0f;
 	float currentWaitTime = 0.0f;
