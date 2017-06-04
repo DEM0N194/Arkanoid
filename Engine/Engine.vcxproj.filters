@@ -122,7 +122,10 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Laser.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="COMInitializer.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,7 +196,10 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Laser.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="COMInitializer.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

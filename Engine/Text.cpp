@@ -80,22 +80,22 @@ void Text::AlignRight()
 void Text::Draw(Graphics& gfx)
 {
 	Position PosOld = pos;
-	PosOld.y = max(0,PosOld.y);
+	PosOld.y = std::max(0,PosOld.y);
 	int textLen = GetLength(text);
 	int row = 0;
 	column = 0;
 	switch (alignment)
 	{
 		case Left:
-			PosOld.x = max(0, PosOld.x);
+			PosOld.x = std::max(0, PosOld.x);
 			pos.x = box1.x + PosOld.x;
 			break;
 		case Middle:
-			pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(textLen/2, (box2.x - box1.x)/2);
+			pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - std::min(textLen/2, (box2.x - box1.x)/2);
 			break;
 		case Right:
-			PosOld.x = min(0, PosOld.x);
-			pos.x = box2.x + PosOld.x - min(textLen,box2.x - box1.x);
+			PosOld.x = std::min(0, PosOld.x);
+			pos.x = box2.x + PosOld.x - std::min(textLen,box2.x - box1.x);
 			break;
 	}
 	for (int i = 0; i < text.length(); i++)
@@ -132,7 +132,7 @@ void Text::Draw(Graphics& gfx)
 				{
 					std::string newLine = text;
 					newLine.erase(0, i-1);
-					column = PosOld.x + (box2.x - box1.x)/2 - min(GetLength(newLine)/2,(box2.x - box1.x)/2);
+					column = PosOld.x + (box2.x - box1.x)/2 - std::min(GetLength(newLine)/2,(box2.x - box1.x)/2);
 					row++;
 				}
 				pos.y = box1.y + PosOld.y + row * lineSpacing;
@@ -140,7 +140,7 @@ void Text::Draw(Graphics& gfx)
 				{
 					std::string newLine = text;
 					newLine.erase(0, i+1);
-					pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - min(GetLength(newLine)/2, (box2.x - box1.x)/2);
+					pos.x = (box2.x - box1.x)/2 + box1.x + PosOld.x - std::min(GetLength(newLine)/2, (box2.x - box1.x)/2);
 					column = 0;
 					row++;
 				}
@@ -161,7 +161,7 @@ void Text::Draw(Graphics& gfx)
 				{
 					std::string newLine = text;
 					newLine.erase(0, i);
-					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - min(GetLength(newLine), (box2.x - box1.x));
+					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - std::min(GetLength(newLine), (box2.x - box1.x));
 					column = 0;
 					row++;
 				}
@@ -170,7 +170,7 @@ void Text::Draw(Graphics& gfx)
 				{
 					std::string newLine = text;
 					newLine.erase(0, i+1);
-					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - min(GetLength(newLine), (box2.x - box1.x));
+					pos.x = (box2.x - box1.x) + box1.x + PosOld.x - std::min(GetLength(newLine), (box2.x - box1.x));
 					column = 0;
 					row++;
 				}

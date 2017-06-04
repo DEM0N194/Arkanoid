@@ -86,7 +86,7 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 	{
 		ball.ReboundX();
 	}
-	life = max(life--, 0);
+	life = std::max(--life, 0);
 	if (life == 0)
 	{
 		destroyed = true;
@@ -102,7 +102,7 @@ bool Brick::ExecuteLaserCollision(Laser & laser)
 		if (rect.IsOverlappingWith(laser.GetRectLeft()))
 		{
 			laser.DestroyLeft();
-			life = max(life--, 0);
+			life = std::max(--life, 0);
 			if (life == 0)
 			{
 				destroyed = true;
@@ -112,7 +112,7 @@ bool Brick::ExecuteLaserCollision(Laser & laser)
 		if (rect.IsOverlappingWith(laser.GetRectRight()))
 		{
 			laser.DestroyRight();
-			life = max(life--, 0);
+			life = std::max(--life, 0);
 			if (life == 0)
 			{
 				destroyed = true;
