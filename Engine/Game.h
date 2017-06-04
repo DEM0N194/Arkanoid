@@ -72,7 +72,7 @@ private:
 	void Lvl_01();
 	void Lvl_02();
 private:
-	enum eGameStates
+	enum class GameStates
 	{
 		START,
 		READY,
@@ -92,7 +92,7 @@ private:
 	std::uniform_int_distribution<int> rxDist;
 	int ballRelativeX;
 
-	eGameStates gameState;
+	GameStates gameState;
 	bool spacePressed = false;
 	bool escapePressed = false;
 	bool countDownStarted = false;

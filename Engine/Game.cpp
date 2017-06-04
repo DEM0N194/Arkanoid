@@ -57,7 +57,7 @@ Game::Game(MainWindow& wnd)
 	border(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, wallThickness, float(gfx.ScreenHeight)-wallThickness), int(wallThickness)),
 	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness), 10),
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
-	gameState(START),
+	gameState(GameStates::START),
 	powerUps(paddle, ball, life),
 	laser(paddle, walls),
 	p_Laser(Vec2(140,280),PowerUps::Type::LASER),
@@ -189,22 +189,22 @@ void Game::UpdateModel(float dt)
 {
 	switch (gameState)
 	{
-		case START:
+		case GameStates::START:
 			Game_Start(dt);
 			break;
-		case READY:
+		case GameStates::READY:
 			Game_Ready(dt);
 			break;
-		case PLAY:
+		case GameStates::PLAY:
 			Game_Play(dt);
 			break;
-		case END:
+		case GameStates::END:
 			Game_EndWin(dt);
 			break;
-		case WIN:
+		case GameStates::WIN:
 			Game_EndWin(dt);
 			break;
-		case PAUSE:
+		case GameStates::PAUSE:
 			Game_Pause(dt);
 	}
 }
@@ -213,16 +213,16 @@ void Game::ComposeFrame()
 {
 	switch (gameState)
 	{
-		case START:
+		case GameStates::START:
 			Draw_Start();
 			break;
-		case READY:
+		case GameStates::READY:
 			Draw_Ready();
 			break;
-		case PLAY:
+		case GameStates::PLAY:
 			Draw_Play();
 			break;
-		case END:
+		case GameStates::END:
 			if (currentWaitTime < 1.0f)
 			{
 				Draw_Play();
@@ -232,7 +232,7 @@ void Game::ComposeFrame()
 				Draw_End();
 			}
 			break;
-		case WIN:
+		case GameStates::WIN:
 			if (currentWaitTime < 1.0f)
 			{
 				Draw_Play();
@@ -242,7 +242,7 @@ void Game::ComposeFrame()
 				Draw_Win();
 			}
 			break;
-		case PAUSE:
+		case GameStates::PAUSE:
 			Draw_Pause();
 			break;
 	}
@@ -254,7 +254,7 @@ void Game::Game_Start(float dt)
 	{
 		if (!spacePressed)
 		{
-			gameState = READY;
+			gameState = GameStates::READY;
 			ballRelativeX = rxDist(rng);
 			spacePressed = true;
 		}
@@ -280,7 +280,7 @@ void Game::Game_Ready(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
-	powerUps.Update(gameState, dt);
+	powerUps.Update(int(gameState), dt);
 
 	if (paddle.LaserActive())
 	{
@@ -301,7 +301,7 @@ void Game::Game_Ready(float dt)
 	if (currentWaitTime > readyWaitTime)
 	{
 		currentWaitTime = 0.0f;
-		gameState = PLAY;
+		gameState = GameStates::PLAY;
 	}
 	else if (currentWaitTime > readyWaitTime/2)
 	{
@@ -314,7 +314,7 @@ void Game::Game_Play(float dt)
 {
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
-	powerUps.Update(gameState, dt);
+	powerUps.Update(int(gameState), dt);
 
 	if (paddle.LaserActive())
 	{
@@ -415,11 +415,11 @@ void Game::Game_Play(float dt)
 		// true if you consume your last life
 		if (life.ConsumeLife())
 		{
-			gameState = END;
+			gameState = GameStates::END;
 		}
 		else
 		{
-			gameState = READY;
+			gameState = GameStates::READY;
 			paddle.Destroy();
 			Ball::ResetSpeed();
 			ballRelativeX = rxDist(rng);
@@ -451,7 +451,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!escapePressed)
 		{
-			gameState = PAUSE;
+			gameState = GameStates::PAUSE;
 			escapePressed = true;
 		}
 	}
@@ -463,7 +463,7 @@ void Game::Game_Play(float dt)
 	//! LEVEL CLEARED
 	if (levelCleared)
 	{
-		gameState = READY;
+		gameState = GameStates::READY;
 		paddle.Destroy();
 		laser.DestroyLeft();
 		laser.DestroyRight();
@@ -482,7 +482,7 @@ void Game::Game_EndWin(float dt)
 		{
 			if (!spacePressed)
 			{
-				gameState = START;
+				gameState = GameStates::START;
 				ResetGame();
 				currentWaitTime = 0.0f;
 				spacePressed = true;
@@ -539,7 +539,7 @@ void Game::Game_Pause(float dt)
 		{
 			currentWaitTime = 0.0f;
 			countDownStarted = false;
-			gameState = PLAY;
+			gameState = GameStates::PLAY;
 		}
 
 	}
@@ -726,7 +726,7 @@ void Game::LoadLevel()
 			Lvl_02();
 			break;
 		default:
-			gameState = WIN;
+			gameState = GameStates::WIN;
 			break;
 	}
 }
