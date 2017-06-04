@@ -56,12 +56,14 @@ private:
 	void Game_Ready(float dt);
 	void Game_Play(float dt);
 	void Game_EndWin(float dt);
+	void Game_Pause(float dt);
 
 	void Draw_Start();
 	void Draw_Ready();
 	void Draw_Play();
 	void Draw_End();
 	void Draw_Win();
+	void Draw_Pause();
 
 	void InitializeText();
 	void ResetGame();
@@ -76,7 +78,8 @@ private:
 		READY,
 		PLAY,
 		END,
-		WIN
+		WIN,
+		PAUSE
 	};
 private:
 	MainWindow& wnd;
@@ -91,6 +94,7 @@ private:
 
 	eGameStates gameState;
 	bool spacePressed = false;
+	bool escapePressed = false;
 
 	static constexpr float brickWidth = 60.0f;
 	static constexpr float brickHeight = 25.0f;
@@ -148,4 +152,5 @@ private:
 	Text t_PowerUps;
 	Text t_P;
 	Text t_Thanks;
+	Text t_Pause;
 };

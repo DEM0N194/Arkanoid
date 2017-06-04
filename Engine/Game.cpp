@@ -152,6 +152,9 @@ void Game::InitializeText()
 	t_Thanks.SetPostion(0, 430);
 	t_Thanks.AlignMiddle();
 	t_Thanks.SetColor(Colors::Gray);
+	t_Pause.SetText("PAUSED...");
+	t_Pause.SetPostion(0, 500);
+	t_Pause.AlignMiddle();
 }
 
 void Game::ResetGame()
@@ -200,6 +203,8 @@ void Game::UpdateModel(float dt)
 		case WIN:
 			Game_EndWin(dt);
 			break;
+		case PAUSE:
+			Game_Pause(dt);
 	}
 }
 
@@ -235,6 +240,9 @@ void Game::ComposeFrame()
 			{
 				Draw_Win();
 			}
+			break;
+		case PAUSE:
+			Draw_Pause();
 			break;
 	}
 }
@@ -438,6 +446,19 @@ void Game::Game_Play(float dt)
 		spacePressed = false;
 	}
 
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	{
+		if (!escapePressed)
+		{
+			gameState = PAUSE;
+			escapePressed = true;
+		}
+	}
+	else
+	{
+		escapePressed = false;
+	}
+
 	//! LEVEL CLEARED
 	if (levelCleared)
 	{
@@ -479,6 +500,22 @@ void Game::Game_EndWin(float dt)
 	else if (currentWaitTime > 1.5f)
 	{
 		t_PressSpace.SetColor(Colors::Yellow);
+	}
+}
+
+void Game::Game_Pause(float dt)
+{
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	{
+		if (!escapePressed)
+		{
+			gameState = PLAY;
+			escapePressed = true;
+		}
+	}
+	else
+	{
+		escapePressed = false;
 	}
 }
 
@@ -639,6 +676,12 @@ void Game::Draw_Win()
 
 	SpriteCodex::DrawLogo(Vec2(gfx.ScreenWidth-176-30, 690), gfx);
 	SpriteCodex::DrawLogo(Vec2(30, 690), gfx);
+}
+
+void Game::Draw_Pause()
+{
+	Draw_Play();
+	t_Pause.Draw(gfx);
 }
 
 void Game::LoadLevel()
