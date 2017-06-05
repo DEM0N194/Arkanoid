@@ -139,6 +139,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Beveler.h" />
     <ClInclude Include="Border.h" />
+    <ClInclude Include="Break.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
@@ -169,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Beveler.cpp" />
+    <ClCompile Include="Break.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="Counter.cpp" />

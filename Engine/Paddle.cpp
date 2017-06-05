@@ -11,8 +11,8 @@ Paddle::Paddle(const Vec2 & pos_in, float halfWidth_in, float halfHeight_in)
 	wingBev(Color(0, 0, 0)),
 	laserBotBev(Color(130, 130, 130)),
 	laserLeftBev(Color(130, 130, 130)),
-	laserRightBev(Color(130, 130, 130))
-
+	laserRightBev(Color(130, 130, 130)),
+	breakOut(pos_in.y)
 {
 	UpdateExitFactors();
 }
@@ -70,6 +70,10 @@ void Paddle::Update(Keyboard & kbd, float dt)
 	if (!kbd.KeyIsPressed(VK_RIGHT) && !kbd.KeyIsPressed(VK_LEFT))
 	{
 		AproachSpeed(0, 10000*dt);
+		if (std::abs(speed*dt) < 0.1)
+		{
+			speed = 0;
+		}
 	}
 	else
 	{
@@ -104,6 +108,8 @@ void Paddle::Update(Keyboard & kbd, float dt)
 	{
 		AproachWidth(baseHalfWidth, 200*dt);
 	}
+
+	breakOut.Update(dt);
 }
 
 bool Paddle::DoBallCollision(Ball & ball)
@@ -133,13 +139,29 @@ bool Paddle::DoBallCollision(Ball & ball)
 void Paddle::DoWallCollision(const RectF & walls)
 {
 	RectF rect(GetRect());
-	if (rect.left < walls.left)
+	if (breakOut.IsOpen())
 	{
-		pos.x += walls.left - rect.left;
+		if (rect.left < walls.left)
+		{
+			pos.x += walls.left - rect.left;
+		}
+		else if (rect.right > Graphics::ScreenWidth)
+		{
+			pos.x += Graphics::ScreenWidth - rect.right;
+			readyForNextLvl = true;
+		}
 	}
-	else if (rect.right > walls.right)
+	else
 	{
-		pos.x += walls.right - rect.right;
+		readyForNextLvl = false;
+		if (rect.left < walls.left)
+		{
+			pos.x += walls.left - rect.left;
+		}
+		else if (rect.right > walls.right)
+		{
+			pos.x += walls.right - rect.right;
+		}
 	}
 }
 
@@ -256,6 +278,11 @@ RectF Paddle::GetRectLaserLeft() const
 RectF Paddle::GetRectLaserRight() const
 {
 	return laserRight;
+}
+
+bool Paddle::GoToNextLvl() const
+{
+	return readyForNextLvl;
 }
 
 void Paddle::UpdateExitFactors()

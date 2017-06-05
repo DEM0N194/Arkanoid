@@ -5,6 +5,7 @@
 #include "RectF.h"
 #include "Beveler.h"
 #include "Ball.h"
+#include "Break.h"
 
 class Paddle
 {
@@ -34,11 +35,14 @@ public: // powerups
 	bool LaserActive() const;
 	RectF GetRectLaserLeft() const;
 	RectF GetRectLaserRight() const;
+	bool GoToNextLvl() const;
 private:
 	void UpdateExitFactors();
 	void FadeToColor(Beveler & beveler, Color goal);
 	void AproachWidth(float goal, float dt);
 	void AproachSpeed(float goal, float dt);
+public:
+	Break breakOut;
 private:
 	Beveler bev;
 	Beveler wingBev;
@@ -63,4 +67,5 @@ private:
 	bool catchActive = false;
 	bool catched = false;
 	bool laserActive = false;
+	bool readyForNextLvl = false;
 };

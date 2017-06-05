@@ -101,6 +101,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 			life.AddLife();
 			break;
 		case Type::BREAK:
+			paddle.breakOut.Open();
 			break;
 	}
 }
@@ -120,6 +121,7 @@ void PowerUps::PowerUp::DisablePowerUp()
 			paddle.ReleaseBall();
 			break;
 		case PowerUps::Type::BREAK:
+			paddle.breakOut.Close();
 			break;
 	}
 }

@@ -37,7 +37,7 @@
 //TODO:		Slow		-Orange		- done
 //TODO:		Disruption	-Cyan
 //TODO:		Vaus		-Grey		- done
-//TODO:		Break		-Magenta			<--- do this
+//TODO:		Break		-Magenta	- done
 
 //TODO: Sounds, possibly a sound manager
 //TODO: add more Levels
@@ -430,6 +430,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
+			///paddle.breakOut.Open(); //? ***
 			//powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
@@ -444,6 +445,7 @@ void Game::Game_Play(float dt)
 	}
 	else
 	{
+		///paddle.breakOut.Close(); //? ***
 		spacePressed = false;
 	}
 
@@ -461,7 +463,7 @@ void Game::Game_Play(float dt)
 	}
 
 	//! LEVEL CLEARED
-	if (levelCleared)
+	if (levelCleared || paddle.GoToNextLvl())
 	{
 		gameState = GameStates::READY;
 		paddle.Destroy();
@@ -585,12 +587,17 @@ void Game::Draw_Start()
 
 void Game::Draw_Ready()
 {
+	walls.Draw(gfx);
+	thinWalls.Draw(gfx);
+	infoWalls.Draw(gfx);
+
 	life.Draw(gfx);
 	if (currentWaitTime > readyWaitTime/2)
 	{
 		ball.Draw(gfx);
 		t_Ready.Draw(gfx);
 	}
+	paddle.breakOut.Draw(gfx);
 	paddle.Draw(gfx);
 	powerUps.Draw(gfx);
 	for (const Brick& b : bricks)
@@ -602,10 +609,6 @@ void Game::Draw_Ready()
 	{
 		laser.Draw(gfx);
 	}
-
-	walls.Draw(gfx);
-	thinWalls.Draw(gfx);
-	infoWalls.Draw(gfx);
 	
 	// draw lvl in the infoWalls
 	lvl.SetPostion(755, 80);
@@ -628,12 +631,17 @@ void Game::Draw_Ready()
 
 void Game::Draw_Play()
 {
+	walls.Draw(gfx);
+	thinWalls.Draw(gfx);
+	infoWalls.Draw(gfx);
+
 	life.Draw(gfx);
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);
 	}
 	ball.Draw(gfx);
+	paddle.breakOut.Draw(gfx);
 	paddle.Draw(gfx);
 	powerUps.Draw(gfx);
 
@@ -641,10 +649,6 @@ void Game::Draw_Play()
 	{
 		laser.Draw(gfx);
 	}
-
-	walls.Draw(gfx);
-	thinWalls.Draw(gfx);
-	infoWalls.Draw(gfx);
 
 	// draw stuff in infoWalls
 	t_lvl.Draw(gfx);
