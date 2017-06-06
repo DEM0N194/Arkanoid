@@ -380,11 +380,7 @@ void Game::Game_Play(float dt)
 		{
 			// track scores
 			score += bricks[curColIndex].GetValue();
-			if (score > highScore)
-			{
-				highScore = score;
-			}
-
+			highScore = std::max(highScore.GetNum(), score.GetNum());
 		}
 		//x sound for ball and brick collision goes here
 	}
@@ -430,8 +426,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
-			///paddle.breakOut.Open(); //? ***
-			//powerUps.Gimme(Vec2(500, 300));
+			///powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();
@@ -445,7 +440,6 @@ void Game::Game_Play(float dt)
 	}
 	else
 	{
-		///paddle.breakOut.Close(); //? ***
 		spacePressed = false;
 	}
 
@@ -465,6 +459,11 @@ void Game::Game_Play(float dt)
 	//! LEVEL CLEARED
 	if (levelCleared || paddle.GoToNextLvl())
 	{
+		if (paddle.GoToNextLvl())
+		{
+			score += 10000;
+			highScore = std::max(highScore.GetNum(), score.GetNum());
+		}
 		gameState = GameStates::READY;
 		paddle.Destroy();
 		laser.DestroyLeft();
