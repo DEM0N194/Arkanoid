@@ -474,7 +474,7 @@ void Game::Game_Play(float dt)
 		{
 			///PowerUps::ActivateTriple();
 			///balls.push_back(Ball(balls.at(0), 0.2f));
-			levelCleared = true;
+			//levelCleared = true;
 			///powerUps.Gimme(Vec2(500, 300));
 
 			if (paddle.Catched())
@@ -840,9 +840,9 @@ void Game::Lvl_02()
 
 void Game::Lvl_03()
 {
-	walls.SetColor(Color(150, 50, 50));
-	thinWalls.SetColor(Color(150, 50, 50));
-	infoWalls.SetColor(Color(150, 50, 50));
+	walls.SetColor(Color(50, 100, 150));
+	thinWalls.SetColor(Color(50, 100, 150));
+	infoWalls.SetColor(Color(50, 100, 150));
 	const Vec2 topLeft(20.0f, 200.0f);
 	const Brick::Type brickTypes[8] = {Brick::Type::GREEN, Brick::Type::WHITE, Brick::Type::RED, Brick::Type::WHITE,
 		Brick::Type::MAGENTA, Brick::Type::BLUE, Brick::Type::CYAN, Brick::Type::CYAN};
