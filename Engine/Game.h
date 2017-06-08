@@ -113,7 +113,7 @@ private:
 	Border bottomBorder;
 	Border border;
 
-	Ball ball;
+	std::vector<Ball> balls;
 	Paddle paddle;
 	LifeCounter life;
 	PowerUps powerUps;

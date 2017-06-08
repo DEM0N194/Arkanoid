@@ -25,7 +25,7 @@ private:
 	class PowerUp
 	{
 	public:
-		PowerUp(Vec2 pos, Type type, Paddle& paddle, Ball& ball, LifeCounter& life);
+		PowerUp(Vec2 pos, Type type, Paddle& paddle, LifeCounter& life);
 		PowerUp& operator=(const PowerUp& rhs);
 		bool Update(float dt);
 		bool DoPaddleCollision();
@@ -41,7 +41,6 @@ private:
 		Type type;
 		Color c;
 		Paddle& paddle;
-		Ball& ball;
 		LifeCounter& life;
 		bool destroyed = false;
 		static constexpr float halfWidth = 30.0f;
@@ -65,20 +64,26 @@ public:
 		static constexpr float halfHeight = 12.5f;
 	};
 public:
-	PowerUps(Paddle& paddle, Ball& ball, LifeCounter& life);
+	PowerUps(Paddle& paddle, LifeCounter& life);
 	void Update(int gs, float dt);
 	void Gimme(Vec2 pos);
 	void DisableCurrent();
 	void DestroyAll();
 	void Draw(Graphics& gfx);
+	static void DisableTriple();
+	static void ActivateTriple();
+	static bool TripleActive();
+	static void TripleInit();
+	static bool TripleInited();
 private:
 	std::mt19937 rng;
 	std::bernoulli_distribution spawnDist;
 	std::uniform_int_distribution<int> typeDist;
 	Paddle& paddle;
-	Ball& ball;
 	LifeCounter& life;
 	std::vector<PowerUp> powerUps;
 	int index2Delete;
 	bool doDelete = false;
+	static bool triple;
+	static bool tripleInit;
 };

@@ -35,7 +35,7 @@
 //TODO:		Enlarge		-Blue		- done
 //TODO:		Catch		-Green		- done
 //TODO:		Slow		-Orange		- done
-//TODO:		Disruption	-Cyan
+//TODO:		Disruption	-Cyan		- done
 //TODO:		Vaus		-Grey		- done
 //TODO:		Break		-Magenta	- done
 
@@ -58,7 +58,7 @@ Game::Game(MainWindow& wnd)
 	infoBorder(RectF(10, float(gfx.ScreenWidth)-10, 10, float(gfx.ScreenHeight-fieldHeight)-wallThickness), 10),
 	bottomBorder(RectF(10, float(gfx.ScreenWidth)-10, 680, float(gfx.ScreenHeight)-10), 10),
 	gameState(GameStates::START),
-	powerUps(paddle, ball, life),
+	powerUps(paddle, life),
 	laser(paddle, walls),
 	p_Laser(Vec2(140,280),PowerUps::Type::LASER),
 	p_Expand(Vec2(450,280), PowerUps::Type::ENLARGE),
@@ -161,6 +161,8 @@ void Game::InitializeText()
 void Game::ResetGame()
 {
 	Ball::ResetSpeed();
+	balls.clear();
+	balls.push_back(Ball());
 	paddle = Paddle(Vec2(410, 810), 60, 10);
 	life = LifeCounter(Vec2(30, 880), 3);
 	powerUps.DestroyAll();
@@ -295,7 +297,7 @@ void Game::Game_Ready(float dt)
 	}
 
 	// the ball sticks to the paddle
-	ball = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(ball));
+	balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(balls.at(0)));
 
 	currentWaitTime += dt;
 	if (currentWaitTime > readyWaitTime)
@@ -312,6 +314,13 @@ void Game::Game_Ready(float dt)
 
 void Game::Game_Play(float dt)
 {
+	if (PowerUps::TripleActive() && !PowerUps::TripleInited())
+	{
+		balls.push_back(Ball(balls.at(0), 0.2f));
+		balls.push_back(Ball(balls.at(0), -0.2f));
+		PowerUps::TripleInit();
+	}
+
 	paddle.Update(wnd.kbd, dt);
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(int(gameState), dt);
@@ -323,40 +332,55 @@ void Game::Game_Play(float dt)
 
 	if (paddle.Catched())
 	{
-		ball = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX), -17),paddle.GetBallDir(ball));
+		balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX), -17),paddle.GetBallDir(balls.at(0)));
 	}
 	else
 	{
-		ball.Update(dt);
+		for (auto& b : balls)
+		{
+			b.Update(dt);
+		}
+		//ball.Update(dt);
 	}
 
 	bool levelCleared = true;
 	bool ball2brickCollisionHappened = false;
 	float curColDistSq;
 	int curColIndex;
+	int curBallIndex = -1;
 	for (int i = 0; i < nBricks; i++)
 	{
 		// collision of the ball with the bricks
-		if (bricks[i].CheckBallCollision(ball))
+		for (int j = 0; j < balls.size(); j++)
 		{
-			const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
-			if (ball2brickCollisionHappened)
+			if (bricks[i].CheckBallCollision(balls.at(j)))
 			{
-				if (newColDistSq < curColDistSq)
+				const float newColDistSq = (balls.at(j).GetPosition() - bricks[i].GetCenter()).GetLengthSq();
+				if (ball2brickCollisionHappened)
+				{
+					if (newColDistSq < curColDistSq)
+					{
+						curColDistSq = newColDistSq;
+						curColIndex = i;
+						curBallIndex = j;
+					}
+				}
+				else
 				{
 					curColDistSq = newColDistSq;
 					curColIndex = i;
+					curBallIndex = j;
+					ball2brickCollisionHappened = true;
+					if (balls.size() == 1)
+					{
+						powerUps.Gimme(bricks[i].GetCenter());
+					}
+					Ball::SpeedUp();
 				}
-			}
-			else
-			{
-				curColDistSq = newColDistSq;
-				curColIndex = i;
-				ball2brickCollisionHappened = true;
-				powerUps.Gimme(bricks[i].GetCenter());
-				Ball::SpeedUp();
+				break;
 			}
 		}
+		
 		if (paddle.LaserActive())
 		{
 			if (bricks[i].ExecuteLaserCollision(laser))
@@ -375,8 +399,8 @@ void Game::Game_Play(float dt)
 	if (ball2brickCollisionHappened)
 	{
 		paddle.ResetCooldown();
-		// returns true if the brick is destroyed
-		if (bricks[curColIndex].ExecuteBallCollision(ball))
+			// returns true if the brick is destroyed
+		if (bricks[curColIndex].ExecuteBallCollision(balls.at(curBallIndex)))
 		{
 			// track scores
 			score += bricks[curColIndex].GetValue();
@@ -386,39 +410,53 @@ void Game::Game_Play(float dt)
 	}
 
 	// collision of the ball with the paddle
-	if (paddle.DoBallCollision(ball))
+	for (int j = 0; j < balls.size(); j++)
 	{
-		if (paddle.CatchActive())
+		if (paddle.DoBallCollision(&balls.at(j)))
 		{
-			paddle.CatchBall();
-			ballRelativeX = int(ball.GetRect().GetCenter().x - paddle.GetRect().GetCenter().x);
+			if (paddle.CatchActive())
+			{
+				paddle.CatchBall();
+				ballRelativeX = int(balls.at(j).GetRect().GetCenter().x - paddle.GetRect().GetCenter().x);
+			}
+			//x sound for ball and paddle collsion goes here
 		}
-		//x sound for ball and paddle collsion goes here
 	}
-
+	
 	// collision of the ball with the wall is handled here
-	const Ball::Collision ball2wallCollsion = ball.DoWallCollisions(walls.GetInnerBounds());
-	if (ball2wallCollsion == Ball::Collision::SIDE_TOP)
+	for (int j = 0; j < balls.size(); j++)
 	{
-		if (!paddle.GetRect().IsOverlappingWith(ball.GetRect()))
+		const Ball::Collision ball2wallCollsion = balls.at(j).DoWallCollisions(walls.GetInnerBounds());
+		if (ball2wallCollsion == Ball::Collision::SIDE_TOP)
 		{
-			paddle.ResetCooldown();
+			if (!paddle.GetRect().IsOverlappingWith(balls.at(j).GetRect()))
+			{
+				paddle.ResetCooldown();
+			}
+			//x Sound for ball and wall collision goes here
 		}
-		//x Sound for ball and wall collision goes here
-	}
-	else if (ball2wallCollsion == Ball::Collision::BOTTOM)
-	{
-		// true if you consume your last life
-		if (life.ConsumeLife())
+		else if (ball2wallCollsion == Ball::Collision::BOTTOM)
 		{
-			gameState = GameStates::END;
-		}
-		else
-		{
-			gameState = GameStates::READY;
-			paddle.Destroy();
-			Ball::ResetSpeed();
-			ballRelativeX = rxDist(rng);
+			// true if you consume your last life
+			if (balls.size() == 1)
+			{
+				if(life.ConsumeLife())
+				{
+					gameState = GameStates::END;
+				}
+				else
+				{
+					gameState = GameStates::READY;
+					paddle.Destroy();
+					Ball::ResetSpeed();
+					ballRelativeX = rxDist(rng);
+				}
+				PowerUps::DisableTriple();
+			}
+			else
+			{
+				balls.erase(balls.begin() + j);
+			}
 		}
 	}
 
@@ -426,6 +464,8 @@ void Game::Game_Play(float dt)
 	{
 		if (!spacePressed)
 		{
+			///PowerUps::ActivateTriple();
+			///balls.push_back(Ball(balls.at(0), 0.2f));
 			///powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
@@ -593,7 +633,10 @@ void Game::Draw_Ready()
 	life.Draw(gfx);
 	if (currentWaitTime > readyWaitTime/2)
 	{
-		ball.Draw(gfx);
+		for (const Ball& b : balls)
+		{
+			b.Draw(gfx);
+		}
 		t_Ready.Draw(gfx);
 	}
 	paddle.breakOut.Draw(gfx);
@@ -639,7 +682,10 @@ void Game::Draw_Play()
 	{
 		b.Draw(gfx);
 	}
-	ball.Draw(gfx);
+	for (const Ball& b : balls)
+	{
+		b.Draw(gfx);
+	}
 	paddle.breakOut.Draw(gfx);
 	paddle.Draw(gfx);
 	powerUps.Draw(gfx);

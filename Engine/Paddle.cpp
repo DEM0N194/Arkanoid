@@ -112,22 +112,23 @@ void Paddle::Update(Keyboard & kbd, float dt)
 	breakOut.Update(dt);
 }
 
-bool Paddle::DoBallCollision(Ball & ball)
+bool Paddle::DoBallCollision(Ball* ball)
 {
-	if (!coolDown)
+	if (!coolDown || lastBall != ball)
 	{
+		lastBall = ball;
 		RectF rect(GetRect());
-		if (rect.IsOverlappingWith(ball.GetRect()))
+		if (rect.IsOverlappingWith(ball->GetRect()))
 		{
-			const Vec2 ballPos = ball.GetPosition();
-			if (signbit(ball.GetVelocity().x) == signbit((ballPos.x - pos.x))
+			const Vec2 ballPos = ball->GetPosition();
+			if (signbit(ball->GetVelocity().x) == signbit((ballPos.x - pos.x))
 				|| (ballPos.x <= rect.right && ballPos.x >= rect.left))
 			{
-				ball.SetDirection(GetBallDir(ball));
+				ball->SetDirection(GetBallDir(*ball));
 			}
 			else
 			{
-				ball.ReboundX();
+				ball->ReboundX();
 			}
 			coolDown = true;
 			return true;

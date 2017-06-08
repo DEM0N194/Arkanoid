@@ -15,8 +15,10 @@ public:
 	};
 public:
 	Ball() = default;
+	Ball(const Ball&) = default;
+	Ball(const Ball& rhs, float dirModifier);
 	Ball(const Vec2& pos_in, const Vec2& dir_in);
-	void Draw(Graphics& gfx);
+	void Draw(Graphics& gfx) const;
 	void Update(float dt);
 	Collision DoWallCollisions(const RectF& walls);
 	void ReboundX();

@@ -1,8 +1,11 @@
 #include "PowerUps.h"
 #include <vector>
 
-PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, Ball& ball_in, LifeCounter& life_in)
-	: pos(pos_in), type(type_in), paddle(paddle_in), ball(ball_in), life(life_in)
+bool PowerUps::triple = false;
+bool PowerUps::tripleInit = false;
+
+PowerUps::PowerUp::PowerUp(Vec2 pos_in, Type type_in, Paddle& paddle_in, LifeCounter& life_in)
+	: pos(pos_in), type(type_in), paddle(paddle_in), life(life_in)
 {
 	switch (type)
 	{
@@ -39,7 +42,6 @@ PowerUps::PowerUp& PowerUps::PowerUp::operator=(const PowerUp & rhs)
 	type = rhs.type;
 	c = rhs.c;
 	paddle = rhs.paddle;
-	ball = rhs.ball;
 	life = rhs.life;
 	destroyed = rhs.destroyed;
 	return *this;
@@ -96,6 +98,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 			Ball::SlowDown();
 			break;
 		case Type::DISRUPTION:
+			PowerUps::ActivateTriple();
 			break;
 		case Type::VAUS:
 			life.AddLife();
@@ -146,8 +149,8 @@ RectF PowerUps::PowerUp::GetRect() const
 	return RectF::fromCenter(pos, halfWidth, halfHeight);
 }
 
-PowerUps::PowerUps(Paddle & paddle_in, Ball & ball_in, LifeCounter & life_in)
-	: paddle(paddle_in), ball(ball_in), life(life_in)
+PowerUps::PowerUps(Paddle & paddle_in, LifeCounter & life_in)
+	: paddle(paddle_in), life(life_in)
 	, rng(std::random_device()()), spawnDist(0.25), typeDist(0,99)
 {
 }
@@ -203,7 +206,7 @@ void PowerUps::Update(int gs, float dt)
 
 void PowerUps::DisableCurrent()
 {
-	powerUps.push_back(PowerUp(Vec2(100, 100), Type::INVALID, paddle, ball, life));
+	powerUps.push_back(PowerUp(Vec2(100, 100), Type::INVALID, paddle, life));
 }
 
 void PowerUps::DestroyAll()
@@ -213,7 +216,7 @@ void PowerUps::DestroyAll()
 
 void PowerUps::Gimme(Vec2 pos)
 {
-	if (spawnDist(rng))
+	if (spawnDist(rng) && !TripleActive())
 	{
 		const int currTypeDist = typeDist(rng);
 		Type type;
@@ -229,7 +232,7 @@ void PowerUps::Gimme(Vec2 pos)
 		{
 			type = Type(typeDist(rng)%5); // 20%
 		}
-		powerUps.push_back(PowerUp(pos, type, paddle, ball, life));
+		powerUps.push_back(PowerUp(pos, type, paddle, life));
 	}
 }
 
@@ -239,6 +242,32 @@ void PowerUps::Draw(Graphics & gfx)
 	{
 		p.Draw(gfx);
 	}
+}
+
+void PowerUps::DisableTriple()
+{
+	triple = false;
+	tripleInit = false;
+}
+
+void PowerUps::ActivateTriple()
+{
+	triple = true;
+}
+
+bool PowerUps::TripleActive()
+{
+	return triple;
+}
+
+void PowerUps::TripleInit()
+{
+	tripleInit = true;
+}
+
+bool PowerUps::TripleInited()
+{
+	return tripleInit;
 }
 
 PowerUps::PowerUpIcon::PowerUpIcon(Vec2 pos_in, Type type_in)

@@ -14,7 +14,7 @@ public:
 	Paddle(const Vec2& pos_in, float halfWidth_in, float halfHeight_in);
 	void Draw(Graphics& gfx);
 	void Update(Keyboard& kbd, float dt);
-	bool DoBallCollision(Ball& ball);
+	bool DoBallCollision(Ball* ball);
 	void DoWallCollision(const RectF& walls);
 	RectF GetRect() const;
 	Vec2 GetBallDir(Ball& ball);
@@ -52,6 +52,7 @@ private:
 	Vec2 pos;
 	RectF laserLeft;
 	RectF laserRight;
+	Ball* lastBall = nullptr;
 	float baseHalfWidth;
 	float enlargedHalfWidth;
 	float currentHalfWidth;

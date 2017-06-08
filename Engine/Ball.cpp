@@ -5,13 +5,22 @@ std::random_device Ball::rd;
 std::mt19937 Ball::rng(rd());
 std::uniform_real_distribution<float> Ball::sDist(5.0f, 15.0f);
 
+Ball::Ball(const Ball & rhs, float angle)
+	: Ball(rhs)
+{
+	Vec2 dir;
+	dir.x = vel.x * cos(angle) - vel.y * sin(angle);
+	dir.y = vel.x * sin(angle) + vel.y * cos(angle);
+	SetDirection(dir);
+}
+
 Ball::Ball(const Vec2 & pos_in, const Vec2 & dir_in)
 	: pos(pos_in)
 {
 	SetDirection(dir_in);
 }
 
-void Ball::Draw(Graphics & gfx)
+void Ball::Draw(Graphics & gfx) const
 {
 	SpriteCodex::DrawBall(pos, gfx);
 }
