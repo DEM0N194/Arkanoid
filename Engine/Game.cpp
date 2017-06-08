@@ -49,7 +49,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	rng(std::random_device()()),
-	rxDist(-45, 45),
+	rxDist(10, 45),
 	// Walls and borders
 	walls(RectF(wallThickness, float(gfx.ScreenWidth)-wallThickness, float(gfx.ScreenHeight-fieldHeight), float(gfx.ScreenHeight)), int(wallThickness)),
 	thinWalls(RectF(10, float(gfx.ScreenWidth)-10, float(gfx.ScreenHeight-fieldHeight)-10, float(gfx.ScreenHeight)), 10),
@@ -71,6 +71,10 @@ Game::Game(MainWindow& wnd)
 	infoBorder.SetColor(Color(130, 130, 130));
 	bottomBorder.SetColor(Color(130, 130, 130));
 	lvl.SetNumOf0(1);
+	lvl_s.SetNumOf0(1);
+	lvl_s.SetPostion(550+3, 500+3);
+	lvl_s.AlignRight();
+	lvl_s.SetColor(Color(0, 0, 0));
 	highScore.SetPostion(440, 80);
 	highScore.AlignMiddle();
 	countDown.SetPostion(400, 580);
@@ -99,6 +103,9 @@ void Game::InitializeText()
 	t_DEM0N194.SetColor(150, 150, 150);
 	t_level.SetText("LEVEL");
 	t_level.SetPostion(305, 500);
+	t_level_s.SetText("LEVEL");
+	t_level_s.SetPostion(305+3, 500+3);
+	t_level_s.SetColor(Color(0, 0, 0));
 	t_lvl.SetText("LVL");
 	t_lvl.SetPostion(700, 30);
 	t_Ready.SetText("READY");
@@ -153,6 +160,10 @@ void Game::InitializeText()
 	t_Pause.SetText("PAUSED...");
 	t_Pause.SetPostion(0, 500);
 	t_Pause.AlignMiddle();
+	t_Pause_s.SetText("PAUSED...");
+	t_Pause_s.SetPostion(0+3, 500+3);
+	t_Pause_s.AlignMiddle();
+	t_Pause_s.SetColor(Color(0, 0, 0));
 }
 
 void Game::ResetGame()
@@ -165,6 +176,7 @@ void Game::ResetGame()
 	powerUps.DestroyAll();
 
 	lvl = 1;
+	lvl_s = 1;
 	score = 0;
 
 	LoadLevel();
@@ -481,7 +493,7 @@ void Game::Game_Play(float dt)
 		spacePressed = false;
 	}
 
-	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
 		if (!escapePressed)
 		{
@@ -508,6 +520,7 @@ void Game::Game_Play(float dt)
 		laser.DestroyRight();
 		Ball::ResetSpeed();
 		lvl++;
+		lvl_s++;
 		LoadLevel();
 	}
 }
@@ -545,7 +558,7 @@ void Game::Game_EndWin(float dt)
 
 void Game::Game_Pause(float dt)
 {
-	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
 		if (!escapePressed)
 		{
@@ -658,7 +671,9 @@ void Game::Draw_Ready()
 	// draw lvl in the middle of the screen
 	lvl.SetPostion(550, 500);
 	lvl.AlignRight();
+	lvl_s.Draw(gfx);
 	lvl.Draw(gfx);
+	t_level_s.Draw(gfx);
 	t_level.Draw(gfx);
 
 	t_HighScore.Draw(gfx);
@@ -754,6 +769,7 @@ void Game::Draw_Win()
 void Game::Draw_Pause()
 {
 	Draw_Play();
+	t_Pause_s.Draw(gfx);
 	t_Pause.Draw(gfx);
 	if (currentWaitTime != 0.0f)
 	{

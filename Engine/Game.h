@@ -119,6 +119,7 @@ private:
 	Laser laser;
 	
 	Counter lvl;
+	Counter lvl_s;
 	Counter highScore;
 	Counter score;
 	Counter countDown;
@@ -145,6 +146,7 @@ private:
 	Text t_YouWin;
 	Text t_DEM0N194;
 	Text t_level;
+	Text t_level_s;
 	Text t_lvl;
 	Text t_Ready;
 	Text t_HighScore;
@@ -154,4 +156,5 @@ private:
 	Text t_P;
 	Text t_Thanks;
 	Text t_Pause;
+	Text t_Pause_s;
 };
