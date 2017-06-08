@@ -287,7 +287,7 @@ void Game::Game_Ready(float dt)
 	if (paddle.LaserActive())
 	{
 		laser.Update(dt);
-		for (int i = 0; i < nBricks; i++)
+		for (int i = 0; i < bricks.size(); i++)
 		{
 			if (bricks[i].ExecuteLaserCollision(laser))
 			{
@@ -340,7 +340,6 @@ void Game::Game_Play(float dt)
 		{
 			b.Update(dt);
 		}
-		//ball.Update(dt);
 	}
 
 	bool levelCleared = true;
@@ -348,7 +347,7 @@ void Game::Game_Play(float dt)
 	float curColDistSq;
 	int curColIndex;
 	int curBallIndex = -1;
-	for (int i = 0; i < nBricks; i++)
+	for (int i = 0; i < bricks.size(); i++)
 	{
 		// collision of the ball with the bricks
 		for (int j = 0; j < balls.size(); j++)
@@ -371,10 +370,7 @@ void Game::Game_Play(float dt)
 					curColIndex = i;
 					curBallIndex = j;
 					ball2brickCollisionHappened = true;
-					if (balls.size() == 1)
-					{
-						powerUps.Gimme(bricks[i].GetCenter());
-					}
+					powerUps.Gimme(bricks[i].GetCenter());
 					Ball::SpeedUp();
 				}
 				break;
@@ -437,9 +433,9 @@ void Game::Game_Play(float dt)
 		}
 		else if (ball2wallCollsion == Ball::Collision::BOTTOM)
 		{
-			// true if you consume your last life
 			if (balls.size() == 1)
 			{
+				// true if you consume your last life
 				if(life.ConsumeLife())
 				{
 					gameState = GameStates::END;
@@ -451,11 +447,14 @@ void Game::Game_Play(float dt)
 					Ball::ResetSpeed();
 					ballRelativeX = rxDist(rng);
 				}
-				PowerUps::DisableTriple();
 			}
 			else
 			{
 				balls.erase(balls.begin() + j);
+				if (balls.size() == 1)
+				{
+					PowerUps::DisableTriple();
+				}
 			}
 		}
 	}
@@ -466,7 +465,7 @@ void Game::Game_Play(float dt)
 		{
 			///PowerUps::ActivateTriple();
 			///balls.push_back(Ball(balls.at(0), 0.2f));
-			///powerUps.Gimme(Vec2(500, 300));
+			powerUps.Gimme(Vec2(500, 300));
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();
@@ -765,6 +764,7 @@ void Game::Draw_Pause()
 
 void Game::LoadLevel()
 {
+	bricks.clear();
 	Brick::SetLevel(lvl.GetNum());
 	switch (lvl.GetNum())
 	{
@@ -784,12 +784,12 @@ void Game::Lvl_01()
 {
 	const Vec2 topLeft(20.0f, 225.0f);
 	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::RED, Brick::Type::YELLOW, Brick::Type::BLUE, Brick::Type::GREEN};
-	for (int y = 0; y < nBricksDown; y++)
+	for (int y = 0; y < 5; y++)
 	{
 		const Brick::Type brickType = brickTypes[y];
-		for (int x = 0; x < nBricksAcross; x++)
+		for (int x = 0; x < 13; x++)
 		{
-			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
+			bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType));
 		}
 	}
 }
@@ -798,12 +798,12 @@ void Game::Lvl_02()
 {
 	const Vec2 topLeft(20.0f, 225.0f);
 	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::MAGENTA, Brick::Type::CYAN, Brick::Type::YELLOW, Brick::Type::GREEN};
-	for (int y = 0; y < nBricksDown; y++)
+	for (int y = 0; y < 5; y++)
 	{
 		const Brick::Type brickType = brickTypes[y];
-		for (int x = 0; x < nBricksAcross; x++)
+		for (int x = 0; x < 13; x++)
 		{
-			bricks[x + y * nBricksAcross] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType);
+			bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType));
 		}
 	}
 }
