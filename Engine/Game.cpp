@@ -70,9 +70,6 @@ Game::Game(MainWindow& wnd)
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
 	bottomBorder.SetColor(Color(130, 130, 130));
-	walls.SetColor(Color(0, 75, 150));
-	thinWalls.SetColor(Color(0, 75, 150));
-	infoWalls.SetColor(Color(0, 75, 150));
 	lvl.SetNumOf0(1);
 	highScore.SetPostion(440, 80);
 	highScore.AlignMiddle();
@@ -465,7 +462,9 @@ void Game::Game_Play(float dt)
 		{
 			///PowerUps::ActivateTriple();
 			///balls.push_back(Ball(balls.at(0), 0.2f));
-			powerUps.Gimme(Vec2(500, 300));
+			//levelCleared = true;
+			///powerUps.Gimme(Vec2(500, 300));
+
 			if (paddle.Catched())
 			{
 				paddle.ReleaseBall();
@@ -782,6 +781,9 @@ void Game::LoadLevel()
 
 void Game::Lvl_01()
 {
+	walls.SetColor(Color(0, 75, 150));
+	thinWalls.SetColor(Color(0, 75, 150));
+	infoWalls.SetColor(Color(0, 75, 150));
 	const Vec2 topLeft(20.0f, 225.0f);
 	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::RED, Brick::Type::YELLOW, Brick::Type::BLUE, Brick::Type::GREEN};
 	for (int y = 0; y < 5; y++)
@@ -796,14 +798,25 @@ void Game::Lvl_01()
 
 void Game::Lvl_02()
 {
-	const Vec2 topLeft(20.0f, 225.0f);
-	const Brick::Type brickTypes[5] = {Brick::Type::SILVER, Brick::Type::MAGENTA, Brick::Type::CYAN, Brick::Type::YELLOW, Brick::Type::GREEN};
-	for (int y = 0; y < 5; y++)
+	walls.SetColor(Color(50, 150, 50));
+	thinWalls.SetColor(Color(50, 150, 50));
+	infoWalls.SetColor(Color(50, 150, 50));
+	const Vec2 topLeft(20.0f, 200.0f);
+	const Brick::Type brickTypes[8] = {Brick::Type::WHITE, Brick::Type::ORANGE, Brick::Type::CYAN, Brick::Type::GREEN,
+									   Brick::Type::RED, Brick::Type::BLUE, Brick::Type::MAGENTA, Brick::Type::YELLOW};
+	int yMin = 0;
+	for (int x = 0; x < 12; x++)
 	{
-		const Brick::Type brickType = brickTypes[y];
-		for (int x = 0; x < 13; x++)
+		const Brick::Type brickType = brickTypes[x%8];
+		for (int y = 11; y >= yMin; y--)
 		{
 			bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType));
 		}
+		yMin++;
 	}
+	for (int x = 0; x < 12; x++)
+	{
+		bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, 12 * brickHeight), brickWidth, brickHeight), Brick::Type::SILVER));
+	}
+	bricks.push_back(Brick(RectF(topLeft + Vec2(12 * brickWidth, 12 * brickHeight), brickWidth, brickHeight), brickTypes[4]));
 }
