@@ -462,7 +462,7 @@ void Game::Game_Play(float dt)
 		{
 			///PowerUps::ActivateTriple();
 			///balls.push_back(Ball(balls.at(0), 0.2f));
-			//levelCleared = true;
+			levelCleared = true;
 			///powerUps.Gimme(Vec2(500, 300));
 
 			if (paddle.Catched())
@@ -773,6 +773,9 @@ void Game::LoadLevel()
 		case 2:
 			Lvl_02();
 			break;
+		case 3:
+			Lvl_03();
+			break;
 		default:
 			gameState = GameStates::WIN;
 			break;
@@ -813,10 +816,75 @@ void Game::Lvl_02()
 			bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType));
 		}
 		yMin++;
-	}
-	for (int x = 0; x < 12; x++)
-	{
+
 		bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, 12 * brickHeight), brickWidth, brickHeight), Brick::Type::SILVER));
 	}
 	bricks.push_back(Brick(RectF(topLeft + Vec2(12 * brickWidth, 12 * brickHeight), brickWidth, brickHeight), brickTypes[4]));
+}
+
+void Game::Lvl_03()
+{
+	walls.SetColor(Color(150, 50, 50));
+	thinWalls.SetColor(Color(150, 50, 50));
+	infoWalls.SetColor(Color(150, 50, 50));
+	const Vec2 topLeft(20.0f, 200.0f);
+	const Brick::Type brickTypes[8] = {Brick::Type::GREEN, Brick::Type::WHITE, Brick::Type::RED, Brick::Type::WHITE,
+		Brick::Type::MAGENTA, Brick::Type::BLUE, Brick::Type::CYAN, Brick::Type::CYAN};
+
+	Brick::Type type;
+	for (int y = 0; y < 15; y += 2)
+	{
+		for (int x = 0; x < 13; x++)
+		{
+			if (y == 14)
+			{
+				if (x < 10)
+				{
+					type = Brick::Type::GOLD;
+				}
+				else 
+				{
+					type = brickTypes[y/2];
+				}
+			}
+			else if(y == 10)
+			{
+				if (x >= 3)
+				{
+					type = Brick::Type::GOLD;
+				}
+				else
+				{
+					type = brickTypes[y/2];
+				}
+			}
+			else if (y == 6)
+			{
+				if (x < 10)
+				{
+					type = Brick::Type::GOLD;
+				}
+				else
+				{
+					type = brickTypes[y/2];
+				}
+			}
+			else if (y == 2)
+			{
+				if (x >= 3)
+				{
+					type = Brick::Type::GOLD;
+				}
+				else
+				{
+					type = brickTypes[y/2];
+				}
+			}
+			else
+			{
+				type = brickTypes[y/2];
+			}
+			bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), type));
+		}
+	}
 }
