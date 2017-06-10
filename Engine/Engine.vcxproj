@@ -268,9 +268,9 @@
     <Media Include="Sounds\Enlarge.mp3" />
     <Media Include="Sounds\Game_Over.mp3" />
     <Media Include="Sounds\Laser.mp3" />
-    <Media Include="Sounds\Left_Top.mp3" />
     <Media Include="Sounds\Life.mp3" />
     <Media Include="Sounds\Paddle.mp3" />
+    <Media Include="Sounds\PowerUp.mp3" />
     <Media Include="Sounds\Round_Start.mp3" />
     <Media Include="Sounds\Silver.mp3" />
     <Media Include="Sounds\Switch.mp3" />

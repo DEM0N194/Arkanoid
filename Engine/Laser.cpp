@@ -22,7 +22,7 @@ void Laser::Ray::Draw(Graphics & gfx) const
 }
 
 Laser::Laser(Paddle & paddle_in, const Walls& walls_in)
-	: paddle(paddle_in), walls(walls_in)
+	: paddle(paddle_in), walls(walls_in), s_Laser(L"Sounds/Laser.mp3")
 {
 	DestroyLeft();
 	DestroyRight();
@@ -90,6 +90,7 @@ void Laser::Shoot()
 	{
 		left = std::make_unique<Ray>(paddle.GetRectLaserLeft());
 		right = std::make_unique<Ray>(paddle.GetRectLaserRight());
+		s_Laser.Play();
 	}
 }
 

@@ -172,6 +172,19 @@ void PowerUps::Update(int gs, float dt)
 							powerUps.at(i-1).DisablePowerUp();
 						}
 					}
+
+					if (powerUps.at(i).GetType() == Type::ENLARGE || powerUps.at(i).GetType() == Type::BREAK)
+					{
+						s_Enlarge.Play();
+					}
+					else if(powerUps.at(i).GetType() == Type::VAUS)
+					{
+						s_Life.Play();
+					}
+					else
+					{
+						s_default.Play();
+					}
 				}
 				else if (powerUps.at(i).GetType() == Type::INVALID)
 				{

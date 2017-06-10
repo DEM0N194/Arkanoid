@@ -4,6 +4,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "LifeCounter.h"
+#include "Sound.h"
 #include <random>
 
 // this is probably the worst way to do PowerUps, but hey it's working
@@ -46,7 +47,6 @@ private:
 		static constexpr float halfWidth = 30.0f;
 		static constexpr float halfHeight = 12.5f;
 		static constexpr float speed = 300.0f;
-
 	};
 public:
 	class PowerUpIcon
@@ -86,4 +86,7 @@ private:
 	bool doDelete = false;
 	static bool triple;
 	static bool tripleInit;
+	Sound s_Enlarge = Sound(L"Sounds/Enlarge.mp3");
+	Sound s_Life = Sound(L"Sounds/Life.mp3");
+	Sound s_default = Sound(L"Sounds/PowerUp.mp3");
 };

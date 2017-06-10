@@ -157,4 +157,11 @@ private:
 	Text t_Thanks;
 	Text t_Pause;
 	Text t_Pause_s;
+
+	Sound s_Title_Screen;
+	Sound s_Round_Start;
+	Sound s_Game_Over;
+	Sound s_Paddle;
+	Sound s_Bottom;
+	Sound s_Switch;
 };

@@ -4,6 +4,7 @@
 #include "RectF.h"
 #include "Paddle.h"
 #include "Walls.h"
+#include "Sound.h"
 #include <memory>
 
 class Laser
@@ -36,4 +37,5 @@ private:
 	std::unique_ptr<Ray> right;
 	Paddle& paddle;
 	const Walls& walls;
+	Sound s_Laser;
 };

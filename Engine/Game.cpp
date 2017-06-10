@@ -39,7 +39,6 @@
 //TODO:		Vaus		-Grey		- done
 //TODO:		Break		-Magenta	- done
 
-//TODO: Sounds, possibly a sound manager
 //TODO: add more Levels
 
 Game::Game(MainWindow& wnd)
@@ -58,12 +57,20 @@ Game::Game(MainWindow& wnd)
 	gameState(GameStates::START),
 	powerUps(paddle, life),
 	laser(paddle, walls),
+	// power ups on the title screen
 	p_Laser(Vec2(140,280),PowerUps::Type::LASER),
 	p_Expand(Vec2(450,280), PowerUps::Type::ENLARGE),
 	p_Catch(Vec2(140,360), PowerUps::Type::CATCH),
 	p_Slow(Vec2(450,360), PowerUps::Type::SLOW),
 	p_Triple(Vec2(140,440), PowerUps::Type::DISRUPTION),
-	p_Vaus(Vec2(450,440), PowerUps::Type::VAUS)
+	p_Vaus(Vec2(450,440), PowerUps::Type::VAUS),
+	// sounds
+	s_Bottom(L"Sounds/Bottom.mp3"),
+	s_Game_Over(L"Sounds/Game_Over.mp3"),
+	s_Paddle(L"Sounds/Paddle.mp3"),
+	s_Switch(L"Sounds/Switch.mp3"),
+	s_Title_Screen(L"Sounds/Title_Screen.mp3"),
+	s_Round_Start(L"Sounds/Round_Start.mp3")
 {
 	border.SetColor(Color(130, 130, 130));
 	infoBorder.SetColor(Color(130, 130, 130));
@@ -79,6 +86,8 @@ Game::Game(MainWindow& wnd)
 
 	InitializeText();
 	ResetGame();
+
+	s_Title_Screen.Play();
 }
 
 void Game::InitializeText()
@@ -263,6 +272,8 @@ void Game::Game_Start(float dt)
 	{
 		if (!spacePressed)
 		{
+			s_Title_Screen.StopOne();
+			s_Round_Start.Play();
 			gameState = GameStates::READY;
 			ballRelativeX = rxDist(rng);
 			spacePressed = true;
@@ -296,10 +307,7 @@ void Game::Game_Ready(float dt)
 		laser.Update(dt);
 		for (unsigned int i = 0; i < bricks.size(); i++)
 		{
-			if (bricks[i].ExecuteLaserCollision(laser))
-			{
-				//x laser brick sound
-			}
+			bricks[i].ExecuteLaserCollision(laser);
 		}
 	}
 
@@ -382,11 +390,7 @@ void Game::Game_Play(float dt)
 		
 		if (paddle.LaserActive())
 		{
-			if (bricks[i].ExecuteLaserCollision(laser))
-			{
-				//x laser brick sound
-			}
-
+			bricks[i].ExecuteLaserCollision(laser);
 		}
 
 		// if any of the bricks is not destroyed, the level is not cleared
@@ -410,7 +414,6 @@ void Game::Game_Play(float dt)
 			score += bricks[curColIndex].GetValue();
 			highScore = std::max(highScore.GetNum(), score.GetNum());
 		}
-		//x sound for ball and brick collision goes here
 	}
 
 	// collision of the ball with the paddle
@@ -423,7 +426,7 @@ void Game::Game_Play(float dt)
 				paddle.CatchBall();
 				ballRelativeX = int(balls.at(j).GetRect().GetCenter().x - paddle.GetRect().GetCenter().x);
 			}
-			//x sound for ball and paddle collsion goes here
+			s_Paddle.Play();
 		}
 	}
 	
@@ -437,16 +440,17 @@ void Game::Game_Play(float dt)
 			{
 				paddle.ResetCooldown();
 			}
-			//x Sound for ball and wall collision goes here
 		}
 		else if (ball2wallCollsion == Ball::Collision::BOTTOM)
 		{
+			s_Bottom.Play();
 			if (balls.size() == 1)
 			{
 				// true if you consume your last life
 				if(life.ConsumeLife())
 				{
 					gameState = GameStates::END;
+					s_Game_Over.Play();
 				}
 				else
 				{
@@ -454,6 +458,7 @@ void Game::Game_Play(float dt)
 					paddle.Destroy();
 					Ball::ResetSpeed();
 					ballRelativeX = rxDist(rng);
+					s_Round_Start.Play();
 				}
 			}
 			else
@@ -496,6 +501,7 @@ void Game::Game_Play(float dt)
 	{
 		if (!escapePressed)
 		{
+			s_Switch.Play();
 			gameState = GameStates::PAUSE;
 			escapePressed = true;
 		}
@@ -521,6 +527,7 @@ void Game::Game_Play(float dt)
 		lvl++;
 		lvl_s++;
 		LoadLevel();
+		s_Round_Start.Play();
 	}
 }
 
@@ -533,6 +540,7 @@ void Game::Game_EndWin(float dt)
 		{
 			if (!spacePressed)
 			{
+				s_Switch.Play();
 				gameState = GameStates::START;
 				ResetGame();
 				currentWaitTime = 0.0f;

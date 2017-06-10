@@ -242,9 +242,6 @@
     <Media Include="Sounds\Laser.mp3">
       <Filter>Sounds</Filter>
     </Media>
-    <Media Include="Sounds\Left_Top.mp3">
-      <Filter>Sounds</Filter>
-    </Media>
     <Media Include="Sounds\Life.mp3">
       <Filter>Sounds</Filter>
     </Media>
@@ -261,6 +258,9 @@
       <Filter>Sounds</Filter>
     </Media>
     <Media Include="Sounds\Title_Screen.mp3">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\PowerUp.mp3">
       <Filter>Sounds</Filter>
     </Media>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Beveler.h"
 #include "Laser.h"
+#include "Sound.h"
 
 class Brick
 {
@@ -28,7 +29,7 @@ public:
 	void Draw(Graphics& gfx) const;
 	bool CheckBallCollision(const Ball& ball) const;
 	bool ExecuteBallCollision(Ball& ball);
-	bool ExecuteLaserCollision(Laser& laser);
+	void ExecuteLaserCollision(Laser& laser);
 	Vec2 GetCenter() const;
 	int GetValue() const;
 	bool IsDestroyed() const;
@@ -43,4 +44,6 @@ private:
 	int life = 1;
 	static int lvl;
 	bool destroyed;
+	Sound s_Brick;
+	Sound s_Silver;
 };

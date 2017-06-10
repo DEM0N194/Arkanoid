@@ -7,7 +7,9 @@ Brick::Brick(const RectF & rect_in,Type brickType_in)
 	:
 	rect(rect_in),
 	brickType(brickType_in),
-	destroyed(false)
+	destroyed(false),
+	s_Brick(L"Sounds/Brick.mp3"),
+	s_Silver(L"Sounds/Silver.mp3")
 {
 	switch (brickType)
 	{
@@ -73,6 +75,7 @@ bool Brick::CheckBallCollision(const Ball & ball) const
 bool Brick::ExecuteBallCollision(Ball & ball)
 {
 	assert(CheckBallCollision(ball));
+	life = std::max(--life, 0);
 
 	ball.SetColor(bev.GetBaseColor());
 	if (brickType == Type::SILVER)
@@ -82,6 +85,23 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 		c.SetG(std::max((c.GetG() - 30), 25));
 		c.SetB(std::max((c.GetB() - 30), 25));
 		bev = Beveler(c);
+
+		if (life == 0)
+		{
+			s_Brick.Play();
+		}
+		else
+		{
+			s_Silver.Play();
+		}
+	}
+	else if(brickType == Type::GOLD)
+	{
+		s_Silver.Play();
+	}
+	else
+	{
+		s_Brick.Play();
 	}
 
 	const Vec2 ballPos = ball.GetPosition();
@@ -97,7 +117,7 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 	{
 		ball.ReboundX();
 	}
-	life = std::max(--life, 0);
+
 	if (life == 0)
 	{
 		destroyed = true;
@@ -106,7 +126,7 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 	return false;
 }
 
-bool Brick::ExecuteLaserCollision(Laser & laser)
+void Brick::ExecuteLaserCollision(Laser & laser)
 {
 	if (!destroyed || brickType == Type::GOLD)
 	{
@@ -117,7 +137,7 @@ bool Brick::ExecuteLaserCollision(Laser & laser)
 			if (life == 0)
 			{
 				destroyed = true;
-				return true;
+				return;
 			}
 		}
 		if (rect.IsOverlappingWith(laser.GetRectRight()))
@@ -127,11 +147,10 @@ bool Brick::ExecuteLaserCollision(Laser & laser)
 			if (life == 0)
 			{
 				destroyed = true;
-				return true;
+				return;
 			}
 		}
 	}
-	return false;
 }
 
 Vec2 Brick::GetCenter() const
