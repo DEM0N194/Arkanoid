@@ -11,10 +11,9 @@ public:
 	const RectF& GetInnerBounds() const;
 	virtual void Draw( Graphics& gfx) const;
 	void SetColor(const Color c);
+	Color GetColor() const;
 protected:
 	int thickness;
 	RectF innerBounds;
 	Beveler bev;
-private:
-	Color baseColor;
 };

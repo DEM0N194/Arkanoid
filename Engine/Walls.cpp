@@ -32,3 +32,8 @@ void Walls::SetColor(Color c)
 {
 	bev = Beveler(c);
 }
+
+Color Walls::GetColor() const
+{
+	return bev.GetBaseColor();
+}

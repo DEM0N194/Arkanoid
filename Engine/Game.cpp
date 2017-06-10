@@ -40,7 +40,6 @@
 //TODO:		Break		-Magenta	- done
 
 //TODO: make the silver brick flash when you hit it
-//TODO: make the ball change color when you hit a brick
 //TODO: Sounds, possibly a sound manager
 //TODO: add more Levels
 //TODO: fine tune the game speed so it's not as easy as it is now
@@ -298,7 +297,7 @@ void Game::Game_Ready(float dt)
 	if (paddle.LaserActive())
 	{
 		laser.Update(dt);
-		for (int i = 0; i < bricks.size(); i++)
+		for (unsigned int i = 0; i < bricks.size(); i++)
 		{
 			if (bricks[i].ExecuteLaserCollision(laser))
 			{
@@ -308,7 +307,7 @@ void Game::Game_Ready(float dt)
 	}
 
 	// the ball sticks to the paddle
-	balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(balls.at(0)));
+	balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX),-17),paddle.GetBallDir(balls.at(0)), walls.GetColor(), walls.GetColor());
 
 	currentWaitTime += dt;
 	if (currentWaitTime > readyWaitTime)
@@ -340,7 +339,8 @@ void Game::Game_Play(float dt)
 
 	if (paddle.Catched())
 	{
-		balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX), -17),paddle.GetBallDir(balls.at(0)));
+		balls.at(0) = Ball(paddle.GetRect().GetCenter() + Vec2(float(ballRelativeX), -17),paddle.GetBallDir(balls.at(0)),
+						   balls.at(0).GetColor(), balls.at(0).GetColorGoal());
 	}
 	else
 	{
@@ -355,10 +355,10 @@ void Game::Game_Play(float dt)
 	float curColDistSq;
 	int curColIndex;
 	int curBallIndex = -1;
-	for (int i = 0; i < bricks.size(); i++)
+	for (unsigned int i = 0; i < bricks.size(); i++)
 	{
 		// collision of the ball with the bricks
-		for (int j = 0; j < balls.size(); j++)
+		for (unsigned int j = 0; j < balls.size(); j++)
 		{
 			if (bricks[i].CheckBallCollision(balls.at(j)))
 			{
@@ -417,7 +417,7 @@ void Game::Game_Play(float dt)
 	}
 
 	// collision of the ball with the paddle
-	for (int j = 0; j < balls.size(); j++)
+	for (unsigned int j = 0; j < balls.size(); j++)
 	{
 		if (paddle.DoBallCollision(&balls.at(j)))
 		{
@@ -431,7 +431,7 @@ void Game::Game_Play(float dt)
 	}
 	
 	// collision of the ball with the wall is handled here
-	for (int j = 0; j < balls.size(); j++)
+	for (unsigned int j = 0; j < balls.size(); j++)
 	{
 		const Ball::Collision ball2wallCollsion = balls.at(j).DoWallCollisions(walls.GetInnerBounds());
 		if (ball2wallCollsion == Ball::Collision::SIDE_TOP)
@@ -646,7 +646,7 @@ void Game::Draw_Ready()
 	life.Draw(gfx);
 	if (currentWaitTime > readyWaitTime/2)
 	{
-		for (const Ball& b : balls)
+		for (Ball& b : balls)
 		{
 			b.Draw(gfx);
 		}
@@ -697,7 +697,7 @@ void Game::Draw_Play()
 	{
 		b.Draw(gfx);
 	}
-	for (const Ball& b : balls)
+	for (Ball& b : balls)
 	{
 		b.Draw(gfx);
 	}

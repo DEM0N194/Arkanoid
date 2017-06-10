@@ -73,6 +73,9 @@ bool Brick::CheckBallCollision(const Ball & ball) const
 bool Brick::ExecuteBallCollision(Ball & ball)
 {
 	assert(CheckBallCollision(ball));
+
+	ball.SetColor(bev.GetBaseColor());
+
 	const Vec2 ballPos = ball.GetPosition();
 	if (signbit(ball.GetVelocity().x) == signbit( (ballPos.x - GetCenter().x) ))
 	{

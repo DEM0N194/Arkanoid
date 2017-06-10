@@ -14,15 +14,16 @@ Ball::Ball(const Ball & rhs, float angle)
 	SetDirection(dir);
 }
 
-Ball::Ball(const Vec2 & pos_in, const Vec2 & dir_in)
-	: pos(pos_in)
+Ball::Ball(const Vec2 & pos_in, const Vec2 & dir_in, Color c_in, Color cGoal_in)
+	: pos(pos_in), c(c_in), cGoal(cGoal_in)
 {
 	SetDirection(dir_in);
 }
 
-void Ball::Draw(Graphics & gfx) const
+void Ball::Draw(Graphics & gfx)
 {
-	SpriteCodex::DrawBall(pos, gfx);
+	UpdateColor();
+	gfx.DrawCircle(pos.x, pos.y, 7.0f, c);
 }
 
 void Ball::Update(float dt)
@@ -86,6 +87,21 @@ void Ball::SetPosition(const Vec2 & pos_in)
 	pos = pos_in;
 }
 
+void Ball::SetColor(Color color)
+{
+	cGoal = color;
+}
+
+Color Ball::GetColor() const
+{
+	return c;
+}
+
+Color Ball::GetColorGoal() const
+{
+	return cGoal;
+}
+
 void Ball::SpeedUp()
 {
 	speed += sDist(rng);
@@ -99,6 +115,54 @@ void Ball::SlowDown()
 void Ball::ResetSpeed()
 {
 	speed = 500.0f;
+}
+
+void Ball::UpdateColor()
+{
+	Color updated = c;
+	const int rDif = cGoal.GetR() - c.GetR();
+	const int gDif = cGoal.GetG() - c.GetG();
+	const int bDif = cGoal.GetB() - c.GetB();
+	bool changed = false;
+	constexpr int changeSpeed = 2;
+
+	if (rDif > changeSpeed)
+	{
+		updated.SetR(c.GetR()+changeSpeed);
+		changed = true;
+	}
+	if (rDif < -changeSpeed)
+	{
+		updated.SetR(c.GetR()-changeSpeed);
+		changed = true;
+	}
+
+	if (gDif > changeSpeed)
+	{
+		updated.SetG(c.GetG()+changeSpeed);
+		changed = true;
+	}
+	if (gDif < -changeSpeed)
+	{
+		updated.SetG(c.GetG()-changeSpeed);
+		changed = true;
+	}
+
+	if (bDif > changeSpeed)
+	{
+		updated.SetB(c.GetB()+changeSpeed);
+		changed = true;
+	}
+	if (bDif < -changeSpeed && rDif > bDif)
+	{
+		updated.SetB(c.GetB()-changeSpeed);
+		changed = true;
+	}
+
+	if (changed)
+	{
+		c = updated;
+	}
 }
 
 void Ball::ReboundX()
