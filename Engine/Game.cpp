@@ -39,6 +39,8 @@
 //TODO:		Vaus		-Grey		- done
 //TODO:		Break		-Magenta	- done
 
+//TODO: make the silver brick flash when you hit it
+//TODO: make the ball change color when you hit a brick
 //TODO: Sounds, possibly a sound manager
 //TODO: add more Levels
 //TODO: fine tune the game speed so it's not as easy as it is now
@@ -334,10 +336,7 @@ void Game::Game_Play(float dt)
 	paddle.DoWallCollision(walls.GetInnerBounds());
 	powerUps.Update(int(gameState), dt);
 
-	if (paddle.LaserActive())
-	{
-		laser.Update(dt);
-	}
+	laser.Update(dt);
 
 	if (paddle.Catched())
 	{
@@ -379,8 +378,6 @@ void Game::Game_Play(float dt)
 					curColIndex = i;
 					curBallIndex = j;
 					ball2brickCollisionHappened = true;
-					powerUps.Gimme(bricks[i].GetCenter());
-					Ball::SpeedUp();
 				}
 				break;
 			}
@@ -407,6 +404,11 @@ void Game::Game_Play(float dt)
 			// returns true if the brick is destroyed
 		if (bricks[curColIndex].ExecuteBallCollision(balls.at(curBallIndex)))
 		{
+			powerUps.Gimme(bricks[curColIndex].GetCenter());
+			if (!PowerUps::TripleActive() && bricks[curColIndex].GetValue() != 0)
+			{
+				Ball::SpeedUp();
+			}
 			// track scores
 			score += bricks[curColIndex].GetValue();
 			highScore = std::max(highScore.GetNum(), score.GetNum());
@@ -493,7 +495,7 @@ void Game::Game_Play(float dt)
 		spacePressed = false;
 	}
 
-	if (wnd.kbd.KeyIsPressed(VK_UP))
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
 		if (!escapePressed)
 		{
@@ -558,7 +560,7 @@ void Game::Game_EndWin(float dt)
 
 void Game::Game_Pause(float dt)
 {
-	if (wnd.kbd.KeyIsPressed(VK_UP))
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
 		if (!escapePressed)
 		{

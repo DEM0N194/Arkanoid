@@ -30,21 +30,29 @@ Laser::Laser(Paddle & paddle_in, const Walls& walls_in)
 
 void Laser::Update(float dt)
 {
-	if (left != nullptr)
+	if (paddle.LaserActive())
 	{
-		left->Update(dt);
-		if (left->GetRect().top <= walls.GetInnerBounds().top)
+		if (left != nullptr)
 		{
-			DestroyLeft();
+			left->Update(dt);
+			if (left->GetRect().top <= walls.GetInnerBounds().top)
+			{
+				DestroyLeft();
+			}
+		}
+		if (right != nullptr)
+		{
+			right->Update(dt);
+			if (right->GetRect().top <= walls.GetInnerBounds().top)
+			{
+				DestroyRight();
+			}
 		}
 	}
-	if (right != nullptr)
+	else
 	{
-		right->Update(dt);
-		if (right->GetRect().top <= walls.GetInnerBounds().top)
-		{
-			DestroyRight();
-		}
+		DestroyLeft();
+		DestroyRight();
 	}
 }
 
@@ -78,7 +86,7 @@ void Laser::DestroyRight()
 
 void Laser::Shoot()
 {
-	if (left == nullptr)
+	if (left == nullptr && right == nullptr)
 	{
 		left = std::make_unique<Ray>(paddle.GetRectLaserLeft());
 		right = std::make_unique<Ray>(paddle.GetRectLaserRight());
