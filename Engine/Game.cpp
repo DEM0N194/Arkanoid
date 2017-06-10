@@ -799,6 +799,9 @@ void Game::LoadLevel()
 		case 3:
 			Lvl_03();
 			break;
+		case 4:
+			Lvl_04();
+			break;
 		default:
 			gameState = GameStates::WIN;
 			break;
@@ -846,6 +849,28 @@ void Game::Lvl_02()
 }
 
 void Game::Lvl_03()
+{
+	walls.SetColor(Color(150, 50, 50));
+	thinWalls.SetColor(Color(150, 50, 50));
+	infoWalls.SetColor(Color(150, 50, 50));
+	const Vec2 topLeft(20.0f, 225.0f);
+	const Brick::Type brickTypes[8] = {Brick::Type::WHITE, Brick::Type::ORANGE, Brick::Type::CYAN, Brick::Type::GREEN,
+		Brick::Type::RED, Brick::Type::BLUE, Brick::Type::MAGENTA, Brick::Type::YELLOW};
+
+	for (int y = 0; y < 14; y++)
+	{
+		for (int x = 0; x < 13; x++)
+		{
+			if (x != 0 && x != 6 && x != 12)
+			{
+				const Brick::Type brickType = brickTypes[(y+x)%8];
+				bricks.push_back(Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), brickType));
+			}
+		}
+	}
+}
+
+void Game::Lvl_04()
 {
 	walls.SetColor(Color(50, 100, 150));
 	thinWalls.SetColor(Color(50, 100, 150));
