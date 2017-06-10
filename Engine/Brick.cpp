@@ -75,6 +75,14 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 	assert(CheckBallCollision(ball));
 
 	ball.SetColor(bev.GetBaseColor());
+	if (brickType == Type::SILVER)
+	{
+		Color c = bev.GetBaseColor();
+		c.SetR(std::max((c.GetR() - 30), 25));
+		c.SetG(std::max((c.GetG() - 30), 25));
+		c.SetB(std::max((c.GetB() - 30), 25));
+		bev = Beveler(c);
+	}
 
 	const Vec2 ballPos = ball.GetPosition();
 	if (signbit(ball.GetVelocity().x) == signbit( (ballPos.x - GetCenter().x) ))

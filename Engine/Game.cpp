@@ -39,11 +39,8 @@
 //TODO:		Vaus		-Grey		- done
 //TODO:		Break		-Magenta	- done
 
-//TODO: make the silver brick flash when you hit it
 //TODO: Sounds, possibly a sound manager
 //TODO: add more Levels
-//TODO: fine tune the game speed so it's not as easy as it is now
-//TODO: Add fireworks to WIN screen so it feels more rewarding xD
 
 Game::Game(MainWindow& wnd)
 	:
