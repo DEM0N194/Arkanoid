@@ -38,4 +38,5 @@ private:
 	Paddle& paddle;
 	const Walls& walls;
 	Sound s_Laser;
+	Sound s_Explosion;
 };

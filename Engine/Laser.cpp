@@ -22,7 +22,7 @@ void Laser::Ray::Draw(Graphics & gfx) const
 }
 
 Laser::Laser(Paddle & paddle_in, const Walls& walls_in)
-	: paddle(paddle_in), walls(walls_in), s_Laser(L"Sounds/Laser.mp3")
+	: paddle(paddle_in), walls(walls_in), s_Laser(L"Sounds/Laser.mp3"), s_Explosion(L"Sounds/Explosion.mp3")
 {
 	DestroyLeft();
 	DestroyRight();
@@ -76,11 +76,19 @@ RectF Laser::GetRectRight() const
 
 void Laser::DestroyLeft()
 {
+	if (right != nullptr)
+	{
+		s_Explosion.Play();
+	}
 	left = nullptr;
 }
 
 void Laser::DestroyRight()
 {
+	if (left != nullptr)
+	{
+		s_Explosion.Play();
+	}
 	right = nullptr;
 }
 

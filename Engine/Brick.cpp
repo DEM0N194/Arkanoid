@@ -75,7 +75,6 @@ bool Brick::CheckBallCollision(const Ball & ball) const
 bool Brick::ExecuteBallCollision(Ball & ball)
 {
 	assert(CheckBallCollision(ball));
-	life = std::max(--life, 0);
 
 	ball.SetColor(bev.GetBaseColor());
 	if (brickType == Type::SILVER)
@@ -86,14 +85,7 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 		c.SetB(std::max((c.GetB() - 30), 25));
 		bev = Beveler(c);
 
-		if (life == 0)
-		{
-			s_Brick.Play();
-		}
-		else
-		{
-			s_Silver.Play();
-		}
+		s_Silver.Play();
 	}
 	else if(brickType == Type::GOLD)
 	{
@@ -118,6 +110,7 @@ bool Brick::ExecuteBallCollision(Ball & ball)
 		ball.ReboundX();
 	}
 
+	life = std::max(--life, 0);
 	if (life == 0)
 	{
 		destroyed = true;
@@ -133,21 +126,39 @@ void Brick::ExecuteLaserCollision(Laser & laser)
 		if (rect.IsOverlappingWith(laser.GetRectLeft()))
 		{
 			laser.DestroyLeft();
+
+			if (brickType == Type::SILVER)
+			{
+				Color c = bev.GetBaseColor();
+				c.SetR(std::max((c.GetR() - 30), 25));
+				c.SetG(std::max((c.GetG() - 30), 25));
+				c.SetB(std::max((c.GetB() - 30), 25));
+				bev = Beveler(c);
+			}
+
 			life = std::max(--life, 0);
 			if (life == 0)
 			{
 				destroyed = true;
-				return;
 			}
 		}
 		if (rect.IsOverlappingWith(laser.GetRectRight()))
 		{
 			laser.DestroyRight();
+
+			if (brickType == Type::SILVER)
+			{
+				Color c = bev.GetBaseColor();
+				c.SetR(std::max((c.GetR() - 30), 25));
+				c.SetG(std::max((c.GetG() - 30), 25));
+				c.SetB(std::max((c.GetB() - 30), 25));
+				bev = Beveler(c);
+			}
+
 			life = std::max(--life, 0);
 			if (life == 0)
 			{
 				destroyed = true;
-				return;
 			}
 		}
 	}
