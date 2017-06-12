@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include <algorithm>
 
 float Ball::speed;
 std::random_device Ball::rd;
@@ -109,7 +110,7 @@ void Ball::SpeedUp()
 
 void Ball::SlowDown()
 {
-	speed -= 100.0f;
+	speed = std::max(speed-100.0f,200.0f);
 }
 
 void Ball::ResetSpeed()
