@@ -92,6 +92,7 @@ void PowerUps::PowerUp::ActivatePowerUp()
 			paddle.Enlarge();
 			break;
 		case Type::CATCH:
+			if(!triple)
 			paddle.ActivateCatch();
 			break;
 		case Type::SLOW:

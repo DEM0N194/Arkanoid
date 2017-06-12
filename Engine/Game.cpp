@@ -275,6 +275,7 @@ void Game::Game_Start(float dt)
 		if (!spacePressed)
 		{
 			s_Title_Screen.StopOne();
+			s_Ending.StopOne();
 			s_Round_Start.Play();
 			gameState = GameStates::READY;
 			ballRelativeX = rxDist(rng);
@@ -480,7 +481,7 @@ void Game::Game_Play(float dt)
 		{
 			///PowerUps::ActivateTriple();
 			///balls.push_back(Ball(balls.at(0), 0.2f));
-			//levelCleared = true;
+			///levelCleared = true;
 			///powerUps.Gimme(Vec2(500, 300));
 
 			if (paddle.Catched())
@@ -529,7 +530,6 @@ void Game::Game_Play(float dt)
 		lvl++;
 		lvl_s++;
 		LoadLevel();
-		s_Round_Start.Play();
 	}
 }
 
@@ -543,7 +543,6 @@ void Game::Game_EndWin(float dt)
 			if (!spacePressed)
 			{
 				s_Switch.Play();
-				s_Ending.StopOne();
 				gameState = GameStates::START;
 				ResetGame();
 				currentWaitTime = 0.0f;
@@ -789,6 +788,7 @@ void Game::Draw_Pause()
 
 void Game::LoadLevel()
 {
+	s_Round_Start.Play();
 	bricks.clear();
 	Brick::SetLevel(lvl.GetNum());
 	switch (lvl.GetNum())
@@ -807,6 +807,7 @@ void Game::LoadLevel()
 			break;
 		default:
 			gameState = GameStates::WIN;
+			s_Round_Start.StopOne();
 			s_Ending.Play();
 			break;
 	}
