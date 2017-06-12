@@ -31,6 +31,9 @@ public:
 	void SetColor(Color color);
 	Color GetColor() const;
 	Color GetColorGoal() const;
+	void PutInCoolDown();
+	void ResetCoolDown();
+	bool IsInCoolDown() const;
 	static void SpeedUp();
 	static void SlowDown();
 	static void ResetSpeed();
@@ -43,6 +46,7 @@ private:
 	Color cGoal;
 	Vec2 pos;
 	Vec2 vel;
+	bool coolDown = false;
 	static std::random_device rd;
 	static std::mt19937 rng;
 	static std::uniform_real_distribution<float> sDist;

@@ -103,6 +103,21 @@ Color Ball::GetColorGoal() const
 	return cGoal;
 }
 
+void Ball::PutInCoolDown()
+{
+	coolDown = true;
+}
+
+void Ball::ResetCoolDown()
+{
+	coolDown = false;
+}
+
+bool Ball::IsInCoolDown() const
+{
+	return coolDown;
+}
+
 void Ball::SpeedUp()
 {
 	speed += sDist(rng);

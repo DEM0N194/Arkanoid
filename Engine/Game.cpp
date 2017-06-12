@@ -401,7 +401,7 @@ void Game::Game_Play(float dt)
 	}
 	if (ball2brickCollisionHappened)
 	{
-		paddle.ResetCooldown();
+		balls.at(curBallIndex).ResetCoolDown();
 			// returns true if the brick is destroyed
 		if (bricks[curColIndex].ExecuteBallCollision(balls.at(curBallIndex)))
 		{
@@ -419,7 +419,7 @@ void Game::Game_Play(float dt)
 	// collision of the ball with the paddle
 	for (unsigned int j = 0; j < balls.size(); j++)
 	{
-		if (paddle.DoBallCollision(&balls.at(j)))
+		if (paddle.DoBallCollision(balls.at(j)))
 		{
 			if (paddle.CatchActive())
 			{
@@ -438,7 +438,7 @@ void Game::Game_Play(float dt)
 		{
 			if (!paddle.GetRect().IsOverlappingWith(balls.at(j).GetRect()))
 			{
-				paddle.ResetCooldown();
+				balls.at(j).ResetCoolDown();
 			}
 		}
 		else if (ball2wallCollsion == Ball::Collision::BOTTOM)
