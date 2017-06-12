@@ -66,6 +66,7 @@ Game::Game(MainWindow& wnd)
 	p_Vaus(Vec2(450,440), PowerUps::Type::VAUS),
 	// sounds
 	s_Bottom(L"Sounds/Bottom.mp3"),
+	s_Ending(L"Sounds/Ending.mp3"),
 	s_Game_Over(L"Sounds/Game_Over.mp3"),
 	s_Paddle(L"Sounds/Paddle.mp3"),
 	s_Switch(L"Sounds/Switch.mp3"),
@@ -102,6 +103,7 @@ void Game::InitializeText()
 	t_YouWin.SetText("YOU WIN");
 	t_YouWin.SetPostion(0, 250);
 	t_YouWin.AlignMiddle();
+	t_YouWin.SetColor(Colors::Green);
 	t_PressSpace.SetPostion(0, 550);
 	t_PressSpace.AlignMiddle();
 	t_DEM0N194.SetText("DEM0N194");
@@ -541,6 +543,7 @@ void Game::Game_EndWin(float dt)
 			if (!spacePressed)
 			{
 				s_Switch.Play();
+				s_Ending.StopOne();
 				gameState = GameStates::START;
 				ResetGame();
 				currentWaitTime = 0.0f;
@@ -804,6 +807,7 @@ void Game::LoadLevel()
 			break;
 		default:
 			gameState = GameStates::WIN;
+			s_Ending.Play();
 			break;
 	}
 }

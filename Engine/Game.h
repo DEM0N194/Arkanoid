@@ -162,6 +162,7 @@ private:
 	Sound s_Title_Screen;
 	Sound s_Round_Start;
 	Sound s_Game_Over;
+	Sound s_Ending;
 	Sound s_Paddle;
 	Sound s_Bottom;
 	Sound s_Switch;

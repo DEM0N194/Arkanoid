@@ -265,6 +265,7 @@
   <ItemGroup>
     <Media Include="Sounds\Bottom.mp3" />
     <Media Include="Sounds\Brick.mp3" />
+    <Media Include="Sounds\Ending.mp3" />
     <Media Include="Sounds\Enlarge.mp3" />
     <Media Include="Sounds\Explosion.mp3" />
     <Media Include="Sounds\Game_Over.mp3" />

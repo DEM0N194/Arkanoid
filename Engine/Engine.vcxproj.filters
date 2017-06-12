@@ -266,5 +266,8 @@
     <Media Include="Sounds\Explosion.mp3">
       <Filter>Sounds</Filter>
     </Media>
+    <Media Include="Sounds\Ending.mp3">
+      <Filter>Sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>
