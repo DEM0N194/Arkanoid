@@ -87,8 +87,6 @@ Game::Game(MainWindow& wnd)
 
 	InitializeText();
 	ResetGame();
-
-	s_Title_Screen.Play();
 }
 
 void Game::InitializeText()
