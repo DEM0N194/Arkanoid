@@ -527,6 +527,7 @@ void Game::Game_Play(float dt)
 		Ball::ResetSpeed();
 		lvl++;
 		lvl_s++;
+		s_Round_Start.Play();
 		LoadLevel();
 	}
 }
@@ -786,7 +787,6 @@ void Game::Draw_Pause()
 
 void Game::LoadLevel()
 {
-	s_Round_Start.Play();
 	bricks.clear();
 	Brick::SetLevel(lvl.GetNum());
 	switch (lvl.GetNum())
